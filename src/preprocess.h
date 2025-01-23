@@ -3,7 +3,9 @@
 #include <string>
 #include <algorithm>
 #include <cctype>
+#include <set>
+#include "document.h"
 
 using namespace std;
 
-string preprocess_sentence(string str);
+extern void preprocess_text(Document * doc);

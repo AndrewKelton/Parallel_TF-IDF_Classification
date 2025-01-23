@@ -1,13 +1,17 @@
+#ifndef COUNT_VECTORIZATION_H
+#define COUNT_VECTORIZATION_H
+
 #include <string>
 #include <iostream>
 #include <vector>
 #include <map>
 #include <tuple>
-#include <mutex>
+// #include <mutex>
 #include <sstream>
+#include "document.h"
 
 using namespace std;
 
-mutex mtx;
+void count_words_doc(Document * doc);
 
-void count_words(const string& text, map<string, int>& global_count);
+#endif

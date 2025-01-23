@@ -1,3 +1,6 @@
+#ifndef DOCUMENT_H
+#define DOCUMENT_H
+
 #include <iostream>
 #include <vector>
 #include <unordered_map>
@@ -25,8 +28,9 @@ class Document {
 // class for entire corpus (collection of documents)
 class Corpus {
     public:
-        vector<Document> documents; // list of documents
-        int num_of_docs;            // total number of documents
+        vector<Document> documents;                     // list of documents
+        unordered_map<string, int> document_frequency;  // frequency of terms in corpus
+        int num_of_docs;                                // total number of documents
 
         // inverse document frequency calculation
         double idf_corpus(int docs_with_term) {
@@ -34,3 +38,5 @@ class Corpus {
         }
 
 };
+
+#endif
