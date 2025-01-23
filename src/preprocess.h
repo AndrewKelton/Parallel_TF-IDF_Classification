@@ -1,3 +1,6 @@
+#ifndef PREPROCESS_H
+#define PREPROCESS_H
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -9,3 +12,5 @@
 using namespace std;
 
 extern void preprocess_text(Document * doc);
+
+#endif
