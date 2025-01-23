@@ -33,12 +33,20 @@ int main() {
     for (auto& t : threads)
         t.join();
 
-    for (auto& [word, count] : corpus.documents[1].term_count)
-        cout << word << ": " << count << endl;
+    // for (auto& [word, count] : corpus.documents[1].term_count)
+    //     cout << word << ": " << count << endl;
 
-    string st{"hello"};    
-    cout << corpus.num_doc_term(st) << endl;
-    cout << corpus.documents[1].term_frequency[st] * corpus.idf_corpus(corpus.num_doc_term(st)) << endl;
+    corpus.idf_documents();
+
+    for (auto& d : corpus.documents) {
+        for (auto& [word, freq] : d.tf_idf)
+            cout << word << ": " << freq << endl;
+    }
+
+
+    // string st{"hello"};    
+    // cout << corpus.num_doc_term(st) << endl;
+    // cout << corpus.documents[1].term_frequency[st] * corpus.idf_corpus(corpus.num_doc_term(st)) << endl;
 
     return 0;
 }

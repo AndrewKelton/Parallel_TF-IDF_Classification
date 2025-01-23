@@ -14,6 +14,7 @@ class Document {
         string text;                                  // overall text of document
         unordered_map<string, int> term_count;        // count of terms in document
         unordered_map<string, double> term_frequency; // frequency of terms in document
+        unordered_map<string, double> tf_idf;         // tfidf of all terms in document
         int total_terms = 0;                          // total number of terms in document
 
         // returns true if term exists in document
@@ -44,7 +45,7 @@ class Corpus {
         // inverse document frequency calculation
         double idf_corpus(int docs_with_term);
 
-        // void calculate_frequency_corpus();
+        void idf_documents();
 
 
         // other functions here
