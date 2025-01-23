@@ -30,7 +30,7 @@ int Corpus::num_doc_term(string str) {
     return count;
 }
 
-void Corpus::idf_documents() {
+void Corpus::tfidf_documents() {
     for (auto& document : documents) {
         for (const auto& [word, freq] : document.term_frequency)
             document.tf_idf[word] = freq * idf_corpus(num_doc_term(word));

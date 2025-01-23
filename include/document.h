@@ -48,7 +48,7 @@ class Corpus {
         /* calculate idf for each term in each document
          * and save it to document.tfidf
          */
-        void idf_documents();
+        void tfidf_documents();
 
 
         // other functions here
