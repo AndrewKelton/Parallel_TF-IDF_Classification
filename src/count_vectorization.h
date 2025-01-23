@@ -15,4 +15,6 @@ using namespace std;
 
 void count_words_doc(Document * doc);
 
+// void term_frequency_doc(Document * doc);
+
 #endif

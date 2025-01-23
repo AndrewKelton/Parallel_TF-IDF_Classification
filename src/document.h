@@ -16,11 +16,17 @@ class Document {
         unordered_map<string, double> term_frequency; // frequency of terms in document
         int total_terms = 0;                          // total number of terms in document
 
-        // return term frequency associated with a word in a doc
-        double calculate_term_frequency(string term) {
-            return term_count[term] / total_terms;
-        }
+        // returns true if term exists in document
+        bool is_term(string str);
 
+        // return term frequency associated with a word in a doc
+        double calculate_term_frequency(string term);
+
+        /* calculate term frequency for all terms in 
+         * doc and insert into 'term_frequency'
+        */
+        void calculate_term_frequency_doc();
+        
         // other functions here
 
 };
@@ -28,15 +34,18 @@ class Document {
 // class for entire corpus (collection of documents)
 class Corpus {
     public:
-        vector<Document> documents;                     // list of documents
-        unordered_map<string, int> document_frequency;  // frequency of terms in corpus
-        int num_of_docs = 0;                            // total number of documents
+        vector<Document> documents;                         // list of documents
+        unordered_map<string, double> document_frequency;   // frequency of terms in corpus
+        int num_of_docs = 0;                                // total number of documents
+
+        // return # of documents with term
+        int num_doc_term(string str);
 
         // inverse document frequency calculation
-        double idf_corpus(int docs_with_term) {
-            return log(num_of_docs / docs_with_term);
-        }
+        double idf_corpus(int docs_with_term);
 
+
+        // other functions here
 };
 
 #endif
