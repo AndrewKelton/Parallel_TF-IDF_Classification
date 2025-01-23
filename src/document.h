@@ -44,6 +44,8 @@ class Corpus {
         // inverse document frequency calculation
         double idf_corpus(int docs_with_term);
 
+        // void calculate_frequency_corpus();
+
 
         // other functions here
 };
