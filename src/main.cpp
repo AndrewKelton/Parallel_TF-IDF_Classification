@@ -12,8 +12,6 @@ void do_all(Document * doc) {
 
 int main() {
 
-    vector<thread> threads;
-
     Document doc;
     doc.text = "Hello, word Hello";
 
@@ -25,23 +23,13 @@ int main() {
 
     Corpus corpus;
     corpus.documents = {doc, doc1, doc2};
-    corpus.num_of_docs = 3;
 
-    for (auto& d : corpus.documents)
-        threads.emplace_back(thread(do_all, &d));
-    
-    for (auto& t : threads)
-        t.join();
-
-    // for (auto& [word, count] : corpus.documents[1].term_count)
-    //     cout << word << ": " << count << endl;
-
+    vectorize_corpus_threaded(&corpus);
     corpus.idf_documents();
 
-    for (auto& d : corpus.documents) {
+    for (auto& d : corpus.documents)
         for (auto& [word, freq] : d.tf_idf)
             cout << word << ": " << freq << endl;
-    }
 
 
     // string st{"hello"};    

@@ -25,7 +25,7 @@ class Document {
 
         /* calculate term frequency for all terms in 
          * doc and insert into 'term_frequency'
-        */
+         */
         void calculate_term_frequency_doc();
         
         // other functions here
@@ -35,9 +35,9 @@ class Document {
 // class for entire corpus (collection of documents)
 class Corpus {
     public:
-        vector<Document> documents;                         // list of documents
-        unordered_map<string, double> document_frequency;   // frequency of terms in corpus
-        int num_of_docs = 0;                                // total number of documents
+        vector<Document> documents;                       // list of documents
+        unordered_map<string, double> document_frequency; // frequency of terms in corpus
+        int num_of_docs = 0;                              // total number of documents
 
         // return # of documents with term
         int num_doc_term(string str);
@@ -45,6 +45,9 @@ class Corpus {
         // inverse document frequency calculation
         double idf_corpus(int docs_with_term);
 
+        /* calculate idf for each term in each document
+         * and save it to document.tfidf
+         */
         void idf_documents();
 
 

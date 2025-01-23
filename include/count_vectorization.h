@@ -7,14 +7,16 @@
 #include <map>
 #include <tuple>
 #include <set>
+#include <thread>
 // #include <mutex>
 #include <sstream>
 #include "document.h"
+#include "preprocess.h"
 
 using namespace std;
 
 void count_words_doc(Document * doc);
 
-// void term_frequency_doc(Document * doc);
+void vectorize_corpus_threaded(Corpus * corpus);
 
 #endif

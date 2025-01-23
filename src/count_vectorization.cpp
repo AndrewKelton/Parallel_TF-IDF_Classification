@@ -53,3 +53,21 @@ void count_words_doc(Document * doc) {
             doc->term_count.erase(word);
     }
 }
+
+static void vectorize_doc(Document * doc) {
+    preprocess_text(doc);
+    count_words_doc(doc);
+    (*doc).calculate_term_frequency_doc();
+}
+
+void vectorize_corpus_threaded(Corpus * corpus) {
+    vector<thread> threads;
+
+    for (auto& document : (*corpus).documents) {
+        threads.emplace_back(thread(vectorize_doc, &document));
+        corpus->num_of_docs++;
+    }
+
+    for (auto& t : threads)
+        t.join();
+}
