@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <tuple>
+#include <set>
 // #include <mutex>
 #include <sstream>
 #include "document.h"
