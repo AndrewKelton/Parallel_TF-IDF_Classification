@@ -1,6 +1,6 @@
 # Define the compiler and flags
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++20 -pthread
+CXXFLAGS = -Wall -Wextra -std=c++20 -pthread -Iinclude
 
 # Define the executable name
 TARGET = tfidf
