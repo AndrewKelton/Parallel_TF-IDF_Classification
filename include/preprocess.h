@@ -11,6 +11,7 @@
 
 using namespace std;
 
+// preprocess all text in document
 extern void preprocess_text(Document * doc);
 
 #endif

@@ -8,7 +8,7 @@ static string preprocess_to_lower_text(string str) {
     return str;
 }
 
-// remove punctuation from text
+// remove punctuation and numbers from text
 static string preprocess_remove_punc_text(string str) {
     string processed = "";
 
@@ -19,6 +19,16 @@ static string preprocess_remove_punc_text(string str) {
     return processed;
 }
 
+// prune text such as: "enjoying" -> "enjoy" 
+static string preprocess_prune_text(string str) {
+    string processed = "";
+
+    // prune here
+
+    return processed;
+}
+
+// preprocess all text in document
 void preprocess_text(Document * doc) {
     doc->text = preprocess_to_lower_text(preprocess_remove_punc_text(doc->text));
 }
