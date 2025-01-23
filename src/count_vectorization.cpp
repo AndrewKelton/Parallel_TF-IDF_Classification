@@ -41,7 +41,7 @@ static const set<string> STOPWORDS{
  * Ignores words in STOPWORDS, does NOT 
  * remove them from the text.
  */
-void count_words_doc(Document * doc) {
+static void count_words_doc(Document * doc) {
     istringstream iss(doc->text);
     string word;
 
@@ -60,7 +60,7 @@ static void vectorize_doc(Document * doc) {
     (*doc).calculate_term_frequency_doc();
 }
 
-void vectorize_corpus_threaded(Corpus * corpus) {
+extern void vectorize_corpus_threaded(Corpus * corpus) {
     vector<thread> threads;
 
     for (auto& document : (*corpus).documents) {

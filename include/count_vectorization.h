@@ -15,8 +15,6 @@
 
 using namespace std;
 
-void count_words_doc(Document * doc);
-
-void vectorize_corpus_threaded(Corpus * corpus);
+extern void vectorize_corpus_threaded(Corpus * corpus);
 
 #endif
