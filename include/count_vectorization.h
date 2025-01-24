@@ -15,6 +15,7 @@
 
 using namespace std;
 
+// vectorize corpus of documents simultaneously
 extern void vectorize_corpus_threaded(Corpus * corpus);
 
 #endif

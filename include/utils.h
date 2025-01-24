@@ -5,11 +5,13 @@
 
 using namespace std;
 
-const enum class ERR_CODES {
+enum ERR_CODES {
     
     BAD_CAST = 4,
     BAD_TEXT = 8,
     FILE_NOT_FOUND = 100
 };
+
+extern const string utils_error_msg(const string msg, enum err);
 
 #endif

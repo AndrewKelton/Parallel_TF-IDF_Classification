@@ -11,7 +11,7 @@ static auto convert_string_wstring(const InputType& input) {
     else if constexpr (is_same<InputType, string>::value) 
         return converter.from_bytes(input); // cnvert string to wstring
     else 
-        static_assert(always_false<InputType>::value, "Error Bad Cast!");
+        static_assert(always_false<InputType>::value, utils_error_msg("Bad Cast!", ERR_CODES::BAD_CAST));
 }
 
 // Helper for static_assert to trigger an error for unsupported types

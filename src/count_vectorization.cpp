@@ -1,19 +1,4 @@
 #include "count_vectorization.h"
-#include "document.h"
-
-// void count_words(const std::string& text, std::map<std::string, int>& global_count) {
-//     std::map<std::string, int> local_count;
-//     std::istringstream iss(text);
-//     std::string word;
-// 
-//     while (iss >> word)
-//         local_count[word]++;
-// 
-//     std::lock_guard<std::mutex> lock(mtx);
-//     for (const auto& [word, count] : local_count)
-//         global_count[word] += count;
-// }
-
 
 /* words that carry no value and are voided 
  * used from https://towardsdatascience.com/building-a-cross-platform-tfidf-text-summarizer-in-rust-7b05938f4507
@@ -39,13 +24,17 @@ static const set<string> STOPWORDS{
 
 /* Increments term count in a Document.
  * Ignores words in STOPWORDS, does NOT 
- * remove them from the text.
+ * remove them from the text. 
+ * Also, prunes the text before checking 
+ * against STOPWORDS. Pruning must be done
+ * AFTER tokenizing a term.
  */
 static void count_words_doc(Document * doc) {
     istringstream iss(doc->text);
     string word;
 
     while (iss >> word) {
+        word = preprocess_prune_term(word);
         if (STOPWORDS.count(word) == 0) {
             doc->term_count[word]++;
             doc->total_terms++;
@@ -61,6 +50,7 @@ static void vectorize_doc(Document * doc) {
     (*doc).calculate_term_frequency_doc();
 }
 
+// vectorize corpus of documents simultaneously
 extern void vectorize_corpus_threaded(Corpus * corpus) {
     vector<thread> threads;
 
