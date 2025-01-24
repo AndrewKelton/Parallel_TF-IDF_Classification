@@ -54,6 +54,7 @@ static void count_words_doc(Document * doc) {
     }
 }
 
+// preprocess and vectorize a document
 static void vectorize_doc(Document * doc) {
     preprocess_text(doc);
     count_words_doc(doc);

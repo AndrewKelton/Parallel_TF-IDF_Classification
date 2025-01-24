@@ -1,5 +1,23 @@
 #include "preprocess.h"
 
+template <typename InputType>
+
+// covert string to wstring and vice versa
+static auto convert_string_wstring(const InputType& input) {
+    wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
+
+    if constexpr (is_same<InputType, wstring>::value) 
+        return converter.to_bytes(input); // convert wstring to string
+    else if constexpr (is_same<InputType, string>::value) 
+        return converter.from_bytes(input); // cnvert string to wstring
+    else 
+        static_assert(always_false<InputType>::value, "Error Bad Cast!");
+}
+
+// Helper for static_assert to trigger an error for unsupported types
+template <typename T>
+struct always_false : std::false_type {};
+
 // convert uppercase text to lower case text
 static string preprocess_to_lower_text(string str) {
     transform(str.begin(), str.end(), str.begin(),
@@ -19,13 +37,17 @@ static string preprocess_remove_punc_text(string str) {
     return processed;
 }
 
-// prune text such as: "enjoying" -> "enjoy" 
-static string preprocess_prune_text(string str) {
-    string processed = "";
+/* prune text, such as: "enjoying" -> "enjoy" 
+ * uses the OleanderStemmingLibrary by Blake Madden
+ * URL: https://github.com/Blake-Madden/OleanderStemmingLibrary.git
+ */
+extern string preprocess_prune_term(string str) {
+    wstring to_prune = convert_string_wstring(str);
 
-    // prune here
+    stemming::english_stem<> stemmer;
+    stemmer(to_prune);
 
-    return processed;
+    return convert_string_wstring(to_prune);
 }
 
 // preprocess all text in document
