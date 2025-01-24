@@ -12,6 +12,6 @@ enum ERR_CODES {
     FILE_NOT_FOUND = 100
 };
 
-extern const string utils_error_msg(const string msg, enum err);
+extern const string utils_error_msg(const string msg, int err);
 
 #endif
