@@ -1,5 +1,9 @@
 #include "preprocess.h"
 
+// Helper for static_assert to trigger an error for unsupported types
+template <typename T>
+struct always_false : std::false_type {};
+
 template <typename InputType>
 
 // covert string to wstring and vice versa
@@ -11,12 +15,9 @@ static auto convert_string_wstring(const InputType& input) {
     else if constexpr (is_same<InputType, string>::value) 
         return converter.from_bytes(input); // cnvert string to wstring
     else 
-        static_assert(always_false<InputType>::value, utils_error_msg("Bad Cast!", ERR_CODES::BAD_CAST));
+        exit(ERR_CODES::BAD_CAST);
+        // static_assert(always_false<InputType>::value, utils_error_msg("Bad Cast!", ERR_CODES::BAD_CAST));
 }
-
-// Helper for static_assert to trigger an error for unsupported types
-template <typename T>
-struct always_false : std::false_type {};
 
 // convert uppercase text to lower case text
 static string preprocess_to_lower_text(string str) {

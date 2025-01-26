@@ -1,12 +1,12 @@
 # Define the compiler and flags
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++20 -pthread -Iinclude
+CXXFLAGS = -Wall -Wextra -std=c++20 -pthread -Iinclude -Iinclude/OleanderStemmingLibrary/src -Wdeprecated-declarations
 
 # Define the executable name
 TARGET = tfidf
 
 # Define the source files
-SRCS = src/main.cpp src/count_vectorization.cpp src/document.cpp src/preprocess.cpp
+SRCS = src/main.cpp src/count_vectorization.cpp src/document.cpp src/preprocess.cpp 
 
 # Define the object files
 OBJS = $(SRCS:.cpp=.o)
