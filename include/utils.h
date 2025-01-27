@@ -15,15 +15,15 @@ enum ERR_CODES {
 
 enum FLAG_TYPES {
     review_t, article_t, 
-    print_t, time_t
+    print_t, timer_t
 };
 
-const unordered_map<string, int> flags = {
-    {"review", FLAG_TYPES::review_t},       // review type of data classification, 1 (positive) 0 (negative)
-    {"article", FLAG_TYPES::article_t},     // article type of data classification, 5 categories of classification
-    {"print", FLAG_TYPES::print_t},         // print all output
-    {"time", FLAG_TYPES::time_t}            // print time 
-};
+// const unordered_map<string, int> flags = {
+//     {"review", FLAG_TYPES::review_t},       // review type of data classification, 1 (positive) 0 (negative)
+//     {"article", FLAG_TYPES::article_t},     // article type of data classification, 5 categories of classification
+//     {"print", FLAG_TYPES::print_t},         // print all output
+//     {"time", FLAG_TYPES::timer_t}            // print time 
+// };
 
 extern const string utils_error_msg(const string msg, int err);
 

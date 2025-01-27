@@ -12,7 +12,6 @@ extern void read_csv_to_corpus(Corpus& corpus, const string& file_name) {
         Document new_document;
         new_document.text = line;
         corpus.documents.push_back(new_document);
-        // corpus.num_of_docs++;
     }   
 
     file.close();
