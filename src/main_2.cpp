@@ -3,6 +3,9 @@
 #include "count_vectorization.h"
 #include "preprocess.h"
 #include "file_operations.h"
+#include <mlpack.hpp>
+#include "tfidf.h"
+#include <mlpack/methods/logistic_regression/logistic_regression.hpp>
 
 using namespace std;
 
@@ -20,9 +23,14 @@ int main() {
     chrono::duration<double> elapsed_time = end - start;
     cout << "Done creating tfidf, time: " << elapsed_time.count() << endl;
 
-    for (auto& d : corpus.documents)
-        for (auto& [word, freq] : d.tf_idf)
-            cout << word << ": " << freq << endl; 
+    mat X_train = construct_tfidf_matrix(ref(corpus));
+    Row<size_t> y_train = extract_labels(corpus);
+
+    mlpack::regression::LogisticRegression<> classifier(X_train, y_train);
+
+    // for (auto& d : corpus.documents)
+    //     for (auto& [word, freq] : d.tf_idf)
+    //         cout << word << ": " << freq << endl; 
 
     return 0;
 }
