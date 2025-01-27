@@ -5,12 +5,15 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <thread>
+#include "util.h"
 
 using namespace std;
 
 // class for single document
 class Document {
     public:
+        int document_id = 0;
         string text;                                  // overall text of document
         unordered_map<string, int> term_count;        // count of terms in document
         unordered_map<string, double> term_frequency; // frequency of terms in document
@@ -35,9 +38,9 @@ class Document {
 // class for entire corpus (collection of documents)
 class Corpus {
     public:
-        vector<Document> documents;                       // list of documents
-        unordered_map<string, double> document_frequency; // frequency of terms in corpus
-        int num_of_docs = 0;                              // total number of documents
+        vector<Document> documents;                               // list of documents
+        unordered_map<string, double> inverse_document_frequency; // frequency of terms in corpus
+        int num_of_docs = 0;                                      // total number of documents
 
         // return # of documents with term
         int num_doc_term(string str);
@@ -50,6 +53,10 @@ class Corpus {
          */
         void tfidf_documents();
 
+    private:
+        
+        // using a thread insert tfidf into document. one thread per document
+        void emplace_tfidf_document(Document * document);
 
         // other functions here
 };

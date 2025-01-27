@@ -44,7 +44,10 @@ static void count_words_doc(Document * doc) {
 }
 
 // preprocess and vectorize a document
-static void vectorize_doc(Document * doc) {
+static void vectorize_doc(Document * doc, int * id) {
+    (*id)++;
+    doc->document_id = *id;
+    // cout << "document id: " << doc->document_id << endl;
     preprocess_text(doc);
     count_words_doc(doc);
     (*doc).calculate_term_frequency_doc();
@@ -53,9 +56,10 @@ static void vectorize_doc(Document * doc) {
 // vectorize corpus of documents simultaneously
 extern void vectorize_corpus_threaded(Corpus * corpus) {
     vector<thread> threads;
+    int id = 0;
 
     for (auto& document : (*corpus).documents) {
-        threads.emplace_back(thread(vectorize_doc, &document));
+        threads.emplace_back(thread(vectorize_doc, &document, &id));
         corpus->num_of_docs++;
     }
 
