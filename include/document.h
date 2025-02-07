@@ -14,7 +14,7 @@ using namespace std;
 // class for single document
 class Document {
     public:
-        int document_id = 0;                          // for testing purposes
+        int document_id = 0;                          // id for testing purposes
         string text;                                  // overall text of document
         unordered_map<string, int> term_count;        // count of terms in document
         unordered_map<string, double> term_frequency; // frequency of terms in document
@@ -41,7 +41,7 @@ class Document {
 class Corpus {
     public:
         vector<Document> documents;                               // list of documents
-        unordered_map<string, double> inverse_document_frequency; // frequency of terms in corpus
+        unordered_map<string, double> inverse_document_frequency; // tfidf of terms in corpus
         int num_of_docs = 0;                                      // total number of documents
 
         // return # of documents with term

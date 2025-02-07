@@ -16,3 +16,7 @@ extern void read_csv_to_corpus(Corpus& corpus, const string& file_name) {
 
     file.close();
 }    
+
+extern void write_to_csv_tfidf_corpus(Corpus corpus, const string& file_name) {
+    
+}
