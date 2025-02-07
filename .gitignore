@@ -1,0 +1,13 @@
+# vscode files
+.DS*
+
+# directories to ignore
+obj/
+.vscode/
+
+# object files
+*.o
+test[1-9]
+
+# unused files
+sport.txt
