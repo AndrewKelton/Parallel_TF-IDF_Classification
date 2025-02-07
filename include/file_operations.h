@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include "document.h"
+#include "categories.h"
 
 using namespace std;
 
