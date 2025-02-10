@@ -66,3 +66,14 @@ extern void vectorize_corpus_threaded(Corpus * corpus) {
     for (auto& t : threads)
         t.join();
 }
+
+// // vectorize categorize of documents simultaneously
+// extern void vectorize_corpus_category_threaded(Corpus * corpus, int category) {
+//     int num_of_threads = MAX_CATEGORIES;
+// 
+//     thread threads[num_of_threads];
+// 
+//     for (int i = 0; i < num_of_threads; i++) {
+//         
+//     }   
+// }

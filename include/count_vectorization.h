@@ -12,10 +12,14 @@
 #include <sstream>
 #include "document.h"
 #include "preprocess.h"
+#include "categories.h"
 
 using namespace std;
 
 // vectorize corpus of documents simultaneously
 extern void vectorize_corpus_threaded(Corpus * corpus);
+
+// vectorize corpus of documents simultaneously, based on category
+extern void vectorize_corpus_category_threaded(Corpus * corpus, int category);
 
 #endif

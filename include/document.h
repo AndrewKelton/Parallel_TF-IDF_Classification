@@ -23,7 +23,7 @@ class Document {
         unordered_map<string, double> term_frequency; // frequency of terms in document
         unordered_map<string, double> tf_idf;         // tfidf of all terms in document
         int total_terms = 0;                          // total number of terms in document
-        TEXT_CATEGORY_TYPES category;                   // classification category ** result **
+        int category;                 // classification category ** result **
 
         // returns true if term exists in document
         bool is_term(string str);

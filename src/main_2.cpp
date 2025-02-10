@@ -4,6 +4,7 @@
 #include "preprocess.h"
 #include "file_operations.h"
 #include "tfidf.h"
+#include "categories.h"
 // #include <mlpack.hpp>
 // #include <mlpack/methods/logistic_regression/logistic_regression.hpp>
 
@@ -22,6 +23,8 @@ int main() {
     auto end = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed_time = end - start;
     cout << "Done creating tfidf, time: " << elapsed_time.count() << endl;
+
+    print_a_vectored(corpus.documents[0].tf_idf);
 
     // mat X_train = construct_tfidf_matrix(ref(corpus));
     // Row<size_t> y_train = extract_labels(corpus);
