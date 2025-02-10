@@ -47,6 +47,7 @@ static void get_important_terms(Corpus * corpus, Category * category, int catego
         category->most_important_terms.emplace_back(search_nth_important_term(vectored_all_umaps, category->most_important_terms));
 }
 
+// get important terms for each category simultaneously
 extern void get_all_category_terms(Corpus * corpus, Categories * categories) {
     thread threads[MAX_CATEGORIES];
 
@@ -55,18 +56,20 @@ extern void get_all_category_terms(Corpus * corpus, Categories * categories) {
     }
 }
 
-void Category::get_most_important_terms(Corpus corpus) {
-    unordered_map<string, double> tfidf_category_corpus;
 
-    for (auto& document : corpus.documents) {
-        if (document.category != this->category)
-            continue;
 
-        for (auto& term_idf : document.tf_idf)
-            tfidf_category_corpus.
-        
-    }
-}
+// void Category::get_most_important_terms(Corpus corpus) {
+//     unordered_map<string, double> tfidf_category_corpus;
+// 
+//     for (auto& document : corpus.documents) {
+//         if (document.category != this->category)
+//             continue;
+// 
+//         for (auto& term_idf : document.tf_idf)
+//             tfidf_category_corpus.
+//         
+//     }
+// }
 
 
 /* TESTER */
