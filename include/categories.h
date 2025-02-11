@@ -4,11 +4,13 @@
 #include <map>
 #include <unordered_map>
 #include "utils.h"
-#include "document.h"
+// #include "document.h"
 
 using namespace std;
 
 #define MAX_CATEGORIES 5
+
+class Corpus;
 
 
 // enum of text classifcation categories
@@ -27,8 +29,6 @@ const map<string, TEXT_CATEGORY_TYPES> categories_text = {
     {"entertainment", entertainment_t}
 };
 
-extern Category categories[MAX_CATEGORIES];
-
 // typedef struct CATEGORIES_S {
 //     vector<Category> categories;
 //     Corpus corpus;
@@ -40,7 +40,7 @@ class Category {
         int category;                                      // category type
         vector<pair<string, double>> most_important_terms; // 5 most important terms in category
 
-        Category(TEXT_CATEGORY_TYPES category) : category(category) {}
+        // Category(TEXT_CATEGORY_TYPES category) : category(category) {}
 
 
         // constructor for Category
@@ -48,12 +48,14 @@ class Category {
         //     get_most_important_terms(corpus);
         // }
 
-        void get_most_important_terms(Corpus corpus);
+        // void get_most_important_terms(Corpus corpus);
 };
+
+// extern Category categories[MAX_CATEGORIES];
 
 extern void print_a_vectored(unordered_map<string, double> mapped);
 
-extern void get_all_category_terms(Corpus * corpus)
+extern void get_all_category_important_terms(vector<Category>& categories, Corpus * corpus);
 
 
 // 

@@ -1,4 +1,5 @@
 #include "document.h"
+#include "categories.h"
 
 bool Document::is_term(string str) {
     return term_count.find(str) != term_count.end();

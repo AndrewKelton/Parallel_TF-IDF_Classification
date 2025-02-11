@@ -12,6 +12,7 @@
 using namespace std;
 
 
+class Category;
 
 
 // class for single document

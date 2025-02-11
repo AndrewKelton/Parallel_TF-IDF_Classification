@@ -1,6 +1,9 @@
 # Define the compiler and flags
 CXX = g++
-CXXFLAGS = -Wall -Wextra -Wunused-private-field -std=c++17 -pthread -L/opt/homebrew/lib -larmadillo -I/opt/homebrew/include -I/opt/homebrew/include/ -Iinclude -Iinclude/OleanderStemmingLibrary/src -Wdeprecated-declarations
+CXXFLAGS = -Wall -Wextra -Wunused-private-field -std=c++17 -pthread \
+		   -L/opt/homebrew/lib -larmadillo -I/opt/homebrew/include \
+		   -I/opt/homebrew/include/ -Iinclude -Iinclude/OleanderStemmingLibrary/src \
+		   -Wdeprecated-declarations
 
 # Source directories
 SRC_DIR = src
@@ -8,11 +11,15 @@ OBJ_DIR = obj
 
 # Common source files
 COMMON_SOURCES = $(SRC_DIR)/count_vectorization.cpp \
-                 $(SRC_DIR)/document.cpp \
 				 $(SRC_DIR)/categories.cpp \
+                 $(SRC_DIR)/document.cpp \
                  $(SRC_DIR)/preprocess.cpp \
                  $(SRC_DIR)/file_operations.cpp \
                  $(SRC_DIR)/tfidf.cpp 
+
+
+# Object files (convert source file paths to object file paths)
+COMMON_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(COMMON_SOURCES))			 
 
 # Targets and their specific sources
 TARGETS = test1 test2 test3
@@ -21,9 +28,10 @@ TEST1_SOURCES = $(SRC_DIR)/main.cpp $(COMMON_SOURCES)
 TEST2_SOURCES = $(SRC_DIR)/main_2.cpp $(COMMON_SOURCES)
 TEST3_SOURCES = $(SRC_DIR)/main_3.cpp $(COMMON_SOURCES)
 
-TEST1_OBJECTS = $(TEST1_SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-TEST2_OBJECTS = $(TEST2_SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-TEST3_OBJECTS = $(TEST3_SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+
+TEST1_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(TEST1_SOURCES))
+TEST2_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(TEST2_SOURCES))
+TEST3_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(TEST3_SOURCES))
 
 # Rules
 all: $(TARGETS)

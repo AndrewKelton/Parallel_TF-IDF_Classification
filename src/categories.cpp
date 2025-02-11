@@ -1,4 +1,5 @@
 #include "categories.h"
+#include "document.h"
 
 // return sorted vector of tfidf terms
 static vector<pair<string, double>> sort_unordered_umap(unordered_map<string, double> terms) {
@@ -49,11 +50,11 @@ static void get_important_terms(Corpus * corpus, Category * category, int catego
 }
 
 // get important terms for each category simultaneously
-extern void get_all_category_important_terms(vector<Category>& categories, Corpus * corpus) {
-    thread threads[MAX_CATEGORIES];
+extern void get_all_category_important_terms(vector<Category> categories, Corpus * corpus) {
+    vector<thread> threads;
 
     for (int i = 0; i < MAX_CATEGORIES; i++)
-        threads[i] = thread(get_important_terms, corpus, categories[i], i);
+        threads.emplace_back(thread(get_important_terms, corpus, &categories[i], i));
 
     for (int i = 0; i < MAX_CATEGORIES; i++)
         threads[i].join();
