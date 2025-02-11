@@ -4,6 +4,7 @@
 # directories to ignore
 obj/
 .vscode/
+build/
 
 # object files
 *.o
