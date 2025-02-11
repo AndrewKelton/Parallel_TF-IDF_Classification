@@ -27,31 +27,17 @@ const map<string, TEXT_CATEGORY_TYPES> categories_text = {
     {"entertainment", entertainment_t}
 };
 
+extern Category categories[MAX_CATEGORIES];
 
-class Categories {
+// typedef struct CATEGORIES_S {
+//     vector<Category> categories;
+//     Corpus corpus;
+// } categories_t;
 
-    public:
-        Corpus corpus;
-        vector<Category> categories;
-        // Categories(Corpus corpus) : corpus(corpus) {}
-        // Categories() {
-        //     for (int i = 0; i < MAX_CATEGORIES; i++) {
-        //        categories.emplace_back(static_cast<TEXT_CATEGORY_TYPES>(i), corpus);
-        //     }
-        // }
-
-        // constructor for Categories
-        // Categories(Corpus corpus) {
-        //     for (int i = 0; i < MAX_CATEGORIES; i++) {
-        //        categories.emplace_back(static_cast<TEXT_CATEGORY_TYPES>(i), corpus);
-        //     }
-        // }
-};
-
-class Category : public Categories {
+class Category {
 
     public:
-        int category;                                      // category
+        int category;                                      // category type
         vector<pair<string, double>> most_important_terms; // 5 most important terms in category
 
         Category(TEXT_CATEGORY_TYPES category) : category(category) {}
@@ -63,12 +49,60 @@ class Category : public Categories {
         // }
 
         void get_most_important_terms(Corpus corpus);
-
 };
 
 extern void print_a_vectored(unordered_map<string, double> mapped);
 
 extern void get_all_category_terms(Corpus * corpus)
+
+
+// 
+// class Categories {
+// 
+//     public:
+//         Corpus corpus;
+//         vector<Category> categories;
+//         // Categories(Corpus corpus) : corpus(corpus) {}
+//         // Categories() {
+//         //     for (int i = 0; i < MAX_CATEGORIES; i++) {
+//         //        categories.emplace_back(static_cast<TEXT_CATEGORY_TYPES>(i), corpus);
+//         //     }
+//         // }
+// 
+//         // constructor for Categories
+//         // Categories(Corpus corpus) {
+//         //     for (int i = 0; i < MAX_CATEGORIES; i++) {
+//         //        categories.emplace_back(static_cast<TEXT_CATEGORY_TYPES>(i), corpus);
+//         //     }
+//         // }
+// };
+
+// class Category : public Categories {
+// 
+//     public:
+//         int category;                                      // category
+//         vector<pair<string, double>> most_important_terms; // 5 most important terms in category
+// 
+//         Category(TEXT_CATEGORY_TYPES category) : category(category) {}
+// 
+// 
+//         // constructor for Category
+//         // Category(TEXT_CATEGORY_TYPES category, Corpus corpus) : category(category) {
+//         //     get_most_important_terms(corpus);
+//         // }
+// 
+//         void get_most_important_terms(Corpus corpus);
+// 
+// };
+
+
+
+
+
+
+
+
+
 
 // const vector<string> categories_text = {
 //     "sport", "business", 

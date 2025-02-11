@@ -35,6 +35,7 @@ static pair<string, double> search_nth_important_term(vector<vector<pair<string,
 static void get_important_terms(Corpus * corpus, Category * category, int category_type) {
 
     vector<vector<pair<string, double>>> vectored_all_umaps; // vectorized sorted tfidf mapping
+    category->category = category_type;
 
     for (auto& document : corpus->documents) {
         if (document.category != category_type)
@@ -48,13 +49,24 @@ static void get_important_terms(Corpus * corpus, Category * category, int catego
 }
 
 // get important terms for each category simultaneously
-extern void get_all_category_terms(Corpus * corpus, Categories * categories) {
+extern void get_all_category_important_terms(vector<Category>& categories, Corpus * corpus) {
     thread threads[MAX_CATEGORIES];
 
-    for (int i = 0; i < MAX_CATEGORIES; i++) {
-        threads[i] = thread(get_important_terms, ref(corpus), ref(categories->categories[i]), i);
-    }
+    for (int i = 0; i < MAX_CATEGORIES; i++)
+        threads[i] = thread(get_important_terms, corpus, categories[i], i);
+
+    for (int i = 0; i < MAX_CATEGORIES; i++)
+        threads[i].join();
 }
+
+// get important terms for each category simultaneously
+// extern void get_all_category_terms(Corpus * corpus, Categories * categories) {
+//     thread threads[MAX_CATEGORIES];
+// 
+//     for (int i = 0; i < MAX_CATEGORIES; i++) {
+//         threads[i] = thread(get_important_terms, ref(corpus), ref(categories->categories[i]), i);
+//     }
+// }
 
 
 
