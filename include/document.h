@@ -44,7 +44,7 @@ class Document {
 // class for entire corpus (collection of documents)
 class Corpus {
     public:
-        vector<Document> documents;                               // list of documents
+         vector<Document> documents;                               // list of documents
         unordered_map<string, double> inverse_document_frequency; // tfidf of terms in corpus
         int num_of_docs = 0;                                      // total number of documents
 

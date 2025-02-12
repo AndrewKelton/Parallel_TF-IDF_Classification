@@ -2,6 +2,7 @@
 #define CATEGORIES_H
 
 #include <map>
+#include <mutex>
 #include <unordered_map>
 #include "utils.h"
 // #include "document.h"

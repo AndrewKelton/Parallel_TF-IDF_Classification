@@ -1,3 +1,7 @@
+/* Test 2
+ * 
+ */
+
 #include <chrono>
 #include "document.h"
 #include "count_vectorization.h"
@@ -27,8 +31,16 @@ int main() {
     // print_a_vectored(corpus.documents[0].tf_idf);
 
     // initalize important terms for categories
-    vector<Category> categories;
+    vector<Category> categories(MAX_CATEGORIES);
     get_all_category_important_terms(ref(categories), &corpus);
+
+    for (int i = 0; i < MAX_CATEGORIES; i++) {
+        cout << categories[i].category << endl;
+        // cout << categories[0].most_important_terms[i].first << ": " << categories[0].most_important_terms[i].second << endl;
+    }
+
+    
+    
 
     return 0;
 }
