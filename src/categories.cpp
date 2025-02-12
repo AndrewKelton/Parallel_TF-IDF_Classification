@@ -16,6 +16,9 @@ static vector<pair<string, double>> sort_unordered_umap(unordered_map<string, do
 static pair<string, double> search_nth_important_term(vector<vector<pair<string, double>>> all_tfidf_terms, vector<pair<string, double>> used) {
     pair<string, double> current_high = all_tfidf_terms[0][0];
 
+    if (all_tfidf_terms.size() == 0)
+        return pair<string, double>("", 0.0);
+
     for (auto& row : all_tfidf_terms) {
 
         /* only checking first 5 terms in a row, 
@@ -50,14 +53,14 @@ static void get_important_terms(Corpus * corpus, Category * category, int catego
 }
 
 // get important terms for each category simultaneously
-extern void get_all_category_important_terms(vector<Category> categories, Corpus * corpus) {
+extern void get_all_category_important_terms(vector<Category>& categories, Corpus * corpus) {
     vector<thread> threads;
 
     for (int i = 0; i < MAX_CATEGORIES; i++)
         threads.emplace_back(thread(get_important_terms, corpus, &categories[i], i));
 
-    for (int i = 0; i < MAX_CATEGORIES; i++)
-        threads[i].join();
+    for (auto& thread : threads)
+        thread.join();
 }
 
 // get important terms for each category simultaneously

@@ -12,7 +12,7 @@
 using namespace std;
 
 
-class Category;
+class Category; // forward declaration
 
 
 // class for single document

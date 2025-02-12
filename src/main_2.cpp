@@ -24,16 +24,11 @@ int main() {
     chrono::duration<double> elapsed_time = end - start;
     cout << "Done creating tfidf, time: " << elapsed_time.count() << endl;
 
-    print_a_vectored(corpus.documents[0].tf_idf);
+    // print_a_vectored(corpus.documents[0].tf_idf);
 
-    // mat X_train = construct_tfidf_matrix(ref(corpus));
-    // Row<size_t> y_train = extract_labels(corpus);
-
-    // mlpack::regression::LogisticRegression<> classifier(X_train, y_train);
-
-    // for (auto& d : corpus.documents)
-    //     for (auto& [word, freq] : d.tf_idf)
-    //         cout << word << ": " << freq << endl; 
+    // initalize important terms for categories
+    vector<Category> categories;
+    get_all_category_important_terms(ref(categories), &corpus);
 
     return 0;
 }

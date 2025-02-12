@@ -10,7 +10,8 @@ using namespace std;
 
 #define MAX_CATEGORIES 5
 
-class Corpus;
+
+class Corpus; // forward declaration
 
 
 // enum of text classifcation categories
