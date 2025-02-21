@@ -1,12 +1,13 @@
 #include "categories.h"
 #include "document.h"
-
-mutex mtx;
+#include "utils.h"
 
 // return sorted vector of tfidf terms
-static vector<pair<string, double>> sort_unordered_umap(unordered_map<string, double> terms) {
+vector<pair<string, double>> Category::sort_unordered_umap(unordered_map<string, double> terms) {
     // cout << "sort_unordered_umap" << endl;
-    
+    if (terms.empty())
+        throw_runtime_error("no terms or terms are empty");
+
     vector<pair<string, double>> vectored_umap(terms.begin(), terms.end());
 
     sort(vectored_umap.begin(), vectored_umap.end(), [](const auto&a, const auto&b) {
@@ -17,18 +18,17 @@ static vector<pair<string, double>> sort_unordered_umap(unordered_map<string, do
 }
 
 // return pair for nth important tfidf term in category
-static pair<string, double> search_nth_important_term(vector<vector<pair<string, double>>> all_tfidf_terms, vector<pair<string, double>> used) {
+pair<string, double> Category::search_nth_important_term(vector<vector<pair<string, double>>> all_tfidf_terms, vector<pair<string, double>> used) {
     // cout << "search_nth_important_term" << endl;
 
-    if (all_tfidf_terms.empty() || all_tfidf_terms[0].empty()) {
-        cerr << "Error: No TF-IDF terms available!" << endl;
-        exit(EXIT_FAILURE);
+    if (all_tfidf_terms.empty()){
+        throw_runtime_error("empty tfidf in ", text_categories.find(static_cast<TEXT_CATEGORY_TYPES>(this->category_type))->second);
+    }
+    if (all_tfidf_terms[0].empty()) {
+        throw_runtime_error("empty tfidf in ", text_categories.find(static_cast<TEXT_CATEGORY_TYPES>(this->category_type))->second);
     }
     
     pair<string, double> current_high = all_tfidf_terms[0][0];
-
-    // if (all_tfidf_terms.size() == 0)
-    //     exit(EXIT_FAILURE);
 
     for (auto& row : all_tfidf_terms) {
 
@@ -47,38 +47,71 @@ static pair<string, double> search_nth_important_term(vector<vector<pair<string,
 } 
 
 // get important terms for category
-static void get_important_terms(Corpus * corpus, Category * category, int category_type) {
-    // cout << "get_important_terms" << endl;
-
-    mtx.lock();
+void Category::get_important_terms(Corpus * corpus) {
 
     vector<vector<pair<string, double>>> vectored_all_umaps; // vectorized sorted tfidf mapping
-    category->category = category_type;
 
     for (auto& document : corpus->documents) {
         if (document.category != category_type)
             continue;
         
-        vectored_all_umaps.emplace_back(sort_unordered_umap(document.tf_idf));
+        // lock_guard<mutex> lock(mtx);
+        try {
+            vectored_all_umaps.emplace_back(sort_unordered_umap(document.tf_idf));
+        } catch (const runtime_error& e) {
+            cout << "Error in Category::get_important_terms: " << e.what() << endl;
+            return;
+        }
     }
 
-    for (int i = 0; i < 5; i++)
-        category->most_important_terms.emplace_back(search_nth_important_term(vectored_all_umaps, category->most_important_terms));
+    for (int i = 0; i < 5; i++) {
+        // lock_guard<mutex> lock(mtx);
+        try {
+            most_important_terms.emplace_back(search_nth_important_term(vectored_all_umaps, most_important_terms));
+        } catch (const runtime_error& e) {
+            cout << "Error in Category::get_important_terms: " << e.what() << endl;
+            return;
+        }
+    }
+}
+
+void Category::print_info() {
+    cout << text_categories.find(static_cast<TEXT_CATEGORY_TYPES>(category_type))->second << endl;
     
-    mtx.unlock();
+    for (auto& term : most_important_terms) {
+        cout <<term.first << ": " <<  term.second << endl;
+    }
+    cout << endl;
+}
+
+// initialize categories vector
+static vector<Category> init_categories() {
+    vector<Category> categories_list;
+
+    for (int i = 0; i < MAX_CATEGORIES; i++)
+        categories_list.emplace_back(i);
+    
+    return categories_list;
 }
 
 // get important terms for each category simultaneously
-extern void get_all_category_important_terms(vector<Category>& categories, Corpus * corpus) {
-    // cout << "get_all_category_important_terms" << endl;
-    
-    vector<thread> threads;
+extern vector<Category> get_all_category_important_terms(Corpus * corpus) {
+    // vector<Category> categories_list = init_categories();
+    vector<Category> categories_list{0,1,2,3,4};
+    vector<thread> category_threads;
 
-    for (int i = 0; i < MAX_CATEGORIES; i++)
-        threads.emplace_back(thread(get_important_terms, corpus, &categories[i], i));
+    for (int i = 0; i < MAX_CATEGORIES; i++) {
+        cout << "getting important categories for " << text_categories.find(static_cast<TEXT_CATEGORY_TYPES>(i))->second << endl;
+        category_threads.emplace_back([&] {
+            categories_list[i].get_important_terms(corpus);
+        });
 
-    for (auto& thread : threads)
+    }
+
+    for (auto& thread : category_threads)
         thread.join();
+
+    return categories_list;
 }
 
 
@@ -110,11 +143,11 @@ extern void get_all_category_important_terms(vector<Category>& categories, Corpu
 
 
 /* TESTER */
-extern void print_a_vectored(unordered_map<string, double> mapped) {
-    vector<pair<string, double>> vec = sort_unordered_umap(mapped);
-
-    for (const auto& pair : vec) {
-        cout << pair.first << ": " << pair.second << endl;
-    }
-}
+// extern void print_a_vectored(unordered_map<string, double> mapped) {
+//     vector<pair<string, double>> vec = sort_unordered_umap(mapped);
+// 
+//     for (const auto& pair : vec) {
+//         cout << pair.first << ": " << pair.second << endl;
+//     }
+// }
 /* TESTER */

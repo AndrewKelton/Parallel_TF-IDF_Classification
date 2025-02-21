@@ -33,13 +33,32 @@ int Corpus::num_doc_term(string str) {
 
 // Try threading this one 
 void Corpus::tfidf_documents() {
-    vector<thread> threads;
+    vector<future<void>> futures;
 
-    for (auto& document : documents) 
-        threads.emplace_back(thread(&Corpus::emplace_tfidf_document, this, &document));
+    for (auto& document: documents) {
+        futures.emplace_back(async(
+            launch::async, &Corpus::emplace_tfidf_document, this, &document
+        ));
+    }
 
-    for (auto& t : threads)
-        t.join();
+    for (auto& f : futures) 
+        f.get();
+
+    // vector<thread> threads;
+
+    // for (int i = 0; i < num_of_docs; i+=10) {
+    //     threads.emplace_back([this, i]() {
+    //         for (int x = 0; x < 10; x++) {
+    //             emplace_tfidf_document(&documents[x+i]);
+    //         }
+    //     });
+    // }
+
+    // for (auto& document : documents) 
+    //     threads.emplace_back(thread(&Corpus::emplace_tfidf_document, this, &document));
+
+    // for (auto& t : threads)
+    //     t.join();
 }
 
 // using a thread insert tfidf into document. one thread per document

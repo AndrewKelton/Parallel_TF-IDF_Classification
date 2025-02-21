@@ -32,7 +32,7 @@ static string preprocess_remove_punc_text(string str) {
     string processed = "";
 
     for (char c : str)
-        if (!ispunct(c) && !isnumber(c))
+        if (!ispunct(c) && !isdigit(c))
             processed += c;
 
     return processed;

@@ -7,7 +7,7 @@
 #include "count_vectorization.h"
 #include "preprocess.h"
 #include "file_operations.h"
-#include "tfidf.h"
+// #include "tfidf.h"
 #include "categories.h"
 // #include <mlpack.hpp>
 // #include <mlpack/methods/logistic_regression/logistic_regression.hpp>
@@ -28,19 +28,13 @@ int main() {
     chrono::duration<double> elapsed_time = end - start;
     cout << "Done creating tfidf, time: " << elapsed_time.count() << endl;
 
-    // print_a_vectored(corpus.documents[0].tf_idf);
-
-    // initalize important terms for categories
-    vector<Category> categories(MAX_CATEGORIES);
-    get_all_category_important_terms(ref(categories), &corpus);
+    vector<Category> categories = get_all_category_important_terms(&corpus);
 
     for (int i = 0; i < MAX_CATEGORIES; i++) {
-        cout << categories[i].category << endl;
-        // cout << categories[0].most_important_terms[i].first << ": " << categories[0].most_important_terms[i].second << endl;
+       categories[i].print_info();
     }
 
-    
-    
+
 
     return 0;
 }

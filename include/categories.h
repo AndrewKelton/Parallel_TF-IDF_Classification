@@ -3,8 +3,12 @@
 
 #include <map>
 #include <mutex>
+#include <vector>
 #include <unordered_map>
-#include "utils.h"
+#include <algorithm>
+#include <stdexcept>
+#include <sstream>
+// #include "utils.h"
 // #include "document.h"
 
 using namespace std;
@@ -31,33 +35,51 @@ const map<string, TEXT_CATEGORY_TYPES> categories_text = {
     {"entertainment", entertainment_t}
 };
 
-// typedef struct CATEGORIES_S {
-//     vector<Category> categories;
-//     Corpus corpus;
-// } categories_t;
+const map<TEXT_CATEGORY_TYPES, string> text_categories = {
+    {sport_t, "sport"},
+    {business_t, "business"},
+    {politics_t, "politics"},
+    {tech_t, "tech"},
+    {entertainment_t, "entertainment"}
+};
 
+
+// Category class for determing category of document
 class Category {
 
-    public:
-        int category;                                      // category type
+    private:
+        mutex mtx;
+        int category_type;                                 // category type
         vector<pair<string, double>> most_important_terms; // 5 most important terms in category
 
-        // Category(TEXT_CATEGORY_TYPES category) : category(category) {}
+        vector<pair<string, double>> sort_unordered_umap(unordered_map<string, double> terms);
+        pair<string, double> search_nth_important_term(vector<vector<pair<string, double>>> all_tfidf_terms, vector<pair<string, double>> used);
 
+    public:
+        
+        // regular constructor
+        Category(int category_type) : category_type{category_type} {}
 
-        // constructor for Category
-        // Category(TEXT_CATEGORY_TYPES category, Corpus corpus) : category(category) {
-        //     get_most_important_terms(corpus);
-        // }
+        /* constructors for vector */
+        Category(const Category&) = delete;
+        Category& operator=(const Category&) = delete;  
 
-        // void get_most_important_terms(Corpus corpus);
+        Category(Category&& other) noexcept : category_type{other.category_type} {}
+        Category& operator=(Category&& other) noexcept {
+            category_type = other.category_type;
+            return *this;
+        }
+
+        void get_important_terms(Corpus * corpus);
+
+        void print_info();
 };
 
 // extern Category categories[MAX_CATEGORIES];
 
-extern void print_a_vectored(unordered_map<string, double> mapped);
+// extern void print_a_vectored(unordered_map<string, double> mapped);
 
-extern void get_all_category_important_terms(vector<Category>& categories, Corpus * corpus);
+extern vector<Category> get_all_category_important_terms(/*vector<Category>& categories, */Corpus * corpus);
 
 
 // 

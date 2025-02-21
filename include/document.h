@@ -6,7 +6,8 @@
 #include <unordered_map>
 #include <string>
 #include <thread>
-#include "util.h"
+#include <future>
+#include <cmath>
 #include "categories.h"
 
 using namespace std;
@@ -24,7 +25,7 @@ class Document {
         unordered_map<string, double> term_frequency; // frequency of terms in document
         unordered_map<string, double> tf_idf;         // tfidf of all terms in document
         int total_terms = 0;                          // total number of terms in document
-        int category;                 // classification category ** result **
+        int category;                                 // classification category ** result **
 
         // returns true if term exists in document
         bool is_term(string str);
@@ -44,7 +45,7 @@ class Document {
 // class for entire corpus (collection of documents)
 class Corpus {
     public:
-         vector<Document> documents;                               // list of documents
+        vector<Document> documents;                               // list of documents
         unordered_map<string, double> inverse_document_frequency; // tfidf of terms in corpus
         int num_of_docs = 0;                                      // total number of documents
 

@@ -9,6 +9,7 @@
 #include <set>
 #include <locale>
 #include <codecvt>
+#include <cctype>
 #include "document.h"
 #include "utils.h"
 #include "english_stem.h"

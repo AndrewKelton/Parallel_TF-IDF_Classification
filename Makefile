@@ -1,9 +1,12 @@
 # Define the compiler and flags
 CXX = g++
-CXXFLAGS = -Wall -Wextra -Wunused-private-field -std=c++17 -pthread \
-		   -L/opt/homebrew/lib -larmadillo -I/opt/homebrew/include \
-		   -I/opt/homebrew/include/ -Iinclude -Iinclude/OleanderStemmingLibrary/src \
+CXXFLAGS = -Wall -Wextra -std=c++17 -pthread \
+		   -I/opt/homebrew/include -I/opt/homebrew/include/ \
+		   -Iinclude -Iinclude/OleanderStemmingLibrary/src \
 		   -Wdeprecated-declarations
+# -L/opt/homebrew/lib -larmadillo
+
+ZIP_NAME = kelton_project_cop4520.zip
 
 # Source directories
 SRC_DIR = src
@@ -14,8 +17,8 @@ COMMON_SOURCES = $(SRC_DIR)/count_vectorization.cpp \
 				 $(SRC_DIR)/categories.cpp \
                  $(SRC_DIR)/document.cpp \
                  $(SRC_DIR)/preprocess.cpp \
-                 $(SRC_DIR)/file_operations.cpp \
-                 $(SRC_DIR)/tfidf.cpp 
+                 $(SRC_DIR)/file_operations.cpp 
+                #  $(SRC_DIR)/tfidf.cpp 
 
 
 # Object files (convert source file paths to object file paths)
@@ -50,9 +53,14 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(TARGETS) $(OBJ_DIR)
+	rm -rf $(TARGETS) $(OBJ_DIR) "$(ZIP_NAME)"
 
-.PHONY: all clean
+# Zip target to archive the project folder
+zip:
+	zip -r $(ZIP_NAME) . -x "*.git*" "$(OBJ_DIR)/*" "*.DS_Store" "$(ZIP_NAME)"
+
+
+.PHONY: all clean zip
 # 
 # # Define the executable name
 # TARGET = tfidf

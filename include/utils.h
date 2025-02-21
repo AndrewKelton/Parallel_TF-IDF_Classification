@@ -4,6 +4,10 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
+#include <cstdarg>
+#include <exception>
+#include <stdexcept>
+#include <sstream>
 
 using namespace std;
 
@@ -14,17 +18,23 @@ enum ERR_CODES {
 };
 
 enum FLAG_TYPES {
-    review_t, article_t, 
-    print_t, timer_t
+    review_flag, article_flag, 
+    print_flag, timer_flag
 };
 
-// const unordered_map<string, int> flags = {
-//     {"review", FLAG_TYPES::review_t},       // review type of data classification, 1 (positive) 0 (negative)
-//     {"article", FLAG_TYPES::article_t},     // article type of data classification, 5 categories of classification
-//     {"print", FLAG_TYPES::print_t},         // print all output
-//     {"time", FLAG_TYPES::timer_t}            // print time 
-// };
+// extern const string utils_error_msg(const string msg, int err);
 
-extern const string utils_error_msg(const string msg, int err);
+template<typename... Args>
+inline void throw_runtime_error(Args... args) {
+    ostringstream err_response;
+
+    ((err_response << args << " "), ...);
+
+    string err_msg = err_response.str();
+    if (!err_msg.empty()) 
+        err_msg.pop_back();
+    
+    throw runtime_error(err_msg);
+}
 
 #endif
