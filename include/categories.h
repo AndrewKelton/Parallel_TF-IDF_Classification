@@ -2,7 +2,7 @@
 #define CATEGORIES_H
 
 #include <map>
-#include <mutex>
+#include <thread>
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
@@ -49,7 +49,6 @@ const map<TEXT_CATEGORY_TYPES, string> text_categories = {
 class Category {
 
     private:
-        mutex mtx;
         int category_type;                                 // category type
         vector<pair<string, double>> most_important_terms; // 5 most important terms in category
 
@@ -94,7 +93,7 @@ extern TEXT_CATEGORY_TYPES get_category(string category);
 extern string get_category(int category);
 
 extern void get_single_cat(Corpus * corpus, vector<Category>& cats, int catint);
-
+extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, int catint);
 // 
 // class Categories {
 // 

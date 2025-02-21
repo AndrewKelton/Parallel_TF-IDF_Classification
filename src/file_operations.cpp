@@ -9,11 +9,6 @@ static pair<string, string> split_string_comma(const string& str) {
   return {str.substr(0, comma_pos), str.substr(comma_pos + 1)};
 }
 
-// // return category enum from category string
-// static TEXT_CATEGORY_TYPES get_category(string category) {
-//     return categories_text.find(category)->second;
-// }
-
 // return a new document
 static Document create_document(string text, TEXT_CATEGORY_TYPES category) {
     Document new_document;

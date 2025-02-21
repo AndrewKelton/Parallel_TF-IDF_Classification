@@ -1,0 +1,3 @@
+Done vectorizing
+Done creating tfidf, time: 143.74
+Done creating categories, time: 0.270059

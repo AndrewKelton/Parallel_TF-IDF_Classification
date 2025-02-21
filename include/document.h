@@ -62,6 +62,8 @@ class Corpus {
          */
         void tfidf_documents();
 
+        void tfidf_documents_seq();
+
         // void calculate_all();
 
         int get_num_unique_terms();

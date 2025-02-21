@@ -1,4 +1,5 @@
 #include "count_vectorization.h"
+#include <thread>
 
 /* words that carry no value and are voided 
  * used from https://towardsdatascience.com/building-a-cross-platform-tfidf-text-summarizer-in-rust-7b05938f4507
@@ -45,8 +46,8 @@ static void count_words_doc(Document * doc) {
 
 // preprocess and vectorize a document
 static void vectorize_doc(Document * doc, int * id) {
-    (*id)++;
-    doc->document_id = *id;
+    // (*id)++;
+    doc->document_id = *id++;
     // cout << "document id: " << doc->document_id << endl;
     preprocess_text(doc);
     count_words_doc(doc);
@@ -65,6 +66,15 @@ extern void vectorize_corpus_threaded(Corpus * corpus) {
 
     for (auto& t : threads)
         t.join();
+}
+
+extern void vectorize_corpus_sequential(Corpus * corpus) {
+    int id = 0;
+
+    for (auto& document : (*corpus).documents) {
+        vectorize_doc(&document, &id);
+        corpus->num_of_docs++;
+    }
 }
 
 // // vectorize categorize of documents simultaneously

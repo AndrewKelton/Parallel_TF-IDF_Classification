@@ -1,8 +1,8 @@
 #include "categories.h"
 #include "document.h"
 #include "utils.h"
-
-
+#include <mutex>
+#include <thread>
 
 mutex mtx;
 
@@ -115,6 +115,12 @@ extern void get_single_cat(Corpus * corpus, vector<Category>& cats, int catint) 
         lock_guard<mutex> lock(mtx);
         cats.emplace_back(std::move(cat));
     }
+}
+
+extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, int catint) {
+    Category cat(catint);
+    cat.get_important_terms(corpus);
+    cats.emplace_back(std::move(cat));
 }
 
 // get important terms for each category simultaneously

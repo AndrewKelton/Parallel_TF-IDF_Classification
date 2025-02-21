@@ -20,6 +20,8 @@ using namespace std;
 extern void vectorize_corpus_threaded(Corpus * corpus);
 
 // vectorize corpus of documents simultaneously, based on category
-extern void vectorize_corpus_category_threaded(Corpus * corpus, int category);
+// extern void vectorize_corpus_category_threaded(Corpus * corpus, int category);
+
+extern void vectorize_corpus_sequential(Corpus * corpus);
 
 #endif
