@@ -15,7 +15,7 @@ static auto convert_string_wstring(const InputType& input) {
     else if constexpr (is_same<InputType, string>::value) 
         return converter.from_bytes(input); // cnvert string to wstring
     else 
-        exit(ERR_CODES::BAD_CAST);
+        throw_runtime_error("Bad Cast!");
         // static_assert(always_false<InputType>::value, utils_error_msg("Bad Cast!", ERR_CODES::BAD_CAST));
 }
 
@@ -43,7 +43,13 @@ static string preprocess_remove_punc_text(string str) {
  * URL: https://github.com/Blake-Madden/OleanderStemmingLibrary.git
  */
 extern string preprocess_prune_term(string str) {
-    wstring to_prune = convert_string_wstring(str);
+    wstring to_prune;
+    try {
+        to_prune = convert_string_wstring(str);
+    } catch(const runtime_error &e) {
+        cerr << "Bad cast" << endl;
+        return str;
+    }
 
     stemming::english_stem<> stemmer;
     stemmer(to_prune);

@@ -31,8 +31,8 @@ inline void throw_runtime_error(Args... args) {
     ((err_response << args << " "), ...);
 
     string err_msg = err_response.str();
-    if (!err_msg.empty()) 
-        err_msg.pop_back();
+    // if (!err_msg.empty()) 
+    //     err_msg.pop_back();
     
     throw runtime_error(err_msg);
 }

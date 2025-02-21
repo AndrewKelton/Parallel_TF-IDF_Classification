@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <sstream>
+#include <exception>
 // #include "utils.h"
 // #include "document.h"
 
@@ -59,16 +60,24 @@ class Category {
         
         // regular constructor
         Category(int category_type) : category_type{category_type} {}
-
+        // Category(const Category&) = delete;  // Copy constructor deleted
+        // Category(Category&&) = default; 
         /* constructors for vector */
-        Category(const Category&) = delete;
+        Category(const Category&) = default;
         Category& operator=(const Category&) = delete;  
 
-        Category(Category&& other) noexcept : category_type{other.category_type} {}
+        Category(Category&& other) noexcept
+            : category_type{other.category_type},
+            most_important_terms{std::move(other.most_important_terms)} 
+        {}
         Category& operator=(Category&& other) noexcept {
-            category_type = other.category_type;
+            if (this != &other) {
+                category_type = other.category_type;
+                most_important_terms = std::move(other.most_important_terms);
+            }
             return *this;
         }
+
 
         void get_important_terms(Corpus * corpus);
 
@@ -81,6 +90,10 @@ class Category {
 
 extern vector<Category> get_all_category_important_terms(/*vector<Category>& categories, */Corpus * corpus);
 
+extern TEXT_CATEGORY_TYPES get_category(string category);
+extern string get_category(int category);
+
+extern void get_single_cat(Corpus * corpus, vector<Category>& cats, int catint);
 
 // 
 // class Categories {

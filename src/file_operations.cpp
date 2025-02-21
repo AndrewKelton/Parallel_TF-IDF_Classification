@@ -1,18 +1,18 @@
 #include "file_operations.h"
 
-// return pair of first split from csv
+// return pair of first split from csv 'category, text'
 static pair<string, string> split_string_comma(const string& str) {
   size_t comma_pos = str.find(',');
-  if (comma_pos == string::npos) {
+  if (comma_pos == string::npos)
     return {str, ""};
-  }
+
   return {str.substr(0, comma_pos), str.substr(comma_pos + 1)};
 }
 
-// return category enum from category string
-static TEXT_CATEGORY_TYPES get_category(string category) {
-    return categories_text.find(category)->second;
-}
+// // return category enum from category string
+// static TEXT_CATEGORY_TYPES get_category(string category) {
+//     return categories_text.find(category)->second;
+// }
 
 // return a new document
 static Document create_document(string text, TEXT_CATEGORY_TYPES category) {
@@ -32,6 +32,7 @@ extern void read_csv_to_corpus(Corpus& corpus, const string& file_name) {
     }
 
     string line;
+    int i = 0;
     while (getline(file, line)) {
         
         // ignore header
@@ -42,11 +43,6 @@ extern void read_csv_to_corpus(Corpus& corpus, const string& file_name) {
         TEXT_CATEGORY_TYPES category = get_category(split.first);
         
         corpus.documents.push_back(create_document(split.second, category));
-
-        // cout << split.first << endl;
-        // cout << corpus.documents[0].category << endl; 
-
-        // exit(EXIT_SUCCESS);
     }   
 
     file.close();

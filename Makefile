@@ -3,10 +3,11 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17 -pthread \
 		   -I/opt/homebrew/include -I/opt/homebrew/include/ \
 		   -Iinclude -Iinclude/OleanderStemmingLibrary/src \
-		   -Wdeprecated-declarations
+		   -Wdeprecated-declarations -Wno-unused-function -Wno-unused-variable
 # -L/opt/homebrew/lib -larmadillo
 
 ZIP_NAME = kelton_project_cop4520.zip
+ZIP_NAME_CODE = kelton_project_code.zip
 
 # Source directories
 SRC_DIR = src
@@ -58,6 +59,9 @@ clean:
 # Zip target to archive the project folder
 zip:
 	zip -r $(ZIP_NAME) . -x "*.git*" "$(OBJ_DIR)/*" "*.DS_Store" "$(ZIP_NAME)"
+
+zip_code:
+	zip -r $(ZIP_NAME_CODE) . -x "*.git*" "$(OBJ_DIR)/*" "*.DS_Store" "build/*" "data/*" ".vscode/*" "include/mlpack/*" "include/OleanderStemmingLibrary/*" "$(ZIP_NAME_CODE)"
 
 
 .PHONY: all clean zip

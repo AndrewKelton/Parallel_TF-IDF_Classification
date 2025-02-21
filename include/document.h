@@ -47,7 +47,9 @@ class Corpus {
     public:
         vector<Document> documents;                               // list of documents
         unordered_map<string, double> inverse_document_frequency; // tfidf of terms in corpus
+        // unordered_map<string, int> document_frequency;              // # of documents each word appears in
         int num_of_docs = 0;                                      // total number of documents
+
 
         // return # of documents with term
         int num_doc_term(string str);
@@ -60,12 +62,19 @@ class Corpus {
          */
         void tfidf_documents();
 
-    private:
+        // void calculate_all();
+
+        int get_num_unique_terms();
+
+    private:    
+
+        // void calculate_document_frequency(string s);
         
         // using a thread insert tfidf into document. one thread per document
         void emplace_tfidf_document(Document * document);
 
         // other functions here
 };
+
 
 #endif
