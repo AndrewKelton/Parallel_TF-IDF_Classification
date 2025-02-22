@@ -24,15 +24,23 @@ COMMON_SOURCES = $(SRC_DIR)/count_vectorization.cpp \
 
 COMMON_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(COMMON_SOURCES))			 
 
-# Main test source
-MAINTEST_SOURCES = $(SRC_DIR)/main-test.cpp $(COMMON_SOURCES)
+# Main test source (existing)
+MAINTEST_SOURCES = $(SRC_DIR)/main-test-parallel.cpp $(COMMON_SOURCES)
 MAINTEST_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(MAINTEST_SOURCES))
-MAINTEST_EXEC = $(BUILD_DIR)/main-test
+MAINTEST_EXEC = $(BUILD_DIR)/main-test-parallel
 
-# Build main-test executable
-all: $(MAINTEST_EXEC)
+# Sequential test source (new)
+MAINTESTSEQ_SOURCES = $(SRC_DIR)/main-test-sequential.cpp $(COMMON_SOURCES)
+MAINTESTSEQ_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(MAINTESTSEQ_SOURCES))
+MAINTESTSEQ_EXEC = $(BUILD_DIR)/main-test-sequential
+
+# Build main-test and main-test-seq executables
+all: $(MAINTEST_EXEC) $(MAINTESTSEQ_EXEC)
 
 $(MAINTEST_EXEC): $(MAINTEST_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+$(MAINTESTSEQ_EXEC): $(MAINTESTSEQ_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 # Compile object files
@@ -40,18 +48,21 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Run main-test and store results
-# Run tests and store results in the test_output folder
-test: main-test
-	@echo "Running tests with input data/file.csv..."
-	@./main-test data/file.csv > $(OUTPUT_DIR)/results/test_results.txt 2> $(OUTPUT_DIR)/logs/test_errors.log
-	@echo "Test results saved in $(OUTPUT_DIR)/results/test_results.txt"
-	@echo "Error logs saved in $(OUTPUT_DIR)/logs/test_errors.log"
+# Run tests and store results in the test_output folder for both tests
+test: $(MAINTEST_EXEC) $(MAINTESTSEQ_EXEC)
+	@echo "Running main-test with input data/bbc-text.csv..."
+	@./$(MAINTEST_EXEC) data/bbc-text.csv > $(OUTPUT_DIR)/results/main_test_results.txt 2> $(OUTPUT_DIR)/logs/main_test_errors.log
+	@echo "main-test results saved in $(OUTPUT_DIR)/results/main_test_results.txt"
+	@echo "main-test error logs saved in $(OUTPUT_DIR)/logs/main_test_errors.log"
 
+	@echo "Running main-test-seq with input data/bbc-text.csv..."
+	@./$(MAINTESTSEQ_EXEC) data/bbc-text.csv > $(OUTPUT_DIR)/results/main_test_seq_results.txt 2> $(OUTPUT_DIR)/logs/main_test_seq_errors.log
+	@echo "main-test-seq results saved in $(OUTPUT_DIR)/results/main_test_seq_results.txt"
+	@echo "main-test-seq error logs saved in $(OUTPUT_DIR)/logs/main_test_seq_errors.log"
 
 # Clean build and test output
 clean:
-	rm -rf $(MAINTEST_EXEC) $(OBJ_DIR) $(BUILD_DIR) $(OUTPUT_DIR)/*
+	rm -rf $(MAINTEST_EXEC) $(MAINTESTSEQ_EXEC) $(OBJ_DIR) $(BUILD_DIR)
 
 # Zip targets
 zip:
