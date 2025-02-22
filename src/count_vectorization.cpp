@@ -46,9 +46,9 @@ static void count_words_doc(Document * doc) {
 
 // preprocess and vectorize a document
 static void vectorize_doc(Document * doc, int * id) {
-    // (*id)++;
-    doc->document_id = *id++;
-    // cout << "document id: " << doc->document_id << endl;
+    
+    doc->document_id = *id++; /* CHANGE TO ATOMIC */
+
     preprocess_text(doc);
     count_words_doc(doc);
     (*doc).calculate_term_frequency_doc();
