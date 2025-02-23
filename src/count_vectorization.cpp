@@ -1,6 +1,8 @@
 #include "count_vectorization.h"
 #include <thread>
 
+atomic<int> doc_id_count{0}; // document id 
+
 /* words that carry no value and are voided 
  * used from https://towardsdatascience.com/building-a-cross-platform-tfidf-text-summarizer-in-rust-7b05938f4507
 */
@@ -45,34 +47,42 @@ static void count_words_doc(Document * doc) {
 }
 
 // preprocess and vectorize a document
-static void vectorize_doc(Document * doc, int * id) {
+static void vectorize_doc(Document * doc) {
     
-    doc->document_id = *id++; /* CHANGE TO ATOMIC */
+    doc->document_id = doc_id_count.load(memory_order_acquire);
+    doc_id_count.fetch_add(1, memory_order_release);
 
     preprocess_text(doc);
     count_words_doc(doc);
     (*doc).calculate_term_frequency_doc();
 }
 
+static void vectorize_doc_sequenital(Document * doc, int * id) {
+    preprocess_text(doc);
+    count_words_doc(doc);
+    (*doc).calculate_term_frequency_doc();
+}
+
+
 // vectorize corpus of documents simultaneously
 extern void vectorize_corpus_threaded(Corpus * corpus) {
     vector<thread> threads;
-    int id = 0;
 
     for (auto& document : (*corpus).documents) {
-        threads.emplace_back(thread(vectorize_doc, &document, &id));
-        corpus->num_of_docs++;
+        threads.emplace_back(thread(vectorize_doc, &document));
     }
 
     for (auto& t : threads)
         t.join();
+    corpus->num_of_docs = doc_id_count.load();
 }
 
 extern void vectorize_corpus_sequential(Corpus * corpus) {
     int id = 0;
 
     for (auto& document : (*corpus).documents) {
-        vectorize_doc(&document, &id);
+        vectorize_doc(&document);
+        document.document_id = id++;
         corpus->num_of_docs++;
     }
 }

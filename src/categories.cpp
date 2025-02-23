@@ -61,30 +61,29 @@ void Category::get_important_terms(Corpus * corpus) {
     for (auto& document : corpus->documents) {
         if (document.category != category_type)
             continue;
-        // cout << document.document_id;
+
         try {
             vectored_all_umaps.emplace_back(sort_unordered_umap(document.tf_idf));
         } catch (const runtime_error& e) {
-            cout << "Error Category::get_important_terms: " << e.what() << endl;
+            cerr << "Error Category::get_important_terms: " << e.what() << endl;
             break;
         } catch (const exception& e) {
-            cout << "Error Category::get_important_terms: " << e.what() << endl;
+            cerr << "Error Category::get_important_terms: " << e.what() << endl;
             break;
-        }
+        } 
     }
 
     for (int i = 0; i < 5; i++) {
         try {
             most_important_terms.emplace_back(search_nth_important_term(vectored_all_umaps, most_important_terms));
         } catch (const runtime_error& e) {
-            cout << "Error in Category::get_important_terms: " << e.what() << endl;
+            cerr << "Error in Category::get_important_terms: " << e.what() << endl;
             return;
         } catch (const exception& e) {
-            cout << "Error in Category::get_important_terms: " << e.what() << endl;
+            cerr << "Error in Category::get_important_terms: " << e.what() << endl;
             return;
         }
     }
-    // cout << "Successfully created imortant terms for " << get_category(this->category_type) << endl;
 }
 
 void Category::print_info() {
