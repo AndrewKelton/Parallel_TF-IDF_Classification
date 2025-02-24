@@ -163,11 +163,8 @@ This simple project offers you a fully customizable and presentable README.md te
 -->
 
 
-- [Make a Readme](https://www.makeareadme.com/)
+- [OleanderStemmingLibrary](https://github.com/Blake-Madden/OleanderStemmingLibrary)
 - [Shields](https://shields.io/)
-- [Emoji-cheat-sheet](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md#flags)
-- [SVG README](https://readme-typing-svg.demolab.com/demo/)
-- [Choose an open source license](https://choosealicense.com/)
 
 <!-- - Use this html element to create a back to top button. -->
 <p align="right"><a href="#how-to-use-this-project">back to top ⬆️</a></p>
