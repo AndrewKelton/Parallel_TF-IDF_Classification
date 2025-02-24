@@ -173,12 +173,6 @@ This simple project offers you a fully customizable and presentable README.md te
 * 
 * Also it's common to add some PR guidance.
 -->
-
-
-> You can make this project better, please  feel free to open a [Pull Request](https://github.com/YousefIbrahimismail/Project-README-Template/pulls).
-- If you notice a bug or a typo use the tag **"Correction"**.
-- If you want to share any ideas to help make this project better, use the tag **"Enhancement"**.
-
 <details>
     <summary>Contact Me 📨</summary>
 
