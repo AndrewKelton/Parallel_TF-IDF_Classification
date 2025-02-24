@@ -150,7 +150,7 @@ This simple project offers you a fully customizable and presentable README.md te
 * Generate github contributors Image here https://contrib.rocks/preview?repo=angular%2Fangular-ja
 -->
 
-<a href="https://github.com/YousefIbrahimismail/Project-README-Template/graphs/contributors">
+<a href="https://github.com/AndrewKelton/COP4520-FinalProject/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=YousefIbrahimismail/Project-README-Template" />
 </a>
 
