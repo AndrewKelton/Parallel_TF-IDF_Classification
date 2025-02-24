@@ -51,6 +51,7 @@ class Category {
     private:
         int category_type;                                 // category type
         vector<pair<string, double>> most_important_terms; // 5 most important terms in category
+        vector<pair<string, double>> all_category_terms;
 
         vector<pair<string, double>> sort_unordered_umap(unordered_map<string, double> terms);
         pair<string, double> search_nth_important_term(vector<vector<pair<string, double>>> all_tfidf_terms, vector<pair<string, double>> used);
