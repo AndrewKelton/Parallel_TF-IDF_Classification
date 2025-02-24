@@ -83,17 +83,17 @@ This simple project offers you a fully customizable and presentable README.md te
 - Support me by staring this repository 💛
 
 
-## Demo<!-- Required -->
+<!-- ## Demo<!-- Required
 <!-- 
 * You can add a demo here GH supports images/ GIFs/videos 
 * 
 * It's recommended to use GIFs as they are more dynamic
--->
 
 
 <div align="center">
     <img alt="demo" src="https://user-images.githubusercontent.com/59213365/198179320-b9ec79a6-b5ca-47b9-9f29-125d18f6be70.gif">
 </div>
+-->
 
 ## Table of Contents<!-- Optional -->
 <!-- 
@@ -131,19 +131,6 @@ This simple project offers you a fully customizable and presentable README.md te
 <!-- - Use this html element to create a back to top button. -->
 <p align="right"><a href="#how-to-use-this-project">back to top ⬆️</a></p>
 
-
-## Project Roadmap <!-- Optional --> <!-- add learning_Rs-->
-<!-- 
-* Add this section in case the project has different phases
-* 
-* Under production or will be updated.
--->
-
-- [x] Create first Template [Access blank Template](https://github.com/YousefIbrahimismail/Project-README-Template/blob/main/Templates/_blank-README.md).
-- [ ] Update a More Dynamic README file.
-
-
-<p align="right"><a href="#how-to-use-this-project">back to top ⬆️</a></p>
 
 ## Documentation<!-- Optional -->
 <!-- 
@@ -202,7 +189,8 @@ This simple project offers you a fully customizable and presentable README.md te
     <summary>Contact Me 📨</summary>
 
 ### Contact<!-- Required -->
-Reach me via email: [yousef_i44@protonmail.com](mailto:yousef_i44@protonmail.com)
+Reach me via email: [an597152@ucf.edu](mailto:an597152@ucf.edu)
+Reach me via email: [andrew7kelton@gmail.com](mailto:andrew7kelton@gmail.com)
 <!-- 
 * add your email and contact info here
 * 
@@ -210,15 +198,6 @@ Reach me via email: [yousef_i44@protonmail.com](mailto:yousef_i44@protonmail.com
 -->
     
 </details>
-
-## License<!-- Optional -->
-<!-- 
-* Here you can add project license for copyrights and distribution 
-* 
-* check this website for an easy reference https://choosealicense.com/)
--->
-
-- [MIT License](./LICENSE.txt)
 
 
 <!-- - Use this html element to create a back to top button. -->
