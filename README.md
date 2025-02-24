@@ -151,7 +151,7 @@ This simple project offers you a fully customizable and presentable README.md te
 -->
 
 <a href="https://github.com/AndrewKelton/COP4520-FinalProject/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=YousefIbrahimismail/Project-README-Template" />
+  <img src="https://contrib.rocks/image?repo=AndrewKelton/COP4520-FinalProject" />
 </a>
 
 
