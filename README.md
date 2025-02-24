@@ -110,8 +110,6 @@ This simple project offers you a fully customizable and presentable README.md te
         <tr>
             <td><a href="#about">About</a></td>        
             <td><a href="#how-to-use-this-project">Getting started</td>
-            <td><a href="#demo">Demo</a></td>
-            <td><a href="#project-roadmap--">Project Roadmap</a></td>
             <td><a href="#documentation">Documentation</a></td>
             <td><a href="#contributors">Contributors</a></td>
         </tr>
@@ -122,7 +120,6 @@ This simple project offers you a fully customizable and presentable README.md te
             Step By Step Guide</a></td>
             <td><a href="#feedback">Feedback</a></td>
             <td><a href="#contact">Contact</a></td>
-            <td><a href="#license">License</a></td>
         </tr>
 </table>
 </dev>
