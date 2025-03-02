@@ -1,5 +1,26 @@
 #include "file_operations.h"
 
+static const string sl{"/"}; // slash
+
+// test directories
+static const string base_test_dir{"test-output"};
+static const string processed_csv_dir{base_test_dir + sl + "processed-data-results"};
+static const string comp_test_dir{base_test_dir + sl + "comparison"};
+static const string solo_test_dir{base_test_dir + sl + "solo"};
+static const string res_test_dir{/* can be either solo or comp*/ "results"};
+
+// plaintext results from Makefile in comparison
+static const string res_par_txt{comp_test_dir + sl + res_test_dir + sl + "main-test-parallel-results.txt"};
+static const string res_seq_txt{comp_test_dir + sl + res_test_dir + sl + "main-test-sequential-results.txt"};
+
+//plaintext results from Makefile in solo
+static const string res_par_txt_singleton{solo_test_dir + sl + res_test_dir + sl + "main-test-parallel-results-singleton.txt"};
+static const string res_seq_txt_singleton{solo_test_dir + sl + res_test_dir + sl + "main-test-sequential-results-singleton.txt"};
+
+// data processed csv files 
+static const string processed_par_csv{processed_csv_dir + sl + "parallel-processed.csv"};
+static const string processed_seq_csv{processed_csv_dir + sl + "sequential-processed.csv"};
+
 // return pair of first split from csv 'category, text'
 static pair<string, string> split_string(const string& str, const char& splitter) {
     size_t comma_pos = str.find(splitter);
@@ -57,10 +78,10 @@ static string get_txt_name(unsigned int par_or_seq /* 0 = parallel, 1 = sequenti
     if (par_or_seq != 0 && par_or_seq != 1)
         throw runtime_error("invalid params in 'get_file_name'");
     else if (par_or_seq == 0) {
-        return comp_or_solo ? solo_test_dir + sl + res_par_txt : comp_test_dir + sl + res_par_txt;
+        return comp_or_solo ? res_par_txt_singleton : res_par_txt;
     }
 
-    return comp_or_solo ? solo_test_dir + sl + res_seq_txt : comp_test_dir + sl + res_seq_txt;
+    return comp_or_solo ? res_seq_txt_singleton : res_seq_txt;
 }
 
 // return .csv file name from .txt result file name
@@ -89,13 +110,6 @@ static void write_sections_csv(vector<pair<string, string>> pln_txt, const strin
             std::string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms"));
             file << sec_time.first << "," << no_ms_time << "\n";
         }
-//         file << "Section,Time (ms)\n";
-// 
-//         for (const auto& sec_time : pln_txt) {
-//             string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms"));
-// 
-//             file << sec_time.first << "," << sec_time.second << "\n";
-//         }
     }
 }
 

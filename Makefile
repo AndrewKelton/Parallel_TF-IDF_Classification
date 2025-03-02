@@ -20,9 +20,8 @@ OUTPUT_DIR = test-output
 COMP_DIR = comparison
 SOLO_DIR = solo
 
-# Create necessary directories
+# Create necessary build directories
 $(shell mkdir -p $(BUILD_DIR)/$(OBJ_DIR) $(BUILD_DIR))
-# $(shell mkdir -p $(BUILD_DIR)/$(OBJ_DIR) $(BUILD_DIR) $(OUTPUT_DIR) $(OUTPUT_DIR)/logs $(OUTPUT_DIR)/results)
 
 
 # Common source files
@@ -102,6 +101,7 @@ seq-test: $(SEQUENTIAL_EXEC)
 txt-to-csv-test: $(TO_CSV_EXEC)
 	@echo "Converting txt results to csv..."
 	@./$(main-txt-to-csv)
+
 
 
 # Files for zip to ignore

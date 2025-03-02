@@ -77,7 +77,7 @@ mkdir -p "$BUILD_TEST_DIR"
 # Check/Create directory for each 
 # required directory for testing 
 for DIR in "${ALL_TEST_DIRS[@]}"; do
-    if [ ! -d "$DIR" ] && [ "$DIR" != "$PROCESSED_DATA_CSV_DIR" ]; then
+    if [ ! -d "$DIR" ]; then
         echo "Creating directory: $DIR\n"
         mkdir -p "$DIR"
 
