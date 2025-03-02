@@ -75,18 +75,27 @@ static string get_csv_name(const string& txt_file_name) {
 // actually write plain text file results to csv file
 static void write_sections_csv(vector<pair<string, string>> pln_txt, const string& txt_file_name, bool comp_or_solo) {
     string file_name = get_csv_name(txt_file_name);
-    ofstream file(file_name);
+    ofstream file(file_name, ios::app); // append to csv
 
     if (!file) {
         throw_runtime_error("file error in write_sections_csv");
     } else {
-        file << "Section,Time (ms)\n";
-
+        file.seekp(0, ios::end);
+        
+        if (file.tellp() == 0) 
+            file << "Section,Time (ms)\n";
+        
         for (const auto& sec_time : pln_txt) {
-            string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms"));
-
-            file << sec_time.first << "," << sec_time.second << "\n";
+            std::string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms"));
+            file << sec_time.first << "," << no_ms_time << "\n";
         }
+//         file << "Section,Time (ms)\n";
+// 
+//         for (const auto& sec_time : pln_txt) {
+//             string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms"));
+// 
+//             file << sec_time.first << "," << sec_time.second << "\n";
+//         }
     }
 }
 
