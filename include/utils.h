@@ -11,6 +11,8 @@
 
 using namespace std;
 
+#define MAX_SECTIONS 3
+
 enum ERR_CODES {
     BAD_CAST = 4,
     BAD_TEXT = 8,

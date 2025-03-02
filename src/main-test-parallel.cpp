@@ -26,13 +26,33 @@ using namespace std;
 
 int main(int argc, char * argv[]) {
 
-    if (argc <= 1) {
-        cerr << "no files inputted..." << endl;
-        return 1;
+    // ensure valid number of input
+    if (argc <= 2) {
+        cerr << "not enough inputs..." << endl;
+        exit(EXIT_FAILURE);
     }
+
+    /* Used for determining which directory (comparison or solo)
+     * we are testing inside of. Used for converting plaintext file
+     * to csv file after data has been processed 
+     */
+    string arg_2 = argv[2];
+
+    // ensure valid testing type    
+    if (arg_2 != "solo" && arg_2 != "comparison") {
+        cerr << "invalid second parameter... usage: 'solo' or 'comparison'" << endl;
+        exit(EXIT_FAILURE);
+    } 
+
+    bool comp_or_solo{(arg_2 == "solo") /* false == comparison, true == solo */}; 
+    // comp_or_solo = (argv[2] == "solo"); // save testing type for later
     
     Corpus corpus;
-    read_csv_to_corpus(ref(corpus), argv[1]);
+    try {
+        read_csv_to_corpus(ref(corpus), argv[1]);
+    } catch (runtime_error e) {
+        cerr << "Error: " << argv[1] << " " << e.what() << endl;
+    }
 
 
     // vectorize corpus of documents
@@ -57,10 +77,7 @@ int main(int argc, char * argv[]) {
         exit(1);
     }
     end = chrono::high_resolution_clock::now();
-    // elapsed_time = elapsed_time_ms(start, end);//chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-    // cout << "TF-IDF Time: ";
-    // print_elapsed_time_ms(start, end);
     print_duration_code(start, end, tfidf_);
 
 
@@ -82,11 +99,17 @@ int main(int argc, char * argv[]) {
         cat.join();
     
     end = chrono::high_resolution_clock::now();
-    // elapsed_time = elapsed_time_ms(start, end);//chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-    // cout << "Categories Time: ";
-    // print_elapsed_time_ms(start, end);
     print_duration_code(start, end, categories_);
+
+
+    // convert txt results to csv for python graphing
+    try {
+        convert_results_txt_to_csv(0, comp_or_solo);
+    } catch (runtime_error e) {
+        cerr << "Error converting txt to csv: " << e.what() << endl;
+        exit(EXIT_FAILURE);
+    }
 
     return 0;
 }
