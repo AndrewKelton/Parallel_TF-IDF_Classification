@@ -98,7 +98,7 @@ done
 
 
 # create DESCRIPTION file for test-output
-cat > test-output/DESCRIPTION <<EOF
+cat > test-output/README.md <<EOF
 ### This directory stores output files generated during testing, graphs, and logs.
 
 - processed-data-results/: Contains CSV 2 files with test results, 1. parallel tests, 2. sequential tests.
