@@ -15,11 +15,11 @@
 * Insert project shields and badges through this link https://shields.io/
 * 
 *
--->
+-->https://github.com/AndrewKelton/Parallel_TF-IDF_Classification.git
 
 <div align="center">
     <!-- <a href="https://github.com/YousefIbrahimismail/Project-README-Template/blob/main/LICENSE.txt"><img alt="GitHub license" src="https://img.shields.io/github/license/YousefIbrahimismail/Project-README-Template?color=ff69b4&style=for-the-badge"></a> -->
-    <a href="https://github.com/AndrewKelton/COP4520-FinalProject/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/AndreKelton/COP4520-FinalProject?color=yellow&label=Project%20Stars&style=for-the-badge"></a>
+    <a href="=https://github.com/AndrewKelton/COP4520-FinalProject/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/AndreKelton/Parallel_TF-IDF_Classification?color=yellow&label=Project%20Stars&style=for-the-badge"></a>
     <!-- <a href="https://github.com/YousefIbrahimismail/Project-README-Template/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/YousefIbrahimismail/Project-README-Template?color=brightgreen&label=issues&style=for-the-badge"></a> -->
     <!-- <a href="https://github.com/YousefIbrahimismail/Project-README-Template/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/YousefIbrahimismail/Project-README-Template?color=9cf&label=forks&style=for-the-badge"></a> -->
 </div>
@@ -76,7 +76,7 @@ This simple project offers you a fully customizable and presentable README.md te
 - clone this repository into your local machine.
 
 ```bash
-    git clone https://github.com/AndrewKelton/COP4520-FinalProject.git
+    git clone https://github.com/AndrewKelton/Parallel_TF-IDF_Classification.git
 ```
 - You can copy the markdown directly from this [MD file](./Templates/markdown-only.md).
 - Make sure to check the [Documentation](https://github.com/YousefIbrahimismail/Project-README-Template/wiki/Step-by-Step-Guide) for a step by step guide.
@@ -147,8 +147,8 @@ This simple project offers you a fully customizable and presentable README.md te
 * Generate github contributors Image here https://contrib.rocks/preview?repo=angular%2Fangular-ja
 -->
 
-<a href="https://github.com/AndrewKelton/COP4520-FinalProject/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=AndrewKelton/COP4520-FinalProject" />
+<a href="https://github.com/AndrewKelton/Parallel_TF-IDF_Classification/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=AndrewKelton/Parallel_TF-IDF_Classification" />
 </a>
 
 
