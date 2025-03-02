@@ -31,7 +31,7 @@ int Corpus::num_doc_term(string str) {
     return count;
 }
 
-// parallel
+// Try threading this one 
 void Corpus::tfidf_documents() {
     vector<thread> threads;
 
@@ -42,6 +42,9 @@ void Corpus::tfidf_documents() {
             }
         });
     }
+
+    // for (auto& document : documents) 
+    //     threads.emplace_back(thread(&Corpus::emplace_tfidf_document, this, &document));
 
     for (auto& t : threads)
         t.join();
@@ -57,6 +60,8 @@ void Corpus::tfidf_documents_seq() {
 void Corpus::emplace_tfidf_document(Document * document) {
     for (const auto& [word, freq] : document->term_frequency)
         document->tf_idf[word] = freq * idf_corpus(num_doc_term(word));
+
+    // cout << "Document ID: " << document->document_id << " finished." << endl;
 }
 
 int Corpus::get_num_unique_terms() {

@@ -9,6 +9,7 @@
 #include "preprocess.h"
 #include "file_operations.h"
 #include "categories.h"
+
 using namespace std;
 
 int main(int argc, char * argv[]) {
@@ -21,30 +22,46 @@ int main(int argc, char * argv[]) {
     Corpus corpus;
     read_csv_to_corpus(ref(corpus), argv[1]);
 
-    vectorize_corpus_sequential(&corpus);
-    cout << "Done vectorizing" << endl;
-
+    // vectorize corpus of documents
     auto start = chrono::high_resolution_clock::now();
-    corpus.tfidf_documents_seq();
+    try {
+        vectorize_corpus_sequential(&corpus);
+    } catch (exception e) {
+        cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
+        exit(1);
+    }
     auto end = chrono::high_resolution_clock::now();
-    chrono::duration<double> elapsed_time = end - start;
 
-    cout << "Done creating tfidf, time: " << elapsed_time.count() << endl;
+    print_duration_code(start, end, vectorization_);
 
+
+    // calculate tfidf for every text in corpus
     start = chrono::high_resolution_clock::now();
-    vector<Category> cat_vect;
-    for (int i = 0; i < 5; i++) {
-        get_single_cat_seq(&corpus, ref(cat_vect), i);
+    try {
+        corpus.tfidf_documents_seq();
+    } catch (exception e) {
+        cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
+        exit(1);
     }
     end = chrono::high_resolution_clock::now();
 
-    elapsed_time = end - start;
+    print_duration_code(start, end, tfidf_);
 
-    cout << "Done creating categories, time: " << elapsed_time.count() << endl;
+    
+    // get most important terms of category
+    start = chrono::high_resolution_clock::now();
+    vector<Category> cat_vect;
+    try {
+        for (int i = 0; i < 5; i++) 
+            get_single_cat_seq(&corpus, ref(cat_vect), i);
+        
+    } catch (exception e) {
+        cerr << "Error in get_single_cat_seq: " << e.what() << endl;
+        exit(1);
+    }
+    end = chrono::high_resolution_clock::now();
 
-
-    // for (auto& cat : cat_vect)
-    //     cat.print_info();
+    print_duration_code(start, end, categories_);
 
     return 0;
 }

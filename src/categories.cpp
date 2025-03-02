@@ -106,7 +106,7 @@ static vector<Category> init_categories() {
     return categories_list;
 }
 
-extern void get_single_cat(Corpus * corpus, vector<Category>& cats, int catint) {
+extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, int catint) {
     Category cat(catint);
     cat.get_important_terms(corpus);
     

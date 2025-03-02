@@ -4,16 +4,19 @@ CXXFLAGS = -Wall -Wextra -std=c++17 -pthread \
 		   -I/opt/homebrew/include -I/opt/homebrew/include/ \
 		   -Iinclude -Iinclude/OleanderStemmingLibrary/src \
 		   -Wdeprecated-declarations -Wno-unused-function \
-		   -Wno-unused-variable -Wno-unused-parameter
+		   -Wno-unused-variable -Wno-unused-parameter \
+		   -Wno-catch-value
+
 
 # Project directories
 SRC_DIR = src
 OBJ_DIR = obj
 BUILD_DIR = build
-OUTPUT_DIR = test_output
+OUTPUT_DIR = test-output
 
 # Create necessary directories
-$(shell mkdir -p $(OBJ_DIR) $(BUILD_DIR) $(OUTPUT_DIR) $(OUTPUT_DIR)/logs $(OUTPUT_DIR)/results)
+$(shell mkdir -p $(BUILD_DIR)/$(OBJ_DIR) $(BUILD_DIR))
+# $(shell mkdir -p $(BUILD_DIR)/$(OBJ_DIR) $(BUILD_DIR) $(OUTPUT_DIR) $(OUTPUT_DIR)/logs $(OUTPUT_DIR)/results)
 
 # Common source files
 COMMON_SOURCES = $(SRC_DIR)/count_vectorization.cpp \
@@ -22,53 +25,77 @@ COMMON_SOURCES = $(SRC_DIR)/count_vectorization.cpp \
                  $(SRC_DIR)/preprocess.cpp \
                  $(SRC_DIR)/file_operations.cpp 
 
-COMMON_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(COMMON_SOURCES))			 
+COMMON_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/$(OBJ_DIR)/%.o, $(COMMON_SOURCES))			 
 
 # Main test source (existing)
-MAINTEST_SOURCES = $(SRC_DIR)/main-test-parallel.cpp $(COMMON_SOURCES)
-MAINTEST_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(MAINTEST_SOURCES))
-MAINTEST_EXEC = $(BUILD_DIR)/main-test-parallel
+PARALLEL_SOURCES = $(SRC_DIR)/main-test-parallel.cpp $(COMMON_SOURCES)
+PARALLEL_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_SOURCES))
+PARALLEL_EXEC = $(BUILD_DIR)/main-test-parallel
 
 # Sequential test source (new)
-MAINTESTSEQ_SOURCES = $(SRC_DIR)/main-test-sequential.cpp $(COMMON_SOURCES)
-MAINTESTSEQ_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(MAINTESTSEQ_SOURCES))
-MAINTESTSEQ_EXEC = $(BUILD_DIR)/main-test-sequential
+SEQUENTIAL_SOURCES = $(SRC_DIR)/main-test-sequential.cpp $(COMMON_SOURCES)
+SEQUENTIAL_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/$(OBJ_DIR)/%.o, $(SEQUENTIAL_SOURCES))
+SEQUENTIAL_EXEC = $(BUILD_DIR)/main-test-sequential
 
 # Build main-test and main-test-seq executables
-all: $(MAINTEST_EXEC) $(MAINTESTSEQ_EXEC)
+all: $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC) 
 
-$(MAINTEST_EXEC): $(MAINTEST_OBJECTS)
+$(PARALLEL_EXEC): $(PARALLEL_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-$(MAINTESTSEQ_EXEC): $(MAINTESTSEQ_OBJECTS)
+$(SEQUENTIAL_EXEC): $(SEQUENTIAL_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 # Compile object files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(OBJ_DIR)
+$(BUILD_DIR)/$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(BUILD_DIR)/$(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Run tests and store results in the test_output folder for both tests
-test: $(MAINTEST_EXEC) $(MAINTESTSEQ_EXEC)
-	@echo "Running main-test with input data/bbc-text.csv..."
-	@./$(MAINTEST_EXEC) data/bbc-text.csv > $(OUTPUT_DIR)/results/main_test_results.txt 2> $(OUTPUT_DIR)/logs/main_test_errors.log
-	@echo "main-test results saved in $(OUTPUT_DIR)/results/main_test_results.txt"
-	@echo "main-test error logs saved in $(OUTPUT_DIR)/logs/main_test_errors.log"
+# Run tests and store results in the test-output folder for both tests
+test: $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC)
+	@echo "Running main-test-parallel with input data/bbc-text.csv..."
+	@./$(PARALLEL_EXEC) data/bbc-text.csv > $(OUTPUT_DIR)/comparison/results/main-test-parallel-results.txt 2> $(OUTPUT_DIR)/comparison/logs/main-test-parallel-errors.log
+	@echo "main-test-parallel results saved in $(OUTPUT_DIR)/comparison/results/main-test-parallel-results.txt"
+	@echo "main-test-parallel error logs saved in $(OUTPUT_DIR)/comparison/logs/main-test-parallel-results.log"
 
-	@echo "Running main-test-seq with input data/bbc-text.csv..."
-	@./$(MAINTESTSEQ_EXEC) data/bbc-text.csv > $(OUTPUT_DIR)/results/main_test_seq_results.txt 2> $(OUTPUT_DIR)/logs/main_test_seq_errors.log
-	@echo "main-test-seq results saved in $(OUTPUT_DIR)/results/main_test_seq_results.txt"
-	@echo "main-test-seq error logs saved in $(OUTPUT_DIR)/logs/main_test_seq_errors.log"
+	@echo "Running main-test-sequential with input data/bbc-text.csv..."
+	@./$(SEQUENTIAL_EXEC) data/bbc-text.csv > $(OUTPUT_DIR)/comparison/results/main-test-sequential-results.txt 2> $(OUTPUT_DIR)/comparison/logs/main-test-sequential-errors.log
+	@echo "main-test-sequential results saved in $(OUTPUT_DIR)/comparison/results/main-test-sequential-results.txt"
+	@echo "main-test-sequential error logs saved in $(OUTPUT_DIR)/comparison/logs/main-test-sequential-errors.log"
+
+# Run parallel test only (main-test-parallel.cpp)
+par-test: $(PARALLEL_EXEC)
+	@echo "Running ONLY main-test-parallel with input data/bbc-text.csv..."
+	@./$(PARALLEL_EXEC) data/bbc-text.csv > $(OUTPUT_DIR)/solo/results/main-test-parallel-results-singleton.txt 2> $(OUTPUT_DIR)/solo/logs/main-test-parallel-errors-singleton.log
+	@echo "main-test-parallel results saved in $(OUTPUT_DIR)/solo/results/main-test-parallel-results-singleton.txt"
+	@echo "main-test-parallel error logs saved in $(OUTPUT_DIR)/solo/logs/main-test-parallel-errors-singleton.log"
+
+# Run parallel test only (main-test-parallel.cpp)
+seq-test: $(SEQUENTIAL_EXEC)
+	@echo "Running ONLY main-test-sequential  with input data/bbc-text.csv..."
+	@./$(SEQUENTIAL_EXEC) data/bbc-text.csv > $(OUTPUT_DIR)/solo/results/main-test-sequential-results-singleton.txt 2> $(OUTPUT_DIR)/solo/logs/main-test-sequential-errors-singleton.log
+	@echo "main-test-sequential results saved in $(OUTPUT_DIR)/solo/results/main-test-sequential-results-singleton.txt"
+	@echo "main-test-sequential error logs saved in $(OUTPUT_DIR)/solo/logs/main-test-sequential-errors-singleton.log"
 
 # Clean build and test output
 clean:
-	rm -rf $(MAINTEST_EXEC) $(MAINTESTSEQ_EXEC) $(OBJ_DIR) $(BUILD_DIR)
+	rm -rf $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC) $(BUILD_DIR)/$(OBJ_DIR) $(BUILD_DIR)
+
+
+# Files for zip to ignore
+IGNORE_FILES= ./include/mlpack/* ./include/OleanderStemmingLibrary/* ./build/* ./data/* ./test/* ./test_output/* README.md .vscode/*
 
 # Zip targets
 zip:
-	zip -r kelton_project_cop4520.zip . -x "*.git*" "$(OBJ_DIR)/*" "*.DS_Store" "kelton_project_cop4520.zip"
+	zip -r kelton_project_cop4520.zip . -x "*.git*" "$(BUILD_DIR)/$(OBJ_DIR)/*" "*.DS_Store" "kelton_project_cop4520.zip"
 
-zip_code:
-	zip -r kelton_project_code.zip . -x "*.git*" "$(OBJ_DIR)/*" "*.DS_Store" "build/*" "data/*" ".vscode/*" "include/mlpack/*" "include/OleanderStemmingLibrary/*" "kelton_project_code.zip"
+zip-code:
+	zip -r kelton_project_code.zip . -x "*.git*" "$(BUILD_DIR)/$(OBJ_DIR)/*" "*.DS_Store" "build/*" "data/*" ".vscode/*" "include/mlpack/*" "include/OleanderStemmingLibrary/*" "kelton_project_code.zip" "test_output/*" "test/*" "README.md"
 
-.PHONY: all test clean zip
+
+
+
+# zip-code-test:
+# 	zip -r code-test.zip . -x $(foreach exclude, $(IGNORE_FILES), ./$(exclude))
+
+.PHONY: all test clean zip zip_code 
