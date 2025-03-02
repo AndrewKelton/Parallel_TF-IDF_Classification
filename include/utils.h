@@ -66,7 +66,7 @@ inline void print_elapsed_time_ms(_time_point_ start, _time_point_ end) {
 
 // print elapsed time of a named code segment
 inline void print_duration_code(_time_point_ start, _time_point_ end, section_type_ type) {
-    cout << get_section_name(type) << " Time: ";
+    cout << get_section_name(type) << ": ";
     print_elapsed_time_ms(start, end);
 }
 
