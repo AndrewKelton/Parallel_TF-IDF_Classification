@@ -13,6 +13,16 @@
  * space between 'category,text' and/or 'category.x,text.x'
  */
 
+
+/* 
+ * **** NOTE TO SELF **** * 
+ * 
+ * USE AN ATOMIC COUNTER TO COUNT 
+ * HOW MANY THREADS ARE USED IN 
+ * EACH SECTION !!!!
+ * 
+ */
+
 #include <thread>
 #include <iostream>
 #include <chrono>

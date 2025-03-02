@@ -8,9 +8,10 @@ SOLO_TEST_DIR="./solo"
 RES_TEST_DIR="./results"
 LOG_TEST_DIR="./logs"
 PROCESSED_DATA_CSV_DIR="./processed-data-results"
+GRAPHS_DIR="./graphs"
 
 # Correct array definition (no commas)
-ALL_TEST_DIRS=("$BASE_TEST_DIR" "$COMP_TEST_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$SOLO_TEST_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$PROCESSED_DATA_CSV_DIR")
+ALL_TEST_DIRS=("$BASE_TEST_DIR" "$COMP_TEST_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$SOLO_TEST_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$PROCESSED_DATA_CSV_DIR" "$GRAPHS_DIR")
 
 echo "Setting up testing directories..."
 
@@ -27,8 +28,6 @@ for DIR in "${ALL_TEST_DIRS[@]}"; do
         mkdir -p "$DIR"
     elif [ ! -d "$DIR" ] && [ "$DIR" == "$PROCESSED_DATA_CSV_DIR" ]; then 
         echo "Creating directory: $DIR"
-
-        cd "$TEST_DIR"
         mkdir -p "$DIR"
     fi 
 
