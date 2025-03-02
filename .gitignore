@@ -10,5 +10,7 @@ build/
 *.o
 test[1-9]
 
-# unused files
-sport.txt
+# not updating until necessary
+README.md
+
+CMakeLists.txt
