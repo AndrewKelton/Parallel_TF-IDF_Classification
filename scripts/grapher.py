@@ -28,27 +28,34 @@ def main():
     df_par = pd.read_csv(RES_PAR)
     df_seq = pd.read_csv(RES_SEQ)
 
-    df_merge = pd.merge(df_seq, df_par, on="Section", suffixes=('_seq', '_par'))
-    df_merge['Time_rat'] = df_merge['Time_seq'] / df_merge['Time_par']
+    # Convert "Time (ms)" column to numeric (strip spaces, handle errors)
+    df_par["Time (ms)"] = pd.to_numeric(df_par["Time (ms)"], errors="coerce")
+    df_seq["Time (ms)"] = pd.to_numeric(df_seq["Time (ms)"], errors="coerce")
 
-    df_merge['Section'] = df_merge['Section'].replace({
+    # compute average for each section
+    df_par = df_par.groupby("Section", as_index=False)["Time (ms)"].mean().rename(columns={"Time (ms)": "Time_par"})
+    df_seq = df_seq.groupby("Section", as_index=False)["Time (ms)"].mean().rename(columns={"Time (ms)": "Time_seq"})
+
+    df_merge = pd.merge(df_seq, df_par, on="Section")
+    df_merge["Time_rat"] = df_merge["Time_seq"] / df_merge["Time_par"]
+
+    df_merge["Section"] = df_merge["Section"].replace({
         "Vectorization": "Vectorization Ratio",
         "TF-IDF": "TF-IDF Ratio",
         "Categories": "Categories Ratio"
     })
 
-    # Plot the time differences
+    # plot
     plt.figure(figsize=(10, 6))
-    plt.bar(df_merge['Section'], df_merge['Time_rat'], color='skyblue')
-    plt.xlabel('Sections')
-    plt.ylabel('Time Ratio (Sequential / Parallel)')
-    plt.title('Ratio of Sequential to Parallel Processing Time of TF-IDF Vectorization Over 100 Iterations')
+    plt.bar(df_merge["Section"], df_merge["Time_rat"], color="skyblue")
+    plt.xlabel("Sections")
+    plt.ylabel("Time Ratio (Sequential / Parallel)")
+    plt.title("Ratio of Sequential to Parallel Processing Time of TF-IDF Vectorization Over 100 Iterations")
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
 
-    # Show the plot
-    plt.savefig('test-output/graphs/time_differences_plot.pdf', format='pdf')
-
+    # save
+    plt.savefig("test-output/graphs/time_differences_plot.pdf", format="pdf")
     plt.close()
 
 

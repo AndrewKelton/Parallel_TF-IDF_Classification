@@ -3,7 +3,9 @@
 NUM_ITERATIONS=100
 
 for ((i=1; i<=$NUM_ITERATIONS; i++)); do
-    make 
+    make par-test
 done
 
-python3 scripts/grapher.py
+for ((i=1; i<=$NUM_ITERATIONS; i++)); do
+    make seq-test
+done

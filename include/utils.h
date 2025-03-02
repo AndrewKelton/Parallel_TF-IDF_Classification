@@ -33,8 +33,7 @@ static const string SECTION_NAME[3] = {
     "Vectorization", "TF-IDF", "Categories"
 };
 
-// extern const string utils_error_msg(const string msg, int err);
-
+// throw special runtime error message
 template<typename... Args>
 inline void throw_runtime_error(Args... args) {
     ostringstream err_response;

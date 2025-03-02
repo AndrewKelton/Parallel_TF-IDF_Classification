@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Cleans up the project directory removing all generated output, tests, build directories, and dependencies
+
 echo "cleanup.sh will remove ALL testing outputs/directories, .zip files, build directories, and installed dependencies"
 
 while true 
