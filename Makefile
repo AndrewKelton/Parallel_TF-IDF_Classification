@@ -7,7 +7,7 @@ CXXFLAGS = -Wall -Wextra -std=c++17 -pthread \
 		   -Iinclude -Iinclude/OleanderStemmingLibrary/src \
 		   -Wdeprecated-declarations -Wno-unused-function \
 		   -Wno-unused-variable -Wno-unused-parameter \
-		   -Wno-catch-value
+		   -Wno-catch-value -Wno-unused-value
 
 
 # Project directories #
@@ -35,15 +35,20 @@ COMMON_SOURCES = $(SRC_DIR)/count_vectorization.cpp \
 COMMON_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/$(OBJ_DIR)/%.o, $(COMMON_SOURCES))			 
 
 
-# Main test source (existing)
+# Parallel test source
 PARALLEL_SOURCES = $(SRC_DIR)/main-test-parallel.cpp $(COMMON_SOURCES)
 PARALLEL_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_SOURCES))
 PARALLEL_EXEC = $(BUILD_DIR)/main-test-parallel
 
-# Sequential test source (new)
+# Sequential test source 
 SEQUENTIAL_SOURCES = $(SRC_DIR)/main-test-sequential.cpp $(COMMON_SOURCES)
 SEQUENTIAL_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/$(OBJ_DIR)/%.o, $(SEQUENTIAL_SOURCES))
 SEQUENTIAL_EXEC = $(BUILD_DIR)/main-test-sequential
+
+# Txt to csv source (just used to convert txt to csv seperately for testing)
+TO_CSV_SOURCES = $(SRC_DIR)/main-txt-to-csv.cpp $(COMMON_SOURCES)
+TO_CSV_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/$(OBJ_DIR)/%.o, $(TO_CSV_SOURCES))
+TO_CSV_EXEC = $(BUILD_DIR)/main-txt-to-csv
 
 
 # Build main-test and main-test-seq executables
@@ -54,6 +59,11 @@ $(PARALLEL_EXEC): $(PARALLEL_OBJECTS)
 
 $(SEQUENTIAL_EXEC): $(SEQUENTIAL_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
+
+# txt to csv executable tester
+$(TO_CSV_EXEC): $(TO_CSV_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
 
 # Compile object files
 $(BUILD_DIR)/$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -88,6 +98,10 @@ seq-test: $(SEQUENTIAL_EXEC)
 	@echo "main-test-sequential results saved in $(OUTPUT_DIR)/$(SOLO_DIR)/results/main-test-sequential-results-singleton.txt"
 	@echo "main-test-sequential error logs saved in $(OUTPUT_DIR)/$(SOLO_DIR)/logs/main-test-sequential-errors-singleton.log"
 
+# Run main-txt-to-csv
+txt-to-csv-test: $(TO_CSV_EXEC)
+	@echo "Converting txt results to csv..."
+	@./$(main-txt-to-csv)
 
 
 # Files for zip to ignore

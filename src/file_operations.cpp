@@ -7,8 +7,8 @@ static pair<string, string> split_string(const string& str, const char& splitter
     if (comma_pos == string::npos)
         return {str, ""};
 
-    if (str.substr(comma_pos, comma_pos + 1).c_str()[0] == ' ')
-        comma_pos++;
+    // if (str.substr(comma_pos, comma_pos + 1).c_str()[0] == ' ')
+    //     comma_pos++;
         
 
     return {str.substr(0, comma_pos), str.substr(comma_pos + 1)};
@@ -80,10 +80,13 @@ static void write_sections_csv(vector<pair<string, string>> pln_txt, const strin
     if (!file) {
         throw_runtime_error("file error in write_sections_csv");
     } else {
-        file << "Section,Time\n";
+        file << "Section,Time (ms)\n";
 
-        for (const auto& sec_time : pln_txt) 
+        for (const auto& sec_time : pln_txt) {
+            string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms"));
+
             file << sec_time.first << "," << sec_time.second << "\n";
+        }
     }
 }
 
