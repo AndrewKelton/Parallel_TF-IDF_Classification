@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "cleanup.sh will remove ALL testing outputs, .zip files, and build directories"
+echo "cleanup.sh will remove ALL testing outputs/directories, .zip files, and build directories"
 # echo "Are you sure you want to continue? (y/n)"
 # read continue
 
