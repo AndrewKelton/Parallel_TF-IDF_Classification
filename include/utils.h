@@ -1,7 +1,15 @@
+/* utils.h 
+ *
+ * A header-only utility library containing data types and
+ * functions used across all source code in this project.
+ */
+
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <unordered_map>
+#include <map>
+#include <set>
+#include <fstream>
 #include <string>
 #include <iostream>
 #include <cstdarg>
@@ -14,25 +22,42 @@ using namespace std;
 
 #define MAX_SECTIONS 3
 
-const unsigned NUMBER_OF_THREADS_MAX{thread::hardware_concurrency()};
+inline const unsigned NUMBER_OF_THREADS_MAX{thread::hardware_concurrency()};
 
-enum ERR_CODES {
-    BAD_CAST = 4,
-    BAD_TEXT = 8,
-    FILE_NOT_FOUND = 100
+enum class_type_ {
+    _corpus_, _document_, _category_
 };
 
-enum FLAG_TYPES {
-    review_flag, article_flag, 
-    print_flag, timer_flag
+/* -- Category Utilities -- */
+enum text_cat_types_ {
+    sport_t_, business_t_,
+    politics_t_, tech_t_,
+    entertainment_t_, invalid_t_
 };
+
+const map<string, text_cat_types_> categories_text = {
+    {"sport", sport_t_},
+    {"business", business_t_},
+    {"politics", politics_t_},
+    {"tech", tech_t_},
+    {"entertainment", entertainment_t_}
+};
+
+const map<text_cat_types_, string> text_categories = {
+    {sport_t_, "sport"},
+    {business_t_, "business"},
+    {politics_t_, "politics"},
+    {tech_t_, "tech"},
+    {entertainment_t_, "entertainment"},
+    {invalid_t_, "invalid"}
+};
+/* -- Category Utilities -- */
 
 enum section_type_ {
     vectorization_, tfidf_, categories_
 };
 
-
-static const string SECTION_NAME[3] = {
+inline static const string SECTION_NAME[3] = {
     "Vectorization", "TF-IDF", "Categories"
 };
 
@@ -70,6 +95,27 @@ inline void print_elapsed_time_ms(_time_point_ start, _time_point_ end) {
 inline void print_duration_code(_time_point_ start, _time_point_ end, section_type_ type) {
     cout << get_section_name(type) << ": ";
     print_elapsed_time_ms(start, end);
+}
+
+// convert integer to text_cat_types
+inline text_cat_types_ conv_cat_type(int i) {
+    if (i > 5)
+        return invalid_t_;
+    return static_cast<text_cat_types_>(i);
+}
+
+// convert text_cat_types_ to string
+inline string conv_cat_type(text_cat_types_ type_) {
+    try {
+        return text_categories.at(type_);
+    } catch (const out_of_range& e) {
+        return text_categories.at(invalid_t_);
+    }
+}
+
+// string to category type
+inline text_cat_types_ conv_cat_type(string str) {
+    return categories_text.at(str);
 }
 
 #endif

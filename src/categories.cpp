@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <exception>
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 
@@ -16,7 +17,7 @@ mutex mtx; // global mtx for emplacing Category to thread
 // return sorted vector of tfidf terms
 vector<pair<string, double>> Category::sort_unordered_umap(unordered_map<string, double> terms) {
     if (terms.empty())
-        throw_runtime_error("no terms or terms are empty in ", get_category(this->category_type));
+        throw_runtime_error("no terms or terms are empty in ", conv_cat_type(this->category_type));
 
     vector<pair<string, double>> vectored_umap(terms.begin(), terms.end());
 
@@ -31,10 +32,10 @@ vector<pair<string, double>> Category::sort_unordered_umap(unordered_map<string,
 pair<string, double> Category::search_nth_important_term(vector<vector<pair<string, double>>> all_tfidf_terms, vector<pair<string, double>> used) {
 
     if (all_tfidf_terms.empty()){
-        throw_runtime_error("empty tfidf in ", get_category(this->category_type));
+        throw_runtime_error("empty tfidf in ", conv_cat_type(this->category_type));
     }
     if (all_tfidf_terms[0].empty()) {
-        throw_runtime_error("empty tfidf in ", get_category(this->category_type));
+        throw_runtime_error("empty tfidf in ", conv_cat_type(this->category_type));
     }
     
     pair<string, double> current_high = all_tfidf_terms[0][0];
@@ -90,15 +91,21 @@ void Category::get_important_terms(Corpus * corpus) {
     }
 }
 
-void Category::print_info() {
-    cout << "category_type: " << category_type << endl;
-    cout << get_category(this->category_type) << endl;
-    
-    for (auto& term : most_important_terms) {
-        cout <<term.first << ": " <<  term.second << endl;
-    }
-    cout << endl;
-}
+// void Category::print_all_info() {
+//     ofstream file{"test-output/lengthy/category-info.txt"};
+// 
+//     if (!file) {
+//         throw runtime_error("File Error in print_all_info");
+//         return;
+//     }
+// 
+//     file << "Category: " << conv_cat_type(category_type) << "\n";
+//     
+//     for (auto& term : most_important_terms) {
+//         file <<term.first << ": " <<  term.second << "\n";
+//     }
+//     // cout << endl;
+// }
 
 // initialize categories vector
 static vector<Category> init_categories() {
@@ -109,17 +116,17 @@ static vector<Category> init_categories() {
     
     return categories_list;
 }
+// 
+// extern text_cat_types_ conv_cat_type(string category) {
+//     return categories_text.find(category)->second;
+// }
 
-extern TEXT_CATEGORY_TYPES get_category(string category) {
-    return categories_text.find(category)->second;
-}
-
-extern string get_category(int category) {
-    return text_categories.find(static_cast<TEXT_CATEGORY_TYPES>(category))->second;
-}
+// extern string conv_cat_type(text_cat_types_ category) {
+//     return text_categories.find(category)->second;
+// }
 
 // parallel
-extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, int catint) {
+extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, text_cat_types_ catint) {
     Category cat(catint);
     cat.get_important_terms(corpus);
     
@@ -130,7 +137,7 @@ extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, int cati
 }
 
 // sequential
-extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, int catint) {
+extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, text_cat_types_ catint) {
     Category cat(catint);
     cat.get_important_terms(corpus);
     cats.emplace_back(std::move(cat));
@@ -143,7 +150,7 @@ extern vector<Category> get_all_category_important_terms(Corpus * corpus) {
     vector<thread> category_threads;
 
     for (int i = 0; i < MAX_CATEGORIES; i++) {
-        cout << "getting important categories for " << get_category(i) << endl;
+        cout << "getting important categories for " << conv_cat_type(conv_cat_type(i)) << endl;
         category_threads.emplace_back([&] {
             categories_list[i].get_important_terms(corpus);
         });

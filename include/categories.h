@@ -1,12 +1,12 @@
 #ifndef CATEGORIES_H
 #define CATEGORIES_H
 
-#include <map>
-#include <thread>
 #include <vector>
 #include <unordered_map>
+#include <fstream>
 
 #include "utils.h"
+#include "Printable.h"
 
 using namespace std;
 
@@ -14,38 +14,13 @@ using namespace std;
 
 class Corpus; // forward declaration
 
-
-// enum of text classifcation categories
-enum TEXT_CATEGORY_TYPES {
-    sport_t, business_t,
-    politics_t, tech_t,
-    entertainment_t
-};
-
-// mapping of enum type to classifcation type
-const map<string, TEXT_CATEGORY_TYPES> categories_text = {
-    {"sport", sport_t},
-    {"business", business_t},
-    {"politics", politics_t},
-    {"tech", tech_t},
-    {"entertainment", entertainment_t}
-};
-
-const map<TEXT_CATEGORY_TYPES, string> text_categories = {
-    {sport_t, "sport"},
-    {business_t, "business"},
-    {politics_t, "politics"},
-    {tech_t, "tech"},
-    {entertainment_t, "entertainment"}
-};
-
-
 // Category class for determing category of document
-class Category {
+class Category : public Printable {
 
     private:
 
-        int category_type;                                 // category type (TEXT_CATEGORY_TYPES)
+        text_cat_types_ category_type;                     // category type (text_cat_types_)
+        int number_of_docs;                                // number of documents in category
         vector<pair<string, double>> most_important_terms; // 5 most important terms in category
 
         /* sort tf-idf pairs from high tf-idf to 
@@ -59,7 +34,7 @@ class Category {
     public:
         
         // regular constructor
-        Category(int category_type) : category_type{category_type} {}
+        Category(int category_type) : category_type{static_cast<text_cat_types_>(category_type)} {}
 
         /* constructors for vector support */
         Category(const Category&) = default;
@@ -81,28 +56,36 @@ class Category {
         // get important terms for category and save to this->most_important_terms
         void get_important_terms(Corpus * corpus);
 
-        // print important category info
-        void print_info();
+        /* -- Print Function -- */
+        void print_all_info() const override {
+            ofstream file{"test-output/lengthy/category-info.txt"};
+
+            if (!file) {
+                throw runtime_error("File Error in print_all_info");
+                return;
+            }
+
+            file << "Category: " << conv_cat_type(category_type) << "\n";
+            
+            for (auto& term : most_important_terms) {
+                file << term.first << ": " << term.second << "\n";
+            }
+            file.close();
+        }
 };
-
-// return enum representation of string category
-extern TEXT_CATEGORY_TYPES get_category(string category);
-
-// return string representation of enum category
-extern string get_category(int category);
 
 /* Get important terms for a Category
  * utilizing 5 total threads (parallel approach). 
  * One thread per Category type. Creates a Category
  * object based on the @param catint
  */
-extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, int catint);
+extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, text_cat_types_ catint);
 
 /* Get important terms for a Category
  * u. one per 
  * Category type.
  */
-extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, int catint);
+extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, text_cat_types_ catint);
 
 
 // deprecated function

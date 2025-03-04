@@ -5,6 +5,7 @@
 # Directories for output testing
 BUILD_TEST_DIR="./build"
 BASE_TEST_DIR="./test-output"
+LENGTHY_TEST_DIR="./lengthy"
 COMP_TEST_DIR="./comparison"
 SOLO_TEST_DIR="./solo"
 RES_TEST_DIR="./results"
@@ -70,7 +71,7 @@ fi
 echo ""
 
 
-ALL_TEST_DIRS=("$BASE_TEST_DIR" "$COMP_TEST_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$SOLO_TEST_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$PROCESSED_DATA_CSV_DIR" "$GRAPHS_DIR")
+ALL_TEST_DIRS=("$BASE_TEST_DIR" "$LENGTHY_TEST_DIR" "$COMP_TEST_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$SOLO_TEST_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$PROCESSED_DATA_CSV_DIR" "$GRAPHS_DIR")
 
 echo -e "Setting up testing directories...\n" 
 
@@ -91,7 +92,7 @@ for DIR in "${ALL_TEST_DIRS[@]}"; do
 
     if [ "$DIR" == "$LOG_TEST_DIR" ]; then
         cd ".."  
-    elif [ "$DIR" != "$RES_TEST_DIR" ] && [ "$DIR" != "$PROCESSED_DATA_CSV_DIR" ]; then
+    elif [ "$DIR" != "$RES_TEST_DIR" ] && [ "$DIR" != "$PROCESSED_DATA_CSV_DIR" ] && [ "$DIR" != "$LENGTHY_TEST_DIR" ]; then
         cd "$DIR" 
     fi
 done

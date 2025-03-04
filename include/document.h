@@ -5,8 +5,10 @@
 #include <cmath>
 #include <cstdarg>
 #include <sstream>
+#include <fstream>
 #include "categories.h"
 #include "utils.h"
+#include "Printable.h"
 
 using namespace std;
 
@@ -14,7 +16,7 @@ class Category; // forward declaration
 
 
 // class for single document
-class Document {
+class Document : public Printable {
 
     public:
 
@@ -23,8 +25,8 @@ class Document {
         unordered_map<string, int> term_count;        // count of terms in document
         unordered_map<string, double> term_frequency; // frequency of terms in document
         unordered_map<string, double> tf_idf;         // tfidf of all terms in document
-        int total_terms = 0;                          // total number of terms in document
-        int category;                                 // classification category ** result **
+        int total_terms{0};                           // total number of terms in document
+        text_cat_types_ category;                     // classification category ** result **
 
         // returns true if term exists in document
         bool is_term(string str);
@@ -34,14 +36,39 @@ class Document {
          */
         void calculate_term_frequency_doc();
 
+        /* -- Print Function -- */
+        void print_all_info() const override {
+            ofstream file{"test-output/lengthy/document-info.txt"};
+
+            if (!file) {
+                throw runtime_error("File Error in print_all_info");
+                return;
+            }
+
+            file << "Info for Document id: " << document_id << "\n";
+            file << print_category();
+            file << print_number_terms();
+            file << print_tf_idf();
+            file << print_number_terms();
+            
+            file.close();
+        }
+
     private:
 
         // return term frequency associated with a word in a doc
         double calculate_term_frequency(string term);
+
+        /* private helper functions for printing */
+        string print_text() const;
+        string print_number_terms() const;
+        string print_category() const;
+        string print_tf_idf() const;
+        string print_doc_term_count() const;
 };
 
 // class for entire corpus (collection of documents)
-class Corpus {
+class Corpus : public Printable {
 
     public:
 
@@ -69,20 +96,27 @@ class Corpus {
         // returns number of unique terms in Corpus
         int get_num_unique_terms();
 
-        // print output of private return funcs
-        template <typename... Args>
-        void test_print_private_funcs(Args... to_print);
+        /* -- Print Function -- */
+        void print_all_info() const override {
+            fstream file{"test-output/lengthy/corpus-info.txt"};
 
-        // print output of number of threads
-        void test_print_num_roto() {
-            unsigned num = this->get_number_of_docs_per_thread();
+            if (!file) {
+                throw runtime_error("File Error in print_all_info");
+                return;
+            }
 
-            cout << "Number of documents: " << num_of_docs.load() << endl;
-            cout << "Number of Documents per Thread: " << num << endl;
+            file << "Info for Corpus: \n";
+            file << print_number_documents();
+            file << print_number_threads_used();
+            file << print_number_documents_per_thread();
+            file << print_tfidf_entire();
+
+            file.close();
         }
 
     private: 
-        
+        unsigned num_doc_per_thread;
+
         // return # of documents with term
         int num_doc_term(string str);
 
@@ -96,6 +130,12 @@ class Corpus {
          * be computed in one thread.
          */
         unsigned get_number_of_docs_per_thread();
+
+        /* private helper functions for printing */
+        string print_number_threads_used() const;
+        string print_number_documents_per_thread() const;
+        string print_number_documents() const;
+        string print_tfidf_entire() const;
 };
 
 

@@ -46,7 +46,7 @@ static pair<string, string> split_string(const string& str, const char& splitter
 }
 
 // return a new Document object with inputted text and category
-static Document create_document(string text, TEXT_CATEGORY_TYPES category) {
+static Document create_document(string text, text_cat_types_ category) {
     Document new_document;
     new_document.text = text;
     new_document.category = category;
@@ -71,7 +71,7 @@ extern void read_csv_to_corpus(Corpus& corpus, const string& file_name) {
             continue;
 
         pair<string, string> split = split_string(line, ',');
-        TEXT_CATEGORY_TYPES category = get_category(split.first);
+        text_cat_types_ category = conv_cat_type(split.first);
         
         corpus.documents.push_back(create_document(split.second, category));
         i++;

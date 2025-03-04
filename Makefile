@@ -9,6 +9,8 @@ CXXFLAGS = -Wall -Wextra -std=c++17 -pthread \
 		   -Wno-unused-variable -Wno-unused-parameter \
 		   -Wno-catch-value -Wno-unused-value
 
+PROJECT_FLAGS = -DENABLE_LENGTHY -DENABLE_TERMS_INFO -DENABLE_CATS_INFO
+
 
 # Project directories #
 SRC_DIR = src
@@ -94,19 +96,19 @@ $(BUILD_DIR)/$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 # Comparison tester, run both main-test-parallel.cpp & main-test-sequential.cpp
 test: $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC)
 	@echo "Running main-test-parallel with input data/BBC-News-Training.csv..."
-	@./$(PARALLEL_EXEC) data/BBC-News-Training.csv "comparison" > $(OUTPUT_DIR)/$(COMP_DIR)/results/main-test-parallel-results.txt 2> $(OUTPUT_DIR)/$(COMP_DIR)/logs/main-test-parallel-errors.log
+	@./$(PARALLEL_EXEC) data/BBC-News-Training.csv comparison > $(OUTPUT_DIR)/$(COMP_DIR)/results/main-test-parallel-results.txt 2> $(OUTPUT_DIR)/$(COMP_DIR)/logs/main-test-parallel-errors.log
 	@echo "main-test-parallel results saved in $(OUTPUT_DIR)/$(COMP_DIR)/results/main-test-parallel-results.txt"
 	@echo "main-test-parallel error logs saved in $(OUTPUT_DIR)/$(COMP_DIR)/logs/main-test-parallel-results.log"
 
 	@echo "Running main-test-sequential with input data/BBC-News-Training.csv..."
-	@./$(SEQUENTIAL_EXEC) data/BBC-News-Training.csv "comparison" > $(OUTPUT_DIR)/$(COMP_DIR)/results/main-test-sequential-results.txt 2> $(OUTPUT_DIR)/$(COMP_DIR)/logs/main-test-sequential-errors.log
+	@./$(SEQUENTIAL_EXEC) data/BBC-News-Training.csv comparison > $(OUTPUT_DIR)/$(COMP_DIR)/results/main-test-sequential-results.txt 2> $(OUTPUT_DIR)/$(COMP_DIR)/logs/main-test-sequential-errors.log
 	@echo "main-test-sequential results saved in $(OUTPUT_DIR)/$(COMP_DIR)/results/main-test-sequential-results.txt"
 	@echo "main-test-sequential error logs saved in $(OUTPUT_DIR)/$(COMP_DIR)/logs/main-test-sequential-errors.log"
 
 # Run parallel test only (main-test-parallel.cpp)
 par-test: $(PARALLEL_EXEC)
 	@echo "Running ONLY main-test-parallel with input data/BBC-News-Training.csv..."
-	@./$(PARALLEL_EXEC) data/BBC-News-Training.csv "solo" > $(OUTPUT_DIR)/$(SOLO_DIR)/results/main-test-parallel-results-singleton.txt 2> $(OUTPUT_DIR)/$(SOLO_DIR)/logs/main-test-parallel-errors-singleton.log
+	@./$(PARALLEL_EXEC) data/BBC-News-Training.csv solo > $(OUTPUT_DIR)/$(SOLO_DIR)/results/main-test-parallel-results-singleton.txt 2> $(OUTPUT_DIR)/$(SOLO_DIR)/logs/main-test-parallel-errors-singleton.log
 	@echo "main-test-parallel results saved in $(OUTPUT_DIR)/$(SOLO_DIR)/results/main-test-parallel-results-singleton.txt"
 	@echo "main-test-parallel error logs saved in $(OUTPUT_DIR)/$(SOLO_DIR)/logs/main-test-parallel-errors-singleton.log"
 
@@ -120,7 +122,7 @@ seq-test: $(SEQUENTIAL_EXEC)
 # Run non-optimized parallel test only (main-test-parallel.cpp)
 non-opt-par-test: $(NON_OPT_PARALLEL_EXEC)
 	@echo "Running ONLY main-test-non-optimized-parallel with input data/BBC-News-Training.csv..."
-	@./$(NON_OPT_PARALLEL_EXEC) data/BBC-News-Training.csv "solo" > $(OUTPUT_DIR)/$(SOLO_DIR)/results/main-test-non-opt-parallel-results-singleton.txt 2> $(OUTPUT_DIR)/$(SOLO_DIR)/logs/main-test-non-opt-parallel-errors-singleton.log
+	@./$(NON_OPT_PARALLEL_EXEC) data/BBC-News-Training.csv solo > $(OUTPUT_DIR)/$(SOLO_DIR)/results/main-test-non-opt-parallel-results-singleton.txt 2> $(OUTPUT_DIR)/$(SOLO_DIR)/logs/main-test-non-opt-parallel-errors-singleton.log
 	@echo "main-test-non-opt-parallel results saved in $(OUTPUT_DIR)/$(SOLO_DIR)/results/main-test-non-opt-parallel-results-singleton.txt"
 	@echo "main-test-non-opt-parallel error logs saved in $(OUTPUT_DIR)/$(SOLO_DIR)/logs/main-test-non-opt-parallel-errors-singleton.log"
 
