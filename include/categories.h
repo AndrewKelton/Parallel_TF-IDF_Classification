@@ -5,17 +5,12 @@
 #include <thread>
 #include <vector>
 #include <unordered_map>
-#include <algorithm>
-#include <stdexcept>
-#include <sstream>
-#include <exception>
-// #include "utils.h"
-// #include "document.h"
+
+#include "utils.h"
 
 using namespace std;
 
 #define MAX_CATEGORIES 5
-
 
 class Corpus; // forward declaration
 
@@ -49,19 +44,24 @@ const map<TEXT_CATEGORY_TYPES, string> text_categories = {
 class Category {
 
     private:
-        int category_type;                                 // category type
+
+        int category_type;                                 // category type (TEXT_CATEGORY_TYPES)
         vector<pair<string, double>> most_important_terms; // 5 most important terms in category
 
+        /* sort tf-idf pairs from high tf-idf to 
+         * low tf-idf for local Category.
+         */
         vector<pair<string, double>> sort_unordered_umap(unordered_map<string, double> terms);
+
+        // return nth most important tf-idf term for local Category
         pair<string, double> search_nth_important_term(vector<vector<pair<string, double>>> all_tfidf_terms, vector<pair<string, double>> used);
 
     public:
         
         // regular constructor
         Category(int category_type) : category_type{category_type} {}
-        // Category(const Category&) = delete;  // Copy constructor deleted
-        // Category(Category&&) = default; 
-        /* constructors for vector */
+
+        /* constructors for vector support */
         Category(const Category&) = default;
         Category& operator=(const Category&) = delete;  
 
@@ -69,6 +69,7 @@ class Category {
             : category_type{other.category_type},
             most_important_terms{std::move(other.most_important_terms)} 
         {}
+
         Category& operator=(Category&& other) noexcept {
             if (this != &other) {
                 category_type = other.category_type;
@@ -76,23 +77,35 @@ class Category {
             }
             return *this;
         }
-
-
+    
+        // get important terms for category and save to this->most_important_terms
         void get_important_terms(Corpus * corpus);
 
+        // print important category info
         void print_info();
 };
 
-// extern Category categories[MAX_CATEGORIES];
-
-// extern void print_a_vectored(unordered_map<string, double> mapped);
-
-extern vector<Category> get_all_category_important_terms(/*vector<Category>& categories, */Corpus * corpus);
-
+// return enum representation of string category
 extern TEXT_CATEGORY_TYPES get_category(string category);
+
+// return string representation of enum category
 extern string get_category(int category);
 
+/* Get important terms for a Category
+ * utilizing 5 total threads (parallel approach). 
+ * One thread per Category type. Creates a Category
+ * object based on the @param catint
+ */
 extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, int catint);
+
+/* Get important terms for a Category
+ * u. one per 
+ * Category type.
+ */
 extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, int catint);
+
+
+// deprecated function
+extern vector<Category> get_all_category_important_terms(Corpus * corpus);
 
 #endif

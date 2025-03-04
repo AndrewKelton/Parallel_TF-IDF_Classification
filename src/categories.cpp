@@ -1,14 +1,20 @@
+/* categories.cpp
+ * source file for categories.h
+ */
+
 #include "categories.h"
 #include "document.h"
-#include "utils.h"
 #include <mutex>
-#include <thread>
+#include <algorithm>
+#include <exception>
+#include <sstream>
 
-mutex mtx;
+using namespace std;
+
+mutex mtx; // global mtx for emplacing Category to thread
 
 // return sorted vector of tfidf terms
 vector<pair<string, double>> Category::sort_unordered_umap(unordered_map<string, double> terms) {
-    // cout << "sort_unordered_umap" << endl;
     if (terms.empty())
         throw_runtime_error("no terms or terms are empty in ", get_category(this->category_type));
 
@@ -23,7 +29,6 @@ vector<pair<string, double>> Category::sort_unordered_umap(unordered_map<string,
 
 // return pair for nth important tfidf term in category
 pair<string, double> Category::search_nth_important_term(vector<vector<pair<string, double>>> all_tfidf_terms, vector<pair<string, double>> used) {
-    // cout << "search_nth_important_term" << endl;
 
     if (all_tfidf_terms.empty()){
         throw_runtime_error("empty tfidf in ", get_category(this->category_type));
@@ -50,14 +55,12 @@ pair<string, double> Category::search_nth_important_term(vector<vector<pair<stri
     return current_high;
 } 
 
-// get important terms for category
 void Category::get_important_terms(Corpus * corpus) {
 
-    // cout << "Getting important terms for " << get_category(this->category_type) << endl;
-
-    this->most_important_terms.reserve(5);
+    this->most_important_terms.reserve(5);                   // reserve 5 slots of memory
     vector<vector<pair<string, double>>> vectored_all_umaps; // vectorized sorted tfidf mapping
     
+    // sort all the terms for each Document in the Category
     for (auto& document : corpus->documents) {
         if (document.category != category_type)
             continue;
@@ -73,6 +76,7 @@ void Category::get_important_terms(Corpus * corpus) {
         } 
     }
 
+    // get the 5 most important terms 
     for (int i = 0; i < 5; i++) {
         try {
             most_important_terms.emplace_back(search_nth_important_term(vectored_all_umaps, most_important_terms));
@@ -106,6 +110,15 @@ static vector<Category> init_categories() {
     return categories_list;
 }
 
+extern TEXT_CATEGORY_TYPES get_category(string category) {
+    return categories_text.find(category)->second;
+}
+
+extern string get_category(int category) {
+    return text_categories.find(static_cast<TEXT_CATEGORY_TYPES>(category))->second;
+}
+
+// parallel
 extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, int catint) {
     Category cat(catint);
     cat.get_important_terms(corpus);
@@ -116,13 +129,15 @@ extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, int cati
     }
 }
 
+// sequential
 extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, int catint) {
     Category cat(catint);
     cat.get_important_terms(corpus);
     cats.emplace_back(std::move(cat));
 }
 
-// get important terms for each category simultaneously
+
+// deprecated function
 extern vector<Category> get_all_category_important_terms(Corpus * corpus) {
     vector<Category> categories_list = init_categories();
     vector<thread> category_threads;
@@ -139,47 +154,3 @@ extern vector<Category> get_all_category_important_terms(Corpus * corpus) {
 
     return categories_list;
 }
-
-extern TEXT_CATEGORY_TYPES get_category(string category) {
-    return categories_text.find(category)->second;
-}
-
-extern string get_category(int category) {
-    return text_categories.find(static_cast<TEXT_CATEGORY_TYPES>(category))->second;
-}
-
-
-// get important terms for each category simultaneously
-// extern void get_all_category_terms(Corpus * corpus, Categories * categories) {
-//     thread threads[MAX_CATEGORIES];
-// 
-//     for (int i = 0; i < MAX_CATEGORIES; i++) {
-//         threads[i] = thread(get_important_terms, ref(corpus), ref(categories->categories[i]), i);
-//     }
-// }
-
-
-
-// void Category::get_most_important_terms(Corpus corpus) {
-//     unordered_map<string, double> tfidf_category_corpus;
-// 
-//     for (auto& document : corpus.documents) {
-//         if (document.category != this->category)
-//             continue;
-// 
-//         for (auto& term_idf : document.tf_idf)
-//             tfidf_category_corpus.
-//         
-//     }
-// }
-
-
-/* TESTER */
-// extern void print_a_vectored(unordered_map<string, double> mapped) {
-//     vector<pair<string, double>> vec = sort_unordered_umap(mapped);
-// 
-//     for (const auto& pair : vec) {
-//         cout << pair.first << ": " << pair.second << endl;
-//     }
-// }
-/* TESTER */

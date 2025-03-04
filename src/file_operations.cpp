@@ -1,25 +1,39 @@
+/* file_operations.cpp
+ * source file for file_operations.h
+ */
+
 #include "file_operations.h"
+#include "categories.h"
+#include "utils.h"
+#include <fstream>
 
-static const string sl{"/"}; // slash
+using namespace std;
 
-// test directories
+
+/* --- Constants --- */
+
+static const string sl{"/"}; // general purpose slash
+
+/* constants for directory paths */
 static const string base_test_dir{"test-output"};
 static const string processed_csv_dir{base_test_dir + sl + "processed-data-results"};
 static const string comp_test_dir{base_test_dir + sl + "comparison"};
 static const string solo_test_dir{base_test_dir + sl + "solo"};
-static const string res_test_dir{/* can be either solo or comp*/ "results"};
+static const string res_test_dir{"results"};
 
-// plaintext results from Makefile in comparison
+/* constants for .txt files (results) paths */
 static const string res_par_txt{comp_test_dir + sl + res_test_dir + sl + "main-test-parallel-results.txt"};
 static const string res_seq_txt{comp_test_dir + sl + res_test_dir + sl + "main-test-sequential-results.txt"};
 
-//plaintext results from Makefile in solo
 static const string res_par_txt_singleton{solo_test_dir + sl + res_test_dir + sl + "main-test-parallel-results-singleton.txt"};
 static const string res_seq_txt_singleton{solo_test_dir + sl + res_test_dir + sl + "main-test-sequential-results-singleton.txt"};
 
-// data processed csv files 
+/* constants for processed csv files */
 static const string processed_par_csv{processed_csv_dir + sl + "parallel-processed.csv"};
 static const string processed_seq_csv{processed_csv_dir + sl + "sequential-processed.csv"};
+
+/* ----------------- */
+
 
 // return pair of first split from csv 'category, text'
 static pair<string, string> split_string(const string& str, const char& splitter) {
@@ -27,15 +41,11 @@ static pair<string, string> split_string(const string& str, const char& splitter
 
     if (comma_pos == string::npos)
         return {str, ""};
-
-    // if (str.substr(comma_pos, comma_pos + 1).c_str()[0] == ' ')
-    //     comma_pos++;
         
-
     return {str.substr(0, comma_pos), str.substr(comma_pos + 1)};
 }
 
-// return a new document
+// return a new Document object with inputted text and category
 static Document create_document(string text, TEXT_CATEGORY_TYPES category) {
     Document new_document;
     new_document.text = text;
@@ -44,7 +54,7 @@ static Document create_document(string text, TEXT_CATEGORY_TYPES category) {
     return new_document;
 }
 
-// read in csv to corpus/documents
+// main function to read in training data
 extern void read_csv_to_corpus(Corpus& corpus, const string& file_name) {
     ifstream file(file_name);
 
@@ -53,6 +63,7 @@ extern void read_csv_to_corpus(Corpus& corpus, const string& file_name) {
     }
 
     string line;
+    int i{0};
     while (getline(file, line)) {
         
         // ignore header
@@ -63,15 +74,13 @@ extern void read_csv_to_corpus(Corpus& corpus, const string& file_name) {
         TEXT_CATEGORY_TYPES category = get_category(split.first);
         
         corpus.documents.push_back(create_document(split.second, category));
+        i++;
     }   
+    
+    corpus.num_of_docs.store(i);
 
     file.close();
 }    
-
-/* IGNORE FOR NOW */
-extern void write_to_csv_tfidf_corpus(Corpus corpus, const string& file_name) {
-    
-}
 
 // return .txt file name for results to csv
 static string get_txt_name(unsigned int par_or_seq /* 0 = parallel, 1 = sequential*/, bool comp_or_solo) {
@@ -107,15 +116,13 @@ static void write_sections_csv(vector<pair<string, string>> pln_txt, const strin
             file << "Section,Time (ms)\n";
         
         for (const auto& sec_time : pln_txt) {
-            std::string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms"));
+            std::string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms")); // 'stem' the output
             file << sec_time.first << "," << no_ms_time << "\n";
         }
     }
 }
 
-/* Convert the *results.txt file to a csv for python preprocess graphing.
- * Will not check if 'file_name' is one of the preincluded files.
- */
+// main function to convert txt to csv
 extern void convert_results_txt_to_csv(unsigned int par_or_seq /* 0 = parallel, 1 = sequential*/, bool comp_or_solo) {
     string file_name;
 

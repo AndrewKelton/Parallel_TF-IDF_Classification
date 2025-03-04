@@ -1,4 +1,4 @@
-/* main-test-parrallel.cpp
+/* main-test-non-optimized-parallel.cpp
  * 
  * Contains main for testing parallel tfidf with 
  * command line input. Command Line input should be
@@ -76,7 +76,7 @@ int main(int argc, char * argv[]) {
     // calculate tfidf for every text in corpus
     start = chrono::high_resolution_clock::now();
     try {
-        corpus.tfidf_documents();
+        corpus.tfidf_documents_not_dynamic();
     } catch (exception e) {
         cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
         exit(1);
@@ -84,6 +84,7 @@ int main(int argc, char * argv[]) {
     end = chrono::high_resolution_clock::now();
 
     print_duration_code(start, end, tfidf_);
+
 
     // get most important terms of category
     start = chrono::high_resolution_clock::now();

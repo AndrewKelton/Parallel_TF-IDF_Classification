@@ -8,10 +8,13 @@
 #include <exception>
 #include <stdexcept>
 #include <sstream>
+#include <thread>
 
 using namespace std;
 
 #define MAX_SECTIONS 3
+
+const unsigned NUMBER_OF_THREADS_MAX{thread::hardware_concurrency()};
 
 enum ERR_CODES {
     BAD_CAST = 4,

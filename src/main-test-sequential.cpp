@@ -13,11 +13,8 @@
  * space between 'category,text' and/or 'category.x,text.x'
  */
 
-#include <iostream>
-#include <chrono>
-#include "document.h"
+
 #include "count_vectorization.h"
-#include "preprocess.h"
 #include "file_operations.h"
 #include "categories.h"
 

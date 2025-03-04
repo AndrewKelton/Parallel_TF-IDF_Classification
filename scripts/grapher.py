@@ -2,16 +2,18 @@
 
 '''
 
-        *-------*------*------*!!!!!!!!!!!!*------*------*-------*
-        *-------*------*------*!! NOTICE !!*------*------*-------*
-        *-------*------*------*!!!!!!!!!!!!*------*------*-------*
-        +--------------------------------------------------------+
-        +       This python file is only used to graph           +
-        +      the ratio of time between sequential and          +
-        +     parallel tf-idf versions. It has no impact         +
-        +  on the algorithm itself. All code that implements     +
-        +       the tf-idf algorithm is written in c++.          +
-        +--------------------------------------------------------+
+       || ===== * ==== * ==== * !!!!!!!!!! * ==== * ==== * ===== ||
+       || ===== * ==== * ==== * ! NOTICE ! * ==== * ==== * ===== ||
+       || ===== * ==== * ==== * !!!!!!!!!! * ==== * ==== * ===== ||
+       || ===== + ==== + ==== + ========== + ==== + ==== + ===== ||
+       ||                                                        ||
+       ||       This python file is only used to graph           ||
+       ||        certain metrics being recorded during           ||
+       ||           during runs of this project.                 ||
+       ||                                                        ||
+       ||  To view outputted graphs, visit 'test-output/graphs'  ||
+       ||                                                        ||
+       || ===== + ==== + ==== + ========== + ==== + ==== + ===== ||
 
 '''
 

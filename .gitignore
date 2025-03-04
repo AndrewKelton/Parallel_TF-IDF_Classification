@@ -11,6 +11,6 @@ build/
 test[1-9]
 
 # not updating until necessary
-README.md
+# README.md
 
 CMakeLists.txt

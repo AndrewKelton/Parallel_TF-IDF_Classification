@@ -1,5 +1,13 @@
+/* count_vectorization.cpp
+ * source file for count_vectorization.h
+ */
+
 #include "count_vectorization.h"
-#include <thread>
+#include "preprocess.h"
+#include "categories.h"
+#include <set>
+
+using namespace std;
 
 atomic<int> doc_id_count{0}; // document id 
 
@@ -46,9 +54,8 @@ static void count_words_doc(Document * doc) {
     }
 }
 
-// preprocess and vectorize a document
-static void vectorize_doc(Document * doc) {
-    
+// preprocess and vectorize a document (helper for threaded)
+static void vectorize_doc_parallel(Document * doc) {
     doc->document_id = doc_id_count.load(memory_order_acquire);
     doc_id_count.fetch_add(1, memory_order_release);
 
@@ -57,43 +64,36 @@ static void vectorize_doc(Document * doc) {
     (*doc).calculate_term_frequency_doc();
 }
 
+
+// preprocess and vectorize a document sequenitally
 static void vectorize_doc_sequenital(Document * doc, int * id) {
+    doc->document_id = *id++;
     preprocess_text(doc);
     count_words_doc(doc);
     (*doc).calculate_term_frequency_doc();
 }
 
 
-// vectorize corpus of documents simultaneously
+// main vectorization function for parallel execution
 extern void vectorize_corpus_threaded(Corpus * corpus) {
     vector<thread> threads;
 
     for (auto& document : (*corpus).documents) {
-        threads.emplace_back(thread(vectorize_doc, &document));
+        threads.emplace_back(thread(vectorize_doc_parallel, &document));
     }
 
     for (auto& t : threads)
         t.join();
-    corpus->num_of_docs = doc_id_count.load();
+    // corpus->num_of_docs.store(doc_id_count.load(memory_order_acquire));
 }
 
+// main vectorization function for sequential execution
 extern void vectorize_corpus_sequential(Corpus * corpus) {
     int id = 0;
 
     for (auto& document : (*corpus).documents) {
-        vectorize_doc(&document);
-        document.document_id = id++;
-        corpus->num_of_docs++;
+        vectorize_doc_sequenital(&document, &id);
+        // document.document_id = id++;
+        // corpus->num_of_docs++;
     }
 }
-
-// // vectorize categorize of documents simultaneously
-// extern void vectorize_corpus_category_threaded(Corpus * corpus, int category) {
-//     int num_of_threads = MAX_CATEGORIES;
-// 
-//     thread threads[num_of_threads];
-// 
-//     for (int i = 0; i < num_of_threads; i++) {
-//         
-//     }   
-// }
