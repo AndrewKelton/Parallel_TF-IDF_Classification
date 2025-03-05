@@ -7,7 +7,7 @@ CXXFLAGS = -Wall -Wextra -std=c++17 -pthread \
 		   -Iinclude -Iinclude/OleanderStemmingLibrary/src \
 		   -Wdeprecated-declarations -Wno-unused-function \
 		   -Wno-unused-variable -Wno-unused-parameter \
-		   -Wno-catch-value -Wno-unused-value
+		   -Wno-catch-value -Wno-unused-value -Wno-sign-compare
 
 PROJECT_FLAGS = -DENABLE_LENGTHY -DENABLE_TERMS_INFO -DENABLE_CATS_INFO
 

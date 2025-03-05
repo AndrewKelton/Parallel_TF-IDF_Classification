@@ -6,16 +6,16 @@
 #include <fstream>
 
 #include "utils.h"
-#include "Printable.h"
 
 using namespace std;
 
 #define MAX_CATEGORIES 5
 
+const string CAT_FILENAME = "test-output/lengthy/category-info.txt";
 class Corpus; // forward declaration
 
 // Category class for determing category of document
-class Category : public Printable {
+class Category {
 
     private:
 
@@ -52,13 +52,17 @@ class Category : public Printable {
             }
             return *this;
         }
+
+        text_cat_types_ get_type() {
+            return category_type;
+        }
     
         // get important terms for category and save to this->most_important_terms
         void get_important_terms(Corpus * corpus);
 
         /* -- Print Function -- */
-        void print_all_info() const override {
-            ofstream file{"test-output/lengthy/category-info.txt"};
+        void print_all_info() {
+            ofstream file{CAT_FILENAME, ios::app};
 
             if (!file) {
                 throw runtime_error("File Error in print_all_info");
@@ -70,6 +74,7 @@ class Category : public Printable {
             for (auto& term : most_important_terms) {
                 file << term.first << ": " << term.second << "\n";
             }
+            file << "\n";
             file.close();
         }
 };

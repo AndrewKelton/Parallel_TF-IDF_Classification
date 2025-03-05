@@ -22,22 +22,6 @@ void Document::calculate_term_frequency_doc() {
         term_frequency[word] = calculate_term_frequency(word);
 }
 
-// /* -- Print Functions -- */
-// void Document::print_all_info() {
-//     ofstream file{"test-output/lengthy/document-info.txt"};
-// 
-//     if (!file) {
-//         throw runtime_error("File Error in print_all_info");
-//         return;
-//     }
-// 
-//     file << "Info for Document id: " << document_id << "\n";
-//     file << print_category();
-//     file << print_number_terms();
-//     file << print_tf_idf();
-//     file << print_number_terms();
-// 
-// }
 string Document::print_text() const {
     return "Text: " + text + "\n";
 }
@@ -78,7 +62,6 @@ string Document::print_doc_term_count() const {
 
     return term_count_str;
 }
-/* -- Print Functions -- */
 
 double Corpus::idf_corpus(int docs_with_term) {
     return log(static_cast<double>(num_of_docs) / static_cast<double>(docs_with_term));
@@ -102,8 +85,8 @@ void Corpus::tfidf_documents() {
     num_doc_per_thread = number_of_docs_in_thread;
     unsigned number_of_docs_in_last_thread = num_of_docs % number_of_docs_in_thread;
 
-    /* every 10 documents gets their own thread!!
-     * done to reduce contention and reduce resource waste.
+    /* every num_doc_per_thread documents gets their own thread!!
+     * done to reduce contention and resource waste.
      */
     for (int i = 0; i < num_of_docs; i+=number_of_docs_in_thread) {
         threads.emplace_back([this, i, number_of_docs_in_thread, number_of_docs_in_last_thread]() {
@@ -125,7 +108,7 @@ void Corpus::tfidf_documents_not_dynamic() {
     vector<thread> threads;
 
     /* every 10 documents gets their own thread!!
-     * done to reduce contention and reduce resource waste.
+     * done to reduce contention and resource waste.
      */
     for (int i = 0; i < num_of_docs; i+=10) {
         threads.emplace_back([this, i]() {
@@ -169,23 +152,4 @@ string Corpus::print_number_documents_per_thread() const {
 
 string Corpus::print_number_documents() const {
     return "# of Documents: " + to_string(num_of_docs) + "\n";
-}
-
-string Corpus::print_tfidf_entire() const {
-    string tfidf_corp_str{"\nEntire TF-IDF (Term: TF-IDF): \n"};
-    int i{0};
-
-    for (const auto& [word, count] : inverse_document_frequency) {
-        if (i % 5 == 0)
-            tfidf_corp_str += "\n";
-        else 
-            tfidf_corp_str += "\t";
-        tfidf_corp_str += to_string(i) + ". " + word + ": " + to_string(count); 
-        i++;
-    }   
-
-    if (i % 5 != 0)
-        tfidf_corp_str += "\n";
-    
-    return tfidf_corp_str;
 }

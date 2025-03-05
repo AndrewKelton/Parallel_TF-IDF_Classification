@@ -1,16 +1,16 @@
-/* config.h
+/* config.hpp
  * 
  * Contains default feature flags that can be overridden
  * by the Makefile. These features allow for all data 
  * generated to be outputted into .txt files.
  */
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef CONFIG_HPP
+#define CONFIG_HPP
 
 // outputs all data
 #ifndef ENABLE_LENGTHY
-#define ENABLE_LENGTHY 0
+#define ENABLE_LENGTHY 1
 #endif
 
 // outputs all TF-IDF info of corpus 

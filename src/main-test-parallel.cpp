@@ -24,32 +24,13 @@
  */
 
 
-#include "config.h"
 #include "count_vectorization.h"
 #include "file_operations.h"
-#include "categories.h"
-#include "document.h"
-#include "Printable.h"
+#include "flag_handler.hpp"
+
 
 using namespace std;
 
-
-void print_lengthy(Corpus * corp, vector<Document> docs, vector<Category> cats) {
-    Printable * print_corp = corp;
-    print_corp->print_all_info();
-
-    Printable * print_doc = nullptr;
-    for (auto& doc : docs) {
-        print_doc = &doc;
-        print_doc->print_all_info();
-    }
-
-    Printable * print_cat = nullptr;
-    for (auto& cat : cats) {
-        print_cat = &cat;
-        print_cat->print_all_info();
-    }
-}
 
 int main(int argc, char * argv[]) {
 
@@ -146,17 +127,7 @@ int main(int argc, char * argv[]) {
     }
 
     // check the user flags for output related tasks
-    #if ENABLE_LENGTHY
-    print_lengthy(&corpus, corpus.documents, cat_vect);
-    #endif
-
-    #if (!ENABLE_LENGTHY && ENABLE_TERMS_INFO)
-    // print_terms_info();
-    #endif
-    
-    #if (!ENABLE_LENGTHY && ENABLE_CATS_INFO)
-    // print_cat_info();
-    #endif
+    handle_output_flags(corpus, corpus.documents, cat_vect);
 
     return 0;
 }

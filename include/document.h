@@ -8,15 +8,16 @@
 #include <fstream>
 #include "categories.h"
 #include "utils.h"
-#include "Printable.h"
 
 using namespace std;
 
+const string DOC_FILENAME{"test-output/lengthy/document-info.txt"};
+const string COR_FILENAME{"test-output/lengthy/corpus-info.txt"};
 class Category; // forward declaration
 
 
 // class for single document
-class Document : public Printable {
+class Document {
 
     public:
 
@@ -37,8 +38,8 @@ class Document : public Printable {
         void calculate_term_frequency_doc();
 
         /* -- Print Function -- */
-        void print_all_info() const override {
-            ofstream file{"test-output/lengthy/document-info.txt"};
+        void print_all_info() {
+            ofstream file{DOC_FILENAME, ios::app};
 
             if (!file) {
                 throw runtime_error("File Error in print_all_info");
@@ -49,7 +50,6 @@ class Document : public Printable {
             file << print_category();
             file << print_number_terms();
             file << print_tf_idf();
-            file << print_number_terms();
             
             file.close();
         }
@@ -68,7 +68,7 @@ class Document : public Printable {
 };
 
 // class for entire corpus (collection of documents)
-class Corpus : public Printable {
+class Corpus {
 
     public:
 
@@ -97,8 +97,8 @@ class Corpus : public Printable {
         int get_num_unique_terms();
 
         /* -- Print Function -- */
-        void print_all_info() const override {
-            fstream file{"test-output/lengthy/corpus-info.txt"};
+        void print_all_info() {
+            ofstream file{COR_FILENAME};
 
             if (!file) {
                 throw runtime_error("File Error in print_all_info");
@@ -109,12 +109,12 @@ class Corpus : public Printable {
             file << print_number_documents();
             file << print_number_threads_used();
             file << print_number_documents_per_thread();
-            file << print_tfidf_entire();
 
             file.close();
         }
 
     private: 
+    
         unsigned num_doc_per_thread;
 
         // return # of documents with term
@@ -135,7 +135,6 @@ class Corpus : public Printable {
         string print_number_threads_used() const;
         string print_number_documents_per_thread() const;
         string print_number_documents() const;
-        string print_tfidf_entire() const;
 };
 
 

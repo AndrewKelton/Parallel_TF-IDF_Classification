@@ -91,22 +91,6 @@ void Category::get_important_terms(Corpus * corpus) {
     }
 }
 
-// void Category::print_all_info() {
-//     ofstream file{"test-output/lengthy/category-info.txt"};
-// 
-//     if (!file) {
-//         throw runtime_error("File Error in print_all_info");
-//         return;
-//     }
-// 
-//     file << "Category: " << conv_cat_type(category_type) << "\n";
-//     
-//     for (auto& term : most_important_terms) {
-//         file <<term.first << ": " <<  term.second << "\n";
-//     }
-//     // cout << endl;
-// }
-
 // initialize categories vector
 static vector<Category> init_categories() {
     vector<Category> categories_list;
@@ -116,14 +100,6 @@ static vector<Category> init_categories() {
     
     return categories_list;
 }
-// 
-// extern text_cat_types_ conv_cat_type(string category) {
-//     return categories_text.find(category)->second;
-// }
-
-// extern string conv_cat_type(text_cat_types_ category) {
-//     return text_categories.find(category)->second;
-// }
 
 // parallel
 extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, text_cat_types_ catint) {
