@@ -9,9 +9,9 @@
 
 using namespace std;
 
+static string input_file_name;
 
 /* --- Constants --- */
-
 static const string sl{"/"}; // general purpose slash
 
 /* constants for directory paths */
@@ -22,17 +22,16 @@ static const string solo_test_dir{base_test_dir + sl + "solo"};
 static const string res_test_dir{"results"};
 
 /* constants for .txt files (results) paths */
-static const string res_par_txt{comp_test_dir + sl + res_test_dir + sl + "main-test-parallel-results.txt"};
-static const string res_seq_txt{comp_test_dir + sl + res_test_dir + sl + "main-test-sequential-results.txt"};
+static const string res_par_txt{comp_test_dir + sl + res_test_dir + sl + "parallel-results.txt"};
+static const string res_seq_txt{comp_test_dir + sl + res_test_dir + sl + "sequential-results.txt"};
 
-static const string res_par_txt_singleton{solo_test_dir + sl + res_test_dir + sl + "main-test-parallel-results-singleton.txt"};
-static const string res_seq_txt_singleton{solo_test_dir + sl + res_test_dir + sl + "main-test-sequential-results-singleton.txt"};
+static const string res_par_txt_singleton{solo_test_dir + sl + res_test_dir + sl + "parallel-results-singleton.txt"};
+static const string res_seq_txt_singleton{solo_test_dir + sl + res_test_dir + sl + "sequential-results-singleton.txt"};
 
 /* constants for processed csv files */
 static const string processed_par_csv{processed_csv_dir + sl + "parallel-processed.csv"};
 static const string processed_seq_csv{processed_csv_dir + sl + "sequential-processed.csv"};
-
-/* ----------------- */
+/* --- Constants --- */
 
 
 // return pair of first split from csv 'category, text'
@@ -56,6 +55,11 @@ static Document create_document(string text, text_cat_types_ category) {
 
 // main function to read in training data
 extern void read_csv_to_corpus(Corpus& corpus, const string& file_name) {
+    
+    // set the global input file name
+    input_file_name = file_name.substr(file_name.find('/') + 1);
+    input_file_name = input_file_name.substr(0, input_file_name.find('.'));
+
     ifstream file(file_name);
 
     if (!file.is_open()) {
@@ -78,7 +82,6 @@ extern void read_csv_to_corpus(Corpus& corpus, const string& file_name) {
     }   
     
     corpus.num_of_docs.store(i);
-
     file.close();
 }    
 
@@ -123,7 +126,7 @@ static void write_sections_csv(vector<pair<string, string>> pln_txt, const strin
 }
 
 // main function to convert txt to csv
-extern void convert_results_txt_to_csv(unsigned int par_or_seq /* 0 = parallel, 1 = sequential*/, bool comp_or_solo) {
+extern void convert_results_txt_to_csv(unsigned int par_or_seq, bool comp_or_solo) {
     string file_name;
 
     try {
@@ -154,4 +157,8 @@ extern void convert_results_txt_to_csv(unsigned int par_or_seq /* 0 = parallel, 
             exit(EXIT_FAILURE);
         }
     }
+}
+
+extern string get_input_file_name() {
+    return input_file_name;
 }

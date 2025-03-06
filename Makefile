@@ -1,4 +1,4 @@
-# Makefile for main-test-parallel.cpp & main-test-sequential.cpp
+# Makefile for tests
 
 # Compiler and Flags
 CXX = g++
@@ -8,8 +8,6 @@ CXXFLAGS = -Wall -Wextra -std=c++17 -pthread \
 		   -Wdeprecated-declarations -Wno-unused-function \
 		   -Wno-unused-variable -Wno-unused-parameter \
 		   -Wno-catch-value -Wno-unused-value -Wno-sign-compare
-
-PROJECT_FLAGS = -DENABLE_LENGTHY -DENABLE_TERMS_INFO -DENABLE_CATS_INFO
 
 
 # Project directories #
@@ -57,7 +55,7 @@ TO_CSV_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/$(OBJ_DIR)/%.o, $(TO_
 TO_CSV_EXEC = $(BUILD_DIR)/main-txt-to-csv
 
 
-# Target executable names
+# Target executable names 
 TARGET_PAR = main-par
 TARGET_SEQ = main-seq
 TARGET_NON = main-non-opt
@@ -75,10 +73,13 @@ $(SEQUENTIAL_EXEC): $(SEQUENTIAL_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^	
 
 # Executables with no automatic input
-$(TARGET_PAR): $(PARALLEL_OBJECTS)
+main-par: $(PARALLEL_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-$(TARGET_SEQ): $(SEQUENTIAL_OBJECTS)
+main-seq: $(SEQUENTIAL_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+main-non-opt: $(NON_OPT_PARALLEL_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 # txt to csv executable tester

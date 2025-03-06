@@ -1,9 +1,12 @@
 /* config.hpp
  * 
- * Contains default feature flags that can be overridden
- * by the Makefile. These features allow for all data 
- * generated to be outputted into .txt files.
+ * Contains default feature flags to generate .txt
+ * files containing data generated from sections of
+ * the code. By default ENABLE_LENGTHY is set to '1'
+ * to output all data included to the directory:
+ * "/test-output/lengthy".
  */
+
 
 #ifndef CONFIG_HPP
 #define CONFIG_HPP

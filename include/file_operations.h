@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 /* Read the .csv input as whole and create a 
  * Document object for each line read in 
  * from the .csv. Saves the text and category,
@@ -18,5 +17,7 @@ extern void read_csv_to_corpus(Corpus& corpus, const string& file_name);
  */
 extern void convert_results_txt_to_csv(unsigned int par_or_seq /* 0 = parallel, 1 = sequential*/, bool comp_or_solo);
 
+// returns the name of the input file
+extern string get_input_file_name();
 
 #endif

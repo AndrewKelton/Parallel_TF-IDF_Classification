@@ -1,4 +1,5 @@
 /* flag_handler.hpp
+ * handles user print flags and calls the print functions.
  */
 
 #ifndef FLAG_HANDLER_HPP

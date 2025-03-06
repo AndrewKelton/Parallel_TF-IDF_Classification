@@ -16,9 +16,10 @@
 
 #include "count_vectorization.h"
 #include "file_operations.h"
-#include "categories.h"
+#include "flag_handler.hpp"
 
 using namespace std;
+
 
 int main(int argc, char * argv[]) {
 
@@ -39,8 +40,11 @@ int main(int argc, char * argv[]) {
         exit(EXIT_FAILURE);
     } 
 
-    bool comp_or_solo{(arg_2 == "solo") /* false == comparison, true == solo */}; 
+    bool comp_or_solo{(arg_2 == "solo")}; 
 
+    /* initialize corpus and documents in 
+     * corpus, while reading input from csv.
+     */
     Corpus corpus;
     try {
         read_csv_to_corpus(ref(corpus), argv[1]);
@@ -49,7 +53,7 @@ int main(int argc, char * argv[]) {
     }
 
 
-    // vectorize corpus of documents
+    /* -- Vectorize Documents Section -- */
     auto start = chrono::high_resolution_clock::now();
     try {
         vectorize_corpus_sequential(&corpus);
@@ -58,11 +62,11 @@ int main(int argc, char * argv[]) {
         exit(1);
     }
     auto end = chrono::high_resolution_clock::now();
-
     print_duration_code(start, end, vectorization_);
+    /* -- Vectorize Documents Section END -- */
 
 
-    // calculate tfidf for every text in corpus
+    /* -- Calculate TF-IDF Section -- */
     start = chrono::high_resolution_clock::now();
     try {
         corpus.tfidf_documents_seq();
@@ -71,24 +75,24 @@ int main(int argc, char * argv[]) {
         exit(1);
     }
     end = chrono::high_resolution_clock::now();
-
     print_duration_code(start, end, tfidf_);
+    /* -- Calculate TF-IDF Section END -- */
 
     
-    // get most important terms of category
+    /* -- Category Section -- */
     start = chrono::high_resolution_clock::now();
     vector<Category> cat_vect;
     try {
         for (int i = 0; i < 5; i++) 
-            get_single_cat_seq(&corpus, ref(cat_vect), i);
+            get_single_cat_seq(&corpus, ref(cat_vect), conv_cat_type(i));
         
     } catch (exception e) {
         cerr << "Error in get_single_cat_seq: " << e.what() << endl;
         exit(1);
     }
     end = chrono::high_resolution_clock::now();
-
     print_duration_code(start, end, categories_);
+    /* -- Category Section END -- */
 
 
     // convert txt results to csv for python graphing
@@ -98,6 +102,9 @@ int main(int argc, char * argv[]) {
         cerr << "Error converting txt to csv: " << e.what() << endl;
         exit(EXIT_FAILURE);
     }
+
+    // check the user flags for output related tasks
+    handle_output_flags(corpus, corpus.documents, cat_vect);
 
     return 0;
 }

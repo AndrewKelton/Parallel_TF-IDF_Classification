@@ -8,7 +8,7 @@
  * category.x,text.x 
  * --------------------
  * 
- * NOTE that you do not need the labels: 'category, text'
+ * NOTE that you do not need the labels: 'category,text'
  * at the top of the file. HOWEVER, you must not have a
  * space between 'category,text' and/or 'category.x,text.x'
  */
@@ -27,7 +27,6 @@
 #include "count_vectorization.h"
 #include "file_operations.h"
 #include "flag_handler.hpp"
-
 
 using namespace std;
 
@@ -59,7 +58,7 @@ int main(int argc, char * argv[]) {
      */
     Corpus corpus;
     try {
-        read_csv_to_corpus(ref(corpus), argv[1]);
+        read_csv_to_corpus(ref(corpus), argv[1]); return 0;
     } catch (runtime_error e) {
         cerr << "Error: " << argv[1] << " " << e.what() << endl;
     }
@@ -113,7 +112,6 @@ int main(int argc, char * argv[]) {
         cat.join();
     
     end = chrono::high_resolution_clock::now();
-
     print_duration_code(start, end, categories_);
     /* -- Category Section END -- */
 
