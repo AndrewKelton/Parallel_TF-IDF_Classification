@@ -88,6 +88,22 @@ class Category {
         }
 };
 
+struct Classified_S {
+    text_cat_types_ correct_type;
+    text_cat_types_ classified_type;
+    bool correct;
+};
+using unknown_class = Classified_S;
+
+struct Classification_S {
+    vector<unknown_class> unknown_doc;
+    int correct_count;
+    int total_count;
+    double correct_db;
+};
+using unknown_classification_s = Classification_S;
+
+
 /* Get important terms for a Category
  * utilizing 5 total threads (parallel approach). 
  * One thread per Category type. Creates a Category
@@ -96,11 +112,13 @@ class Category {
 extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, text_cat_types_ catint);
 
 /* Get important terms for a Category
- * u. one per 
- * Category type.
+ * u. one per Category type.
  */
 extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, text_cat_types_ catint);
 
+extern unknown_classification_s init_classification(Corpus * unknown_corpus, vector<Category> cat_vect, vector<string> correct_types);
+
+extern void print_classifications(unknown_classification_s classifications);
 
 // deprecated function
 extern vector<Category> get_all_category_important_terms(Corpus * corpus);

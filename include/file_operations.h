@@ -23,4 +23,6 @@ extern void convert_results_txt_to_csv(unsigned int par_or_seq /* 0 = parallel, 
 // returns the name of the input file
 extern string get_input_file_name();
 
+extern vector<string> read_unkown_cats();
+
 #endif

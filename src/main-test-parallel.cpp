@@ -33,46 +33,6 @@
 
 using namespace std;
 
-// Function to compute cosine similarity between two TF-IDF vectors
-double cosineSimilarity(const unordered_map<string, double>& doc1, const unordered_map<string, double>& doc2) {
-    double dotProduct = 0.0, norm1 = 0.0, norm2 = 0.0;
-
-    for (const auto& [word, tfidf1] : doc1) {
-        // cout << "word: " << word << endl;
-        if (doc2.find(word) != doc2.end()) {
-            dotProduct += tfidf1 * doc2.at(word);
-        }
-        norm1 += tfidf1 * tfidf1;
-    }
-    
-    for (const auto& [word, tfidf2] : doc2) {
-        // cout << word << endl;
-        norm2 += tfidf2 * tfidf2;
-    }
-    cout << "Norm1: " << norm1 << "\tNorm2: " << norm2 << "\tdotProduct: " << dotProduct << endl;
-
-    if (fabs(norm1) < 1e-9 || fabs(norm2) < 1e-9) return 0.0; // Avoid division by zero
-
-    return dotProduct / (sqrt(norm1) * sqrt(norm2));
-}
-
-string classifyText(const unordered_map<string, double>& unknownText, vector<Category> cat_vect) {
-    text_cat_types_ best_category_type{invalid_t_};
-    double maxSimilarity = 0.0;
-
-    int i{0};
-    for (const auto& cat_tf_idf : cat_vect) {
-        double similarity = cosineSimilarity(unknownText, cat_tf_idf.tf_idf_all);
-        if (similarity > maxSimilarity) {
-            maxSimilarity = similarity;
-            best_category_type = conv_cat_type(i);
-        }
-        i++;
-    }
-
-    return conv_cat_type(best_category_type);
-}
-
 
 int main(int argc, char * argv[]) {
 
@@ -166,15 +126,13 @@ int main(int argc, char * argv[]) {
     Corpus unknown_corpus;
     try {
         read_unkown_text(ref(unknown_corpus), "data/unkown_text.txt");
-        cout << "HERE" << endl;
     } catch (runtime_error e) {
         cerr << "Error: " << argv[1] << " " << e.what() << endl;
     }
     
     try {
         vectorize_corpus_threaded(&unknown_corpus);
-        unknown_corpus.num_of_docs += corpus.num_of_docs;
-        cout << "HERE: " << unknown_corpus.num_of_docs << endl;
+        // unknown_corpus.num_of_docs += corpus.num_of_docs;
     } catch (exception e) {
         cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
         return 1;
@@ -182,14 +140,29 @@ int main(int argc, char * argv[]) {
 
     try {
         unknown_corpus.tfidf_documents_seq();
-        cout << "HERE" << endl;
     } catch (exception e) {
         cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
         return 1;
     }
-    cout << "HERE" << endl;
 
-    cout << "Unkown Text Classified: " << classifyText(unknown_corpus.documents[0].tf_idf, cat_vect) << endl;
+    vector<string> unknown_cats_correct = read_unkown_cats();
+//     vector<string> unknown_cats_classified;
+// 
+//     for (auto& doc : unknown_corpus.documents)
+//         unknown_cats_classified.emplace_back(classify_text(doc.tf_idf, cat_vect));
+//     
+//     int correct_count{0};
+//     cout << "Correct: class\tClassified: class" << endl;
+//     for (int i = 0; i < unknown_cats_classified.size(); i++) {
+//         if (unknown_cats_correct.at(i) == unknown_cats_classified.at(i))
+//             correct_count++;
+//         cout << "Correct: " << unknown_cats_correct.at(i) << "\tClassified: " << unknown_cats_classified.at(i) << endl;
+//     }
+// 
+//     cout << "# of correctly classified documents: " << correct_count << endl;
+//     cout << "Classified " << (static_cast<double>(correct_count) / static_cast<double>(unknown_corpus.num_of_docs)) * 100.0 << "% Correctly" << endl;
+
+    print_classifications(init_classification(&unknown_corpus, cat_vect, unknown_cats_correct));
 
     // check the user flags for output related tasks
     handle_output_flags(corpus, corpus.documents, cat_vect);

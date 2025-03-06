@@ -151,6 +151,92 @@ extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, text_cat
 }
 
 
+static double cosine_similarity(const unordered_map<string, double>& doc1, const unordered_map<string, double>& doc2) {
+    double dotProduct = 0.0, norm1 = 0.0, norm2 = 0.0;
+
+    for (const auto& [word, tfidf1] : doc1) {
+        // cout << "word: " << word << endl;
+        if (doc2.find(word) != doc2.end()) {
+            dotProduct += tfidf1 * doc2.at(word);
+        }
+        norm1 += tfidf1 * tfidf1;
+    }
+    
+    for (const auto& [word, tfidf2] : doc2) {
+        // cout << word << endl;
+        norm2 += tfidf2 * tfidf2;
+    }
+    // cout << "Norm1: " << norm1 << "\tNorm2: " << norm2 << "\tdotProduct: " << dotProduct << endl;
+
+    if (fabs(norm1) < 1e-9 || fabs(norm2) < 1e-9) return 0.0; // Avoid division by zero
+
+    return dotProduct / (sqrt(norm1) * sqrt(norm2));
+}
+
+static unknown_class classify_text(const unordered_map<string, double>& unknownText, vector<Category> cat_vect, string correct_type) {
+    unknown_class unknown_classification;
+    unknown_classification.correct_type = conv_cat_type(correct_type);
+    text_cat_types_ best_category_type{invalid_t_};
+    double maxSimilarity = 0.0;
+
+    int i{0};
+    for (const auto& cat_tf_idf : cat_vect) {
+        double similarity = cosine_similarity(unknownText, cat_tf_idf.tf_idf_all);
+        if (similarity > maxSimilarity) {
+            maxSimilarity = similarity;
+            best_category_type = conv_cat_type(i);
+            unknown_classification.classified_type = conv_cat_type(i);
+        }
+        i++;
+    }
+
+    // cout << correct_type << "\t" << conv_cat_type(unknown_classification.classified_type) << endl;
+    if (unknown_classification.correct_type == unknown_classification.classified_type) {
+        unknown_classification.correct = true;
+        // cout << "True";
+    } else {
+        unknown_classification.correct = false;
+        // cout << "False";
+    }
+
+    return unknown_classification;
+}
+
+extern unknown_classification_s init_classification(Corpus * unknown_corpus, vector<Category> cat_vect, vector<string> correct_types) {
+    unknown_classification_s u_classified;
+    u_classified.correct_count = 0;
+    u_classified.total_count = (*unknown_corpus).documents.size();
+
+    for (int i = 0; i < u_classified.total_count; i++) {
+        u_classified.unknown_doc.emplace_back(classify_text((*unknown_corpus).documents.at(i).tf_idf, cat_vect, correct_types.at(i)));
+        
+        if (u_classified.unknown_doc.at(i).correct)
+            u_classified.correct_count++;
+    }
+
+    u_classified.correct_db = static_cast<double>(u_classified.correct_count) / u_classified.total_count * 100;
+
+    return u_classified;
+}
+
+extern void print_classifications(unknown_classification_s classified) {
+    cout << "# of total unknown Documents: " << classified.total_count << endl;
+    cout << "# of total correctly Classfied: " << classified.correct_count << endl;
+    cout << "% Classifed Correctly: " << classified.correct_db << "%" << endl;
+    cout << "Actual\tClassified\tCorrect" << endl;
+    
+    for (int i = 0; i < classified.total_count; i++) {
+        cout << conv_cat_type(classified.unknown_doc.at(i).correct_type) << "\t" << conv_cat_type(classified.unknown_doc.at(i).correct_type) << "\t";
+        
+        if (classified.unknown_doc.at(i).correct)
+            cout << "True";
+        else 
+            cout << "False";
+        cout << endl;
+    }
+}
+
+
 // deprecated function
 extern vector<Category> get_all_category_important_terms(Corpus * corpus) {
     vector<Category> categories_list = init_categories();

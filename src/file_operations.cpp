@@ -181,3 +181,18 @@ extern void read_unkown_text(Corpus& corpus, const string& file_name) {
     corpus.num_of_docs.store(i);
     file.close();
 }
+
+extern vector<string> read_unkown_cats() {
+    vector<string> correct_cats;
+    ifstream file{"data/correct_unknown.txt"};
+    
+    if (!file.is_open())
+        throw runtime_error("file cannot be opened...");
+
+    string line;
+    while (getline(file, line)) {
+        correct_cats.emplace_back(line);
+    }
+
+    return correct_cats;
+}
