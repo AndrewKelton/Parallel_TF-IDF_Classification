@@ -54,7 +54,19 @@ pair<string, double> Category::search_nth_important_term(vector<vector<pair<stri
     }
 
     return current_high;
-} 
+}
+
+void Category::put_tf_idf_all(unordered_map<string, double> doc_tf_idf) {
+    for (auto& tf_idf : doc_tf_idf) {
+        auto founded = tf_idf_all.find(tf_idf.first);
+        if (founded != tf_idf_all.end()) {
+            double new_val = (tf_idf.second + founded->second) / 2.0;
+            tf_idf_all[tf_idf.first] = new_val;
+        } else {
+            tf_idf_all[tf_idf.first] = tf_idf.second;
+        }
+    }
+}
 
 void Category::get_important_terms(Corpus * corpus) {
 
@@ -68,6 +80,7 @@ void Category::get_important_terms(Corpus * corpus) {
 
         try {
             vectored_all_umaps.emplace_back(sort_unordered_umap(document.tf_idf));
+            put_tf_idf_all(document.tf_idf);
         } catch (const runtime_error& e) {
             cerr << "Error Category::get_important_terms: " << e.what() << endl;
             break;

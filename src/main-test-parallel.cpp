@@ -54,19 +54,21 @@ double cosineSimilarity(const unordered_map<string, double>& doc1,
     return dotProduct / (sqrt(norm1) * sqrt(norm2));
 }
 
-string classifyText(const unordered_map<string, double>& unknownText, unordered_map<string, unordered_map<string, double>> trainedDocs) {
-    string bestCategory;
+string classifyText(const unordered_map<string, double>& unknownText, vector<Category> cat_vect) {
+    text_cat_types_ best_category_type{invalid_t_};
     double maxSimilarity = 0.0;
 
-    for (const auto& [category, docVector] : trainedDocs) {
-        double similarity = cosineSimilarity(unknownText, docVector);
+    int i{0};
+    for (const auto& cat_tf_idf : cat_vect) {
+        double similarity = cosineSimilarity(unknownText, cat_tf_idf.tf_idf_all);
         if (similarity > maxSimilarity) {
             maxSimilarity = similarity;
-            bestCategory = category;
+            best_category_type = conv_cat_type(i);
         }
+        i++;
     }
 
-    return bestCategory;
+    return conv_cat_type(best_category_type);
 }
 
 
@@ -168,7 +170,7 @@ int main(int argc, char * argv[]) {
      */
     Corpus unknown_corpus;
     try {
-        read_unkown_text(ref(unknown_corpus), argv[3]);
+        read_unkown_text(ref(unknown_corpus), "data/unkown_text.txt");
     } catch (runtime_error e) {
         cerr << "Error: " << argv[1] << " " << e.what() << endl;
     }
@@ -186,6 +188,8 @@ int main(int argc, char * argv[]) {
         cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
         return 1;
     }
+
+    cout << "Unkown Text Classified: " << classifyText(unknown_corpus.documents[0].tf_idf, cat_vect) << endl;
 
     // check the user flags for output related tasks
     handle_output_flags(corpus, corpus.documents, cat_vect);
