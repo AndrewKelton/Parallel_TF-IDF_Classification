@@ -99,7 +99,9 @@ done
 
 
 # create DESCRIPTION file for test-output
-cat > test-output/README.md <<EOF
+cd ".."
+
+echo "
 ### This directory stores output files generated during testing, graphs, and logs.
 
 - processed-data-results/: Contains CSV 2 files with test results, 1. parallel tests, 2. sequential tests.
@@ -107,7 +109,7 @@ cat > test-output/README.md <<EOF
 - logs/: Holds logs related to test runs.
 
 This directory is cleaned up by cleanup.sh and will delete all data, unless specified.
-EOF
+" > README.md
 
 
 echo "Setup Complete!"

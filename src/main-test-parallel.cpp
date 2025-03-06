@@ -58,7 +58,7 @@ int main(int argc, char * argv[]) {
      */
     Corpus corpus;
     try {
-        read_csv_to_corpus(ref(corpus), argv[1]); return 0;
+        read_csv_to_corpus(ref(corpus), argv[1]);
     } catch (runtime_error e) {
         cerr << "Error: " << argv[1] << " " << e.what() << endl;
     }

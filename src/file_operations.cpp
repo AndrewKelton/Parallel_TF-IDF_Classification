@@ -111,7 +111,7 @@ static void write_sections_csv(vector<pair<string, string>> pln_txt, const strin
     ofstream file(file_name, ios::app); // append to csv
 
     if (!file) {
-        throw_runtime_error("file error in write_sections_csv");
+        throw_runtime_error("error writing to csv");
     } else {
         file.seekp(0, ios::end);
         
@@ -132,7 +132,7 @@ extern void convert_results_txt_to_csv(unsigned int par_or_seq, bool comp_or_sol
     try {
         file_name = get_txt_name(par_or_seq, comp_or_solo);
     } catch (runtime_error e) {
-        cerr << "Error in convert_results_txt_to_csv: " << e.what() << endl;
+        cerr << "Cannot open file convert_results_txt_to_csv: " << e.what() << endl;
         exit(EXIT_FAILURE);
     }
 
