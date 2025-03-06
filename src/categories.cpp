@@ -56,17 +56,35 @@ pair<string, double> Category::search_nth_important_term(vector<vector<pair<stri
     return current_high;
 }
 
-void Category::put_tf_idf_all(unordered_map<string, double> doc_tf_idf) {
-    for (auto& tf_idf : doc_tf_idf) {
-        auto founded = tf_idf_all.find(tf_idf.first);
-        if (founded != tf_idf_all.end()) {
-            double new_val = (tf_idf.second + founded->second) / 2.0;
-            tf_idf_all[tf_idf.first] = new_val;
-        } else {
-            tf_idf_all[tf_idf.first] = tf_idf.second;
-        }
+void Category::print_all() {
+    for (auto& [term, tf_idf] : this->tf_idf_all) {
+        cout << term << ": " << tf_idf << endl;
     }
 }
+
+void Category::put_tf_idf_all(unordered_map<string, double> doc_tf_idf) {
+    unordered_map<string, int> word_count;
+    int i{0};
+    for (auto& tf_idf : doc_tf_idf) {
+        i++;
+        // cout << tf_idf.first << " " << tf_idf.second << endl;
+        auto founded = tf_idf_all.find(tf_idf.first);
+        if (founded != tf_idf_all.end()) {
+            double new_val = (tf_idf.second + founded->second);
+            tf_idf_all[tf_idf.first] = new_val;
+            word_count[tf_idf.first]++;
+        } else {
+            tf_idf_all[tf_idf.first] = tf_idf.second;
+            word_count[tf_idf.first] = 1;
+        }
+    }
+
+    for (auto& w_to_count : word_count) {
+        // tf_idf_all
+        tf_idf_all[w_to_count.first] = tf_idf_all[w_to_count.first] / i;
+    }
+}
+
 
 void Category::get_important_terms(Corpus * corpus) {
 

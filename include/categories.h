@@ -22,6 +22,7 @@ class Category {
         text_cat_types_ category_type;                     // category type (text_cat_types_)
         int number_of_docs;                                // number of documents in category
         vector<pair<string, double>> most_important_terms; // 5 most important terms in category
+        // int doc_count{0};
     
         /* sort tf-idf pairs from high tf-idf to 
          * low tf-idf for local Category.
@@ -35,6 +36,8 @@ class Category {
 
     public:
         unordered_map<string, double> tf_idf_all; // tf-idf terms of all documents in category
+
+        void print_all();
         
         // regular constructor
         Category(int category_type) : category_type{static_cast<text_cat_types_>(category_type)} {}
@@ -45,16 +48,19 @@ class Category {
 
         Category(Category&& other) noexcept
             : category_type{other.category_type},
-            most_important_terms{std::move(other.most_important_terms)} 
+            most_important_terms{std::move(other.most_important_terms)},
+            tf_idf_all{std::move(other.tf_idf_all)}  // Move tf_idf_all!
         {}
 
         Category& operator=(Category&& other) noexcept {
             if (this != &other) {
                 category_type = other.category_type;
                 most_important_terms = std::move(other.most_important_terms);
+                tf_idf_all = std::move(other.tf_idf_all);  // Move tf_idf_all!
             }
             return *this;
         }
+
 
         text_cat_types_ get_type() {
             return category_type;

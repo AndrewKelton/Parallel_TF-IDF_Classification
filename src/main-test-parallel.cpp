@@ -34,22 +34,24 @@
 using namespace std;
 
 // Function to compute cosine similarity between two TF-IDF vectors
-double cosineSimilarity(const unordered_map<string, double>& doc1, 
-                        const unordered_map<string, double>& doc2) {
+double cosineSimilarity(const unordered_map<string, double>& doc1, const unordered_map<string, double>& doc2) {
     double dotProduct = 0.0, norm1 = 0.0, norm2 = 0.0;
 
     for (const auto& [word, tfidf1] : doc1) {
-        if (doc2.count(word)) {
+        // cout << "word: " << word << endl;
+        if (doc2.find(word) != doc2.end()) {
             dotProduct += tfidf1 * doc2.at(word);
         }
         norm1 += tfidf1 * tfidf1;
     }
     
-    for (const auto& [_, tfidf2] : doc2) {
+    for (const auto& [word, tfidf2] : doc2) {
+        // cout << word << endl;
         norm2 += tfidf2 * tfidf2;
     }
+    cout << "Norm1: " << norm1 << "\tNorm2: " << norm2 << "\tdotProduct: " << dotProduct << endl;
 
-    if (norm1 == 0.0 || norm2 == 0.0) return 0.0; // Avoid division by zero
+    if (fabs(norm1) < 1e-9 || fabs(norm2) < 1e-9) return 0.0; // Avoid division by zero
 
     return dotProduct / (sqrt(norm1) * sqrt(norm2));
 }
@@ -156,14 +158,7 @@ int main(int argc, char * argv[]) {
     print_duration_code(start, end, categories_);
     /* -- Category Section END -- */
 
-
-    // convert txt results to csv for python graphing
-    try {
-        convert_results_txt_to_csv(0, comp_or_solo);
-    } catch (runtime_error e) {
-        cerr << "Error converting txt to csv: " << e.what() << endl;
-        exit(EXIT_FAILURE);
-    }
+    // cout << "HERE" << endl;
 
     /* initialize corpus and documents in 
      * corpus, from unkown text.
@@ -171,28 +166,41 @@ int main(int argc, char * argv[]) {
     Corpus unknown_corpus;
     try {
         read_unkown_text(ref(unknown_corpus), "data/unkown_text.txt");
+        cout << "HERE" << endl;
     } catch (runtime_error e) {
         cerr << "Error: " << argv[1] << " " << e.what() << endl;
     }
     
     try {
         vectorize_corpus_threaded(&unknown_corpus);
+        unknown_corpus.num_of_docs += corpus.num_of_docs;
+        cout << "HERE: " << unknown_corpus.num_of_docs << endl;
     } catch (exception e) {
         cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
         return 1;
     }
 
     try {
-        unknown_corpus.tfidf_documents();
+        unknown_corpus.tfidf_documents_seq();
+        cout << "HERE" << endl;
     } catch (exception e) {
         cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
         return 1;
     }
+    cout << "HERE" << endl;
 
     cout << "Unkown Text Classified: " << classifyText(unknown_corpus.documents[0].tf_idf, cat_vect) << endl;
 
     // check the user flags for output related tasks
     handle_output_flags(corpus, corpus.documents, cat_vect);
+
+     // convert txt results to csv for python graphing
+    // try {
+    //     convert_results_txt_to_csv(0, comp_or_solo);
+    // } catch (runtime_error e) {
+    //     cerr << "Error converting txt to csv: " << e.what() << endl;
+    //     exit(EXIT_FAILURE);
+    // }
 
     return 0;
 }
