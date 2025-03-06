@@ -24,11 +24,50 @@
  */
 
 
+#include <iostream>
+#include <unordered_map>
+#include <cmath>
 #include "count_vectorization.h"
 #include "file_operations.h"
 #include "flag_handler.hpp"
 
 using namespace std;
+
+// Function to compute cosine similarity between two TF-IDF vectors
+double cosineSimilarity(const unordered_map<string, double>& doc1, 
+                        const unordered_map<string, double>& doc2) {
+    double dotProduct = 0.0, norm1 = 0.0, norm2 = 0.0;
+
+    for (const auto& [word, tfidf1] : doc1) {
+        if (doc2.count(word)) {
+            dotProduct += tfidf1 * doc2.at(word);
+        }
+        norm1 += tfidf1 * tfidf1;
+    }
+    
+    for (const auto& [_, tfidf2] : doc2) {
+        norm2 += tfidf2 * tfidf2;
+    }
+
+    if (norm1 == 0.0 || norm2 == 0.0) return 0.0; // Avoid division by zero
+
+    return dotProduct / (sqrt(norm1) * sqrt(norm2));
+}
+
+string classifyText(const unordered_map<string, double>& unknownText, unordered_map<string, unordered_map<string, double>> trainedDocs) {
+    string bestCategory;
+    double maxSimilarity = 0.0;
+
+    for (const auto& [category, docVector] : trainedDocs) {
+        double similarity = cosineSimilarity(unknownText, docVector);
+        if (similarity > maxSimilarity) {
+            maxSimilarity = similarity;
+            bestCategory = category;
+        }
+    }
+
+    return bestCategory;
+}
 
 
 int main(int argc, char * argv[]) {
@@ -122,6 +161,30 @@ int main(int argc, char * argv[]) {
     } catch (runtime_error e) {
         cerr << "Error converting txt to csv: " << e.what() << endl;
         exit(EXIT_FAILURE);
+    }
+
+    /* initialize corpus and documents in 
+     * corpus, from unkown text.
+     */
+    Corpus unknown_corpus;
+    try {
+        read_unkown_text(ref(unknown_corpus), argv[3]);
+    } catch (runtime_error e) {
+        cerr << "Error: " << argv[1] << " " << e.what() << endl;
+    }
+    
+    try {
+        vectorize_corpus_threaded(&unknown_corpus);
+    } catch (exception e) {
+        cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
+        return 1;
+    }
+
+    try {
+        unknown_corpus.tfidf_documents();
+    } catch (exception e) {
+        cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
+        return 1;
     }
 
     // check the user flags for output related tasks

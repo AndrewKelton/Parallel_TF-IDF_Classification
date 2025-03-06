@@ -22,7 +22,8 @@ class Category {
         text_cat_types_ category_type;                     // category type (text_cat_types_)
         int number_of_docs;                                // number of documents in category
         vector<pair<string, double>> most_important_terms; // 5 most important terms in category
-
+        unordered_map<string, unordered_map<string, double>> tf_idf_all; // tf-idf terms of all documents in category
+    
         /* sort tf-idf pairs from high tf-idf to 
          * low tf-idf for local Category.
          */

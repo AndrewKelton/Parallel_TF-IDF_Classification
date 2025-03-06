@@ -12,6 +12,9 @@ using namespace std;
  */
 extern void read_csv_to_corpus(Corpus& corpus, const string& file_name);
 
+// read and vectorize the unkown text
+extern void read_unkown_text(Corpus& corpus, const string& file_name);
+
 /* Convert the *results.txt file to a csv for python preprocess graphing.
  * Will not check if 'file_name' is one of the preincluded files.
  */

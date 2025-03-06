@@ -162,3 +162,21 @@ extern void convert_results_txt_to_csv(unsigned int par_or_seq, bool comp_or_sol
 extern string get_input_file_name() {
     return input_file_name;
 }
+
+extern void read_unkown_text(Corpus& corpus, const string& file_name) {
+    ifstream file{file_name};
+
+    if (!file.is_open())
+        throw runtime_error("file cannot be opened...");
+    
+    string line;
+    int i{0};
+    while (getline(file, line)) {
+
+        corpus.documents.push_back(create_document(line, invalid_t_));
+        i++;
+    }
+
+    corpus.num_of_docs.store(i);
+    file.close();
+}

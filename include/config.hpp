@@ -13,7 +13,7 @@
 
 // outputs all data
 #ifndef ENABLE_LENGTHY
-#define ENABLE_LENGTHY 0
+#define ENABLE_LENGTHY 1
 #endif
 
 // outputs all TF-IDF info of corpus 
