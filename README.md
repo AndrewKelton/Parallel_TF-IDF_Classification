@@ -35,7 +35,7 @@ scripts/all.sh
 ```
 
 
-## Run Tests
+## Build & Run Tests
 ### Run Individual Tests
 #### a. Parallel Test
 ```bash
