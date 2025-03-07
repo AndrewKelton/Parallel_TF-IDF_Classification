@@ -10,6 +10,7 @@ Parallel TF-IDF Classification is a high-performance implementation of the Term 
 - **Linux Environment** (I used Ubuntu)
 
 ### Build Instructions
+#### Build Environment
 ```bash
 git clone https://github.com/AndrewKelton/Parallel_TF-IDF_Classification.git
 cd Parallel_TF-IDF_Classification
@@ -17,25 +18,14 @@ cd Parallel_TF-IDF_Classification
 chmod +x scripts/setup.sh
 scripts/setup.sh
 ```
-
-### Build the Program without Running Tests
-#### Build Parallel Program
-```bash
-make main-par
-```
-#### Build Sequential Program
-```bash
-make main-seq
-```
-
-### Build, Run Tests, and Cleanup
+#### Build Environment & Run Tests
 ```bash
 chmod +x scripts/all.sh
 scripts/all.sh
 ```
 
 
-## Build & Run Tests
+## Run Tests
 ### Run Individual Tests
 #### a. Parallel Test
 ```bash
@@ -62,6 +52,25 @@ _(Runs multiple iterations of make test for benchmarking.)_
 ```bash
 chmod +x scripts/cleanup.sh
 ```
+
+
+## Challenges
+* Efficient parallel version of TF-IDF algorithm
+* Optimize thread usage to maximize speedup
+* Handle large datasets efficiently
+* Ensure correctness in parallel optimization
+
+## Tasks
+* Implement parallel vectorization and TF-IDF compution
+* Implement classifier using cosine similarity
+* Measure times of computation in different sections of code
+* Measure accuracy of classification
+* Compare Parallel and Sequential times and accuracy
+
+## Goals
+* Prove parallel TF-IDF is more efficient than its sequential implementation
+* Ensure correctness in parallel TF-IDF computation
+* Successfully classify documents using TF-IDF scores
 
 
 ## Notes
