@@ -173,7 +173,7 @@ static double cosine_similarity(const unordered_map<string, double>& doc1, const
     return dotProduct / (sqrt(norm1) * sqrt(norm2));
 }
 
-static unknown_class classify_text(const unordered_map<string, double>& unknownText, vector<Category> cat_vect, string correct_type) {
+extern unknown_class classify_text(const unordered_map<string, double>& unknownText, vector<Category> cat_vect, string correct_type) {
     unknown_class unknown_classification;
     unknown_classification.correct_type = conv_cat_type(correct_type);
     text_cat_types_ best_category_type{invalid_t_};
@@ -226,12 +226,14 @@ extern void print_classifications(unknown_classification_s classified) {
     cout << "Actual\tClassified\tCorrect" << endl;
     
     for (int i = 0; i < classified.total_count; i++) {
-        cout << conv_cat_type(classified.unknown_doc.at(i).correct_type) << "\t" << conv_cat_type(classified.unknown_doc.at(i).correct_type) << "\t";
+        // if (classified.unknown_doc.at(i).correct_type == )
+        cout << conv_cat_type(classified.unknown_doc.at(i).correct_type) << "\t" << conv_cat_type(classified.unknown_doc.at(i).classified_type) << "\t";
         
         if (classified.unknown_doc.at(i).correct)
             cout << "True";
         else 
             cout << "False";
+        
         cout << endl;
     }
 }

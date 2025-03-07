@@ -42,16 +42,17 @@ def main():
     df_merge["Time_rat"] = df_merge["Time_seq"] / df_merge["Time_par"]
 
     df_merge["Section"] = df_merge["Section"].replace({
-        "Vectorization": "Vectorization Ratio",
-        "TF-IDF": "TF-IDF Ratio",
-        "Categories": "Categories Ratio"
+        "Vectorization": "Vectorization Time Ratio",
+        "TF-IDF": "TF-IDF Time Ratio",
+        "Categories": "Categories Time Ratio",
+        "Accuracy": "Accuracy Ratio"
     })
 
     # plot
     plt.figure(figsize=(10, 6))
     plt.bar(df_merge["Section"], df_merge["Time_rat"], color="skyblue")
     plt.xlabel("Sections")
-    plt.ylabel("Time Ratio (Sequential / Parallel)")
+    plt.ylabel("Ratio (Sequential / Parallel)")
     plt.title("Ratio of Sequential to Parallel Processing Time of TF-IDF Vectorization Over 100 Iterations")
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()

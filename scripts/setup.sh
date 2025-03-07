@@ -14,7 +14,7 @@ PROCESSED_DATA_CSV_DIR="./processed-data-results"
 GRAPHS_DIR="./graphs"
 INCLUDE_DIR="./include"
 STEM_LIB_DIR="$INCLUDE_DIR/OleanderStemmingLibrary"
-ML_LIB_DIR="$INCLUDE_DIR/mlpack"
+# ML_LIB_DIR="$INCLUDE_DIR/mlpack"
  
 # welcome message
 echo -e "\n"
@@ -50,23 +50,23 @@ else
     fi
 fi
 
-if [ -d "$ML_LIB_DIR" ] && [ "$(ls -A "$ML_LIB_DIR" 2>/dev/null)" ]; then
-    echo "mlpack is already installed..."
-else 
-    echo "mlpack not found. Cloning into $ML_LIB_DIR..."
-
-    # Remove the directory if it exists but is empty
-    if [ -d "$ML_LIB_DIR" ]; then
-        rm -rf "$ML_LIB_DIR"
-    fi
-
-    git clone https://github.com/mlpack/mlpack.git "$ML_LIB_DIR"
-
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to clone mlpack. Check your internet connection and try again."
-        exit 1
-    fi
-fi
+# if [ -d "$ML_LIB_DIR" ] && [ "$(ls -A "$ML_LIB_DIR" 2>/dev/null)" ]; then
+#     echo "mlpack is already installed..."
+# else 
+#     echo "mlpack not found. Cloning into $ML_LIB_DIR..."
+# 
+#     # Remove the directory if it exists but is empty
+#     if [ -d "$ML_LIB_DIR" ]; then
+#         rm -rf "$ML_LIB_DIR"
+#     fi
+# 
+#     git clone https://github.com/mlpack/mlpack.git "$ML_LIB_DIR"
+# 
+#     if [ $? -ne 0 ]; then
+#         echo "Error: Failed to clone mlpack. Check your internet connection and try again."
+#         exit 1
+#     fi
+# fi
 
 echo ""
 

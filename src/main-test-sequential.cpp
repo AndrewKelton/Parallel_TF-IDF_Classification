@@ -95,6 +95,40 @@ int main(int argc, char * argv[]) {
     /* -- Category Section END -- */
 
 
+    /* initialize corpus and documents in 
+     * corpus, from unkown text.
+     */
+    start = chrono::high_resolution_clock::now();
+    
+    Corpus unknown_corpus;
+    try {
+        read_unkown_text(ref(unknown_corpus), "data/unkown_text.txt");
+    } catch (runtime_error e) {
+        cerr << "Error: " << argv[1] << " " << e.what() << endl;
+    }
+    
+    try {
+        vectorize_corpus_sequential(&unknown_corpus);
+        // unknown_corpus.num_of_docs += corpus.num_of_docs;
+    } catch (exception e) {
+        cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
+        return 1;
+    }
+
+    try {
+        unknown_corpus.tfidf_documents_seq();
+    } catch (exception e) {
+        cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
+        return 1;
+    }
+
+    vector<string> unknown_cats_correct = read_unkown_cats();
+
+    print_classifications(init_classification(&unknown_corpus, cat_vect, unknown_cats_correct));
+    end = chrono::high_resolution_clock::now();
+    print_duration_code(start, end, unknown_);
+
+
     // convert txt results to csv for python graphing
     try {
         convert_results_txt_to_csv(1, comp_or_solo);

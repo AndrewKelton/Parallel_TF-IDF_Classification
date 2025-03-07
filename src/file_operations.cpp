@@ -144,12 +144,25 @@ extern void convert_results_txt_to_csv(unsigned int par_or_seq, bool comp_or_sol
 
     else {
         vector<pair<string, string>> res_pln_txt;
+        pair<string, string> percent_to_end;
         string line;
 
         while (getline(file, line)) {
+            
+            // ignore non time data
+            if (line.find(':') == string::npos || line.find('#') != string::npos)
+                continue;
+            
+            if (line.find('%') != string::npos) {
+                pair<string, string> split = split_string(line, ':');
+                percent_to_end = pair<string, string>{"Accuracy", split.second.substr(0, split.second.size() - 1)};
+                continue;
+            }
+
             pair<string, string> split = split_string(line, ':');
             res_pln_txt.emplace_back(split);
         }
+        res_pln_txt.emplace_back(percent_to_end);
 
         try {
             write_sections_csv(res_pln_txt, file_name, comp_or_solo);

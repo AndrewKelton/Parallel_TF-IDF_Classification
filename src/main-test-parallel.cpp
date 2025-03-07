@@ -34,6 +34,44 @@
 using namespace std;
 
 
+// Function to compute cosine similarity between two TF-IDF vectors
+// double cosineSimilarity(const unordered_map<string, double>& doc1, const unordered_map<string, double>& doc2) {
+//     double dotProduct = 0.0, norm1 = 0.0, norm2 = 0.0;
+// 
+//     for (const auto& [word, tfidf1] : doc1) {
+//         if (doc2.count(word)) {
+//             dotProduct += tfidf1 * doc2.at(word);
+//         }
+//         norm1 += tfidf1 * tfidf1;
+//     }
+//     
+//     for (const auto& [_, tfidf2] : doc2) {
+//         norm2 += tfidf2 * tfidf2;
+//     }
+// 
+//     if (norm1 == 0.0 || norm2 == 0.0) return 0.0; // Avoid division by zero
+// 
+//     return dotProduct / (sqrt(norm1) * sqrt(norm2));
+// }
+// 
+// string classify_text(const unordered_map<string, double>& unknownText, vector<Category> cat_vect) {
+//     text_cat_types_ best_category_type{invalid_t_};
+//     double maxSimilarity = 0.0;
+// 
+//     int i{0};
+//     for (const auto& cat_tf_idf : cat_vect) {
+//         double similarity = cosineSimilarity(unknownText, cat_tf_idf.tf_idf_all);
+//         if (similarity > maxSimilarity) {
+//             maxSimilarity = similarity;
+//             best_category_type = conv_cat_type(i);
+//         }
+//         i++;
+//     }
+// 
+//     return conv_cat_type(best_category_type);
+// }
+
+
 int main(int argc, char * argv[]) {
 
     // ensure valid number of input
@@ -118,11 +156,12 @@ int main(int argc, char * argv[]) {
     print_duration_code(start, end, categories_);
     /* -- Category Section END -- */
 
-    // cout << "HERE" << endl;
 
     /* initialize corpus and documents in 
      * corpus, from unkown text.
      */
+    start = chrono::high_resolution_clock::now();
+
     Corpus unknown_corpus;
     try {
         read_unkown_text(ref(unknown_corpus), "data/unkown_text.txt");
@@ -163,17 +202,19 @@ int main(int argc, char * argv[]) {
 //     cout << "Classified " << (static_cast<double>(correct_count) / static_cast<double>(unknown_corpus.num_of_docs)) * 100.0 << "% Correctly" << endl;
 
     print_classifications(init_classification(&unknown_corpus, cat_vect, unknown_cats_correct));
+    end = chrono::high_resolution_clock::now();
+    print_duration_code(start, end, unknown_);
+
+    // convert txt results to csv for python graphing
+    try {
+        convert_results_txt_to_csv(0, comp_or_solo);
+    } catch (runtime_error e) {
+        cerr << "Error converting txt to csv: " << e.what() << endl;
+        exit(EXIT_FAILURE);
+    }
 
     // check the user flags for output related tasks
     handle_output_flags(corpus, corpus.documents, cat_vect);
-
-     // convert txt results to csv for python graphing
-    // try {
-    //     convert_results_txt_to_csv(0, comp_or_solo);
-    // } catch (runtime_error e) {
-    //     cerr << "Error converting txt to csv: " << e.what() << endl;
-    //     exit(EXIT_FAILURE);
-    // }
 
     return 0;
 }

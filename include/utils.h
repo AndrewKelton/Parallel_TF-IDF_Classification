@@ -54,11 +54,11 @@ const map<text_cat_types_, string> text_categories = {
 /* -- Category Utilities -- */
 
 enum section_type_ {
-    vectorization_, tfidf_, categories_
+    vectorization_, tfidf_, categories_, unknown_
 };
 
-inline static const string SECTION_NAME[3] = {
-    "Vectorization", "TF-IDF", "Categories"
+inline static const string SECTION_NAME[4] = {
+    "Vectorization", "TF-IDF", "Categories", "Unknown Classification"
 };
 
 // throw special runtime error message

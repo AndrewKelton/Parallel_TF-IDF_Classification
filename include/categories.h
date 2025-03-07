@@ -118,6 +118,8 @@ extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, text_cat
 
 extern unknown_classification_s init_classification(Corpus * unknown_corpus, vector<Category> cat_vect, vector<string> correct_types);
 
+extern unknown_class classify_text(const unordered_map<string, double>& unknownText, vector<Category> cat_vect, string correct_type);
+
 extern void print_classifications(unknown_classification_s classifications);
 
 // deprecated function
