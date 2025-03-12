@@ -58,7 +58,7 @@ def main():
     plt.tight_layout()
 
     # save
-    plt.savefig("test-output/graphs/time_differences_plot.pdf", format="pdf")
+    plt.savefig("test-output/graphs/time_ratio_plot.pdf", format="pdf")
     plt.close()
 
 

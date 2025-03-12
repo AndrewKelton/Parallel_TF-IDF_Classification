@@ -1,5 +1,21 @@
-/* flag_handler.hpp
- * handles user print flags and calls the print functions.
+/**
+ * @file flag_handler.hpp
+ * @author Andrew Kelton
+ * @brief Handles user print flags and triggers the appropriate print functions.
+ * 
+ * @details This file defines functions that control the output of detailed information 
+ * about the `Corpus`, `Category`, and `Document` objects. The printing behavior 
+ * is controlled via feature flags (`config.hpp`). Depending on the enabled flags, 
+ * different sets of data are written to output files.
+ * 
+ * The main functions include:
+ * - `print_terms_info()`: Prints TF-IDF and term-related information for a corpus.
+ * - `print_cat_info()`: Outputs classification categories.
+ * - `print_lengthy()`: Prints all detailed information about the corpus, documents, and categories.
+ * - `handle_output_flags()`: Checks flags and calls the appropriate printing functions.
+ * 
+ * @version 0.1
+ * @date 2025-03-12
  */
 
 #ifndef FLAG_HANDLER_HPP
@@ -13,7 +29,14 @@
 
 using namespace std;
 
-// call print function for Corpus
+/**
+ * @brief Prints term-related information for a given corpus.
+ * 
+ * @details Calls `Corpus::print_all_info()` to save corpus-level statistical 
+ * information, including TF-IDF and term distributions.
+ * 
+ * @param corp Pointer to the `Corpus` object.
+ */
 inline static void print_terms_info(Corpus * corp) {
     try {
         corp->print_all_info();
@@ -22,7 +45,14 @@ inline static void print_terms_info(Corpus * corp) {
     }
 }
 
-// call print function for Category(s)
+/**
+ * @brief Prints classification category information.
+ * 
+ * @details This function ensures that the category output file is reset before writing.  
+ * It then iterates through the list of categories and prints their details.
+ * 
+ * @param cats A vector of `Category` objects to print.
+ */
 inline static void print_cat_info(vector<Category>& cats) {
     if (filesystem::exists(CAT_FILENAME))
         filesystem::remove(CAT_FILENAME);
@@ -39,7 +69,17 @@ inline static void print_cat_info(vector<Category>& cats) {
     }
 }
 
-// call print function for Corpus, Category(s), & Document(s)
+/**
+ * @brief Prints detailed corpus, document, and category information.
+ * 
+ * @details This function first prints term information from the corpus.
+ * It then iterates through each document and prints its details.
+ * Finally, it calls `print_cat_info()` to output category data.
+ * 
+ * @param corp Pointer to the `Corpus` object.
+ * @param docs A vector of `Document` objects to print.
+ * @param cats A vector of `Category` objects to print.
+ */
 inline static void print_lengthy(Corpus * corp, vector<Document> docs, vector<Category>& cats) {
     print_terms_info(corp);
 
@@ -60,7 +100,19 @@ inline static void print_lengthy(Corpus * corp, vector<Document> docs, vector<Ca
     print_cat_info(cats);
 }
 
-// handle flags to print features
+/**
+ * @brief Determines which print functions to call based on enabled flags.
+ * 
+ * @details This function checks the flag settings in `config.hpp` and calls the appropriate 
+ * printing functions:
+ * - If `ENABLE_LENGTHY` is set, it prints all available data.
+ * - If `ENABLE_TERMS_INFO` is set but `ENABLE_LENGTHY` is not, it prints term-related data.
+ * - If `ENABLE_CATS_INFO` is set but `ENABLE_LENGTHY` is not, it prints category-related data.
+ * 
+ * @param corpus Reference to the `Corpus` object.
+ * @param documents Reference to a vector of `Document` objects.
+ * @param cat_vect Reference to a vector of `Category` objects.
+ */
 inline void handle_output_flags(Corpus& corpus, vector<Document>& documents, vector<Category>& cat_vect) {
     #if ENABLE_LENGTHY
     print_lengthy(&corpus, documents, cat_vect);
@@ -75,5 +127,4 @@ inline void handle_output_flags(Corpus& corpus, vector<Document>& documents, vec
     #endif
 }
 
-
-#endif
+#endif // FLAG_HANDLER_HPP

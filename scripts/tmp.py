@@ -12,8 +12,8 @@ def process_file(input_file, output_file, removed_words_file):
 
 if __name__ == '__main__':
     # File names
-    input_filename = "data/unkown_text.txt"  # Replace with your actual input file
-    output_filename = "data/unkown_text_fix.txt"
+    input_filename = "data/unknown_text.txt"  # Replace with your actual input file
+    output_filename = "data/unknown_text_fix.txt"
     removed_words_filename = "data/correct_unknown.txt"
 
     # Process the file

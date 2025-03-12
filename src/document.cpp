@@ -22,6 +22,22 @@ void Document::calculate_term_frequency_doc() {
         term_frequency[word] = calculate_term_frequency(word);
 }
 
+void Document::print_all_info() {
+            ofstream file{DOC_FILENAME, ios::app};
+
+            if (!file) {
+                throw runtime_error("File Error in print_all_info");
+                return;
+            }
+
+            file << "Info for Document id: " << document_id << "\n";
+            file << print_category();
+            file << print_number_terms();
+            file << print_tf_idf();
+            
+            file.close();
+        }
+
 string Document::print_text() const {
     return "Text: " + text + "\n";
 }
@@ -67,7 +83,7 @@ double Corpus::idf_corpus(int docs_with_term) {
     return log(static_cast<double>(num_of_docs) / static_cast<double>(docs_with_term));
 }
 
-int Corpus::num_doc_term(string str) {
+int Corpus::num_doc_term(const string& str) {
     int count{0};
 
     for (auto& d : documents) 
@@ -152,4 +168,21 @@ string Corpus::print_number_documents_per_thread() const {
 
 string Corpus::print_number_documents() const {
     return "# of Documents: " + to_string(num_of_docs) + "\n";
+}
+
+// print king
+void Corpus::print_all_info() {
+    ofstream file{COR_FILENAME};
+
+    if (!file) {
+        throw runtime_error("File Error in print_all_info");
+        return;
+    }
+
+    file << "Info for Corpus: \n";
+    file << print_number_documents();
+    file << print_number_threads_used();
+    file << print_number_documents_per_thread();
+
+    file.close();
 }

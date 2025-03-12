@@ -158,13 +158,13 @@ int main(int argc, char * argv[]) {
 
 
     /* initialize corpus and documents in 
-     * corpus, from unkown text.
+     * corpus, from unknown text.
      */
     start = chrono::high_resolution_clock::now();
 
     Corpus unknown_corpus;
     try {
-        read_unkown_text(ref(unknown_corpus), "data/unkown_text.txt");
+        read_unknown_text(ref(unknown_corpus), "data/unknown_text.txt");
     } catch (runtime_error e) {
         cerr << "Error: " << argv[1] << " " << e.what() << endl;
     }
@@ -184,7 +184,7 @@ int main(int argc, char * argv[]) {
         return 1;
     }
 
-    vector<string> unknown_cats_correct = read_unkown_cats();
+    vector<string> unknown_cats_correct = read_unknown_cats();
 //     vector<string> unknown_cats_classified;
 // 
 //     for (auto& doc : unknown_corpus.documents)

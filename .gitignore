@@ -5,6 +5,9 @@
 obj/
 .vscode/
 build/
+docs/
+test-output/
+
 
 # object files
 *.o

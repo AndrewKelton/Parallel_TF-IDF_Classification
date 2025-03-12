@@ -1,29 +1,39 @@
-/* config.hpp
+/**
+ * @file config.hpp
+ * @author Andrew Kelton
+ * @brief Contains default flag features for controlling the generation of output files.
  * 
- * Contains default feature flags to generate .txt
- * files containing data generated from sections of
- * the code. By default ENABLE_LENGTHY is set to '1'
- * to output all data included to the directory:
- * "/test-output/lengthy".
+ * @details This file defines default feature flags used to control the generation of `.txt` files
+ * containing data generated from various sections of the code. 
+ * 
+ * By default, all flags are set to `0`, meaning output generation is **disabled** unless explicitly enabled
+ * 
+ * - `ENABLE_LENGTHY` (default: 0) → Enables detailed output in `/test-output/lengthy/`.  
+ * - `ENABLE_TERMS_INFO` (default: 0) → Enables TF-IDF term information output.  
+ * - `ENABLE_CATS_INFO` (default: 0) → Enables document category output.  
+ * 
+ * To enable a feature, modify the flag definition or use `-D<FLAG>=1` during compilation.
+ * 
+ * @version 0.1
+ * @date 2025-03-12
  */
-
 
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-// outputs all data
+/** @brief Enables detailed output in `/test-output/lengthy/`. Default: Disabled (`0`). */
 #ifndef ENABLE_LENGTHY
 #define ENABLE_LENGTHY 0
 #endif
 
-// outputs all TF-IDF info of corpus 
+/** @brief Enables output of TF-IDF term information for the corpus. Default: Disabled (`0`). */
 #ifndef ENABLE_TERMS_INFO
 #define ENABLE_TERMS_INFO 0
 #endif
 
-// outputs all categories info
+/** @brief Enables output of document category information. Default: Disabled (`0`). */
 #ifndef ENABLE_CATS_INFO
 #define ENABLE_CATS_INFO 0
 #endif
 
-#endif 
+#endif // CONFIG_HPP

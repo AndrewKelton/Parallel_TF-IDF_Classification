@@ -177,7 +177,7 @@ extern string get_input_file_name() {
     return input_file_name;
 }
 
-extern void read_unkown_text(Corpus& corpus, const string& file_name) {
+extern void read_unknown_text(Corpus& corpus, const string& file_name) {
     ifstream file{file_name};
 
     if (!file.is_open())
@@ -195,7 +195,7 @@ extern void read_unkown_text(Corpus& corpus, const string& file_name) {
     file.close();
 }
 
-extern vector<string> read_unkown_cats() {
+extern vector<string> read_unknown_cats() {
     vector<string> correct_cats;
     ifstream file{"data/correct_unknown.txt"};
     

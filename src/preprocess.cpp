@@ -63,10 +63,6 @@ static string preprocess_remove_punc_text(string str) {
     return processed;
 }
 
-/* prune text, such as: "enjoying" -> "enjoy" 
- * uses the OleanderStemmingLibrary by Blake Madden
- * URL: https://github.com/Blake-Madden/OleanderStemmingLibrary.git
- */
 extern string preprocess_prune_term(string str) {
     wstring to_prune;
 

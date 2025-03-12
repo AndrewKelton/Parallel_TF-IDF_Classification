@@ -122,6 +122,23 @@ void Category::get_important_terms(Corpus * corpus) {
     }
 }
 
+void Category::print_all_info() {
+            ofstream file{CAT_FILENAME, ios::app};
+
+            if (!file) {
+                throw runtime_error("File Error in print_all_info");
+                return;
+            }
+
+            file << "Category: " << conv_cat_type(category_type) << "\n";
+            
+            for (auto& term : most_important_terms) {
+                file << term.first << ": " << term.second << "\n";
+            }
+            file << "\n";
+            file.close();
+        }
+
 // initialize categories vector
 static vector<Category> init_categories() {
     vector<Category> categories_list;
