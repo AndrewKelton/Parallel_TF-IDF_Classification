@@ -1,5 +1,6 @@
 # **Scripts**
 
+## Introduction
 _scripts_ contains `bash` and `python` code that are NOT used for the project itself and are JUST for setting up and cleaning the workspace, and creating graphs out of data.   
 
 ## About _scripts_
