@@ -1,5 +1,7 @@
 /**
  * @file count_vectorization.h
+ * @compiler g++ -std=c++17 
+ * 
  * @author Andrew Kelton
  * @brief Provides functions to vectorize a Corpus object.
  * 

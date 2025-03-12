@@ -1,5 +1,7 @@
 /**
  * @file document.h
+ * @compiler g++ -std=c++17 
+ * 
  * @author Andrew Kelton
  * @brief Defines the Document and Corpus classes and their related functions.
  * @version 0.1

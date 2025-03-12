@@ -1,5 +1,7 @@
 /**
  * @file utils.h
+ * @compiler g++ -std=c++17 
+ * 
  * @author Andrew Kelton
  * @brief Header-only utility library with common data types and functions.
  * 
@@ -12,7 +14,6 @@
  * 
  * @version 0.1
  * @date 2025-03-12
- * 
  */
 
 #ifndef UTILS_H

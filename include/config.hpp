@@ -1,5 +1,7 @@
 /**
  * @file config.hpp
+ * @compiler g++ -std=c++17 
+ * 
  * @author Andrew Kelton
  * @brief Contains default flag features for controlling the generation of output files.
  * 

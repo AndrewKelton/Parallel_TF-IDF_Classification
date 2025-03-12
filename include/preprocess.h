@@ -1,5 +1,7 @@
 /**
  * @file preprocess.h
+ * @compiler g++ -std=c++17 
+ * 
  * @author Andrew Kelton
  * @brief Handles text preprocessing tasks such as stemming and text normalization.
  * 

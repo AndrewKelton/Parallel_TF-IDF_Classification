@@ -2,7 +2,7 @@
 
 # Compiler and Flags
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17 -pthread \
+CXXFLAGS += -std=c++17 -Wall -Wextra -pthread \
 		   -I/opt/homebrew/include -I/opt/homebrew/include/ \
 		   -Iinclude -Iinclude/OleanderStemmingLibrary/src \
 		   -Wdeprecated-declarations -Wno-unused-function \

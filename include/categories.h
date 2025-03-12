@@ -1,7 +1,20 @@
 /**
  * @file categories.h
+ * @compiler g++ -std=c++17 
+ * 
  * @author Andrew Kelton
  * @brief Contains Category class and functions to classify Document(s).
+ * 
+ * @details This file defines the `Category` class, which represents the classification categories
+ * used to categorize documents in the corpus. The class provides various functions for managing
+ * categories, including adding documents to a category, retrieving category information, and
+ * performing classification tasks. 
+ * 
+ * The `Category` class is integral to the document classification system, helping organize and
+ * classify documents based on predefined categories. The classification process can be based on
+ * different criteria, such as the content of the documents or manually assigned labels. This file 
+ * also contains utility functions for managing categories, checking if a document belongs to a 
+ * specific category, and handling category-related data efficiently.
  * 
  * @version 0.1
  * @date 2025-03-12

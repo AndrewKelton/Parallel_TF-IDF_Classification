@@ -1,5 +1,7 @@
 /**
  * @file flag_handler.hpp
+ * @compiler g++ -std=c++17 
+ * 
  * @author Andrew Kelton
  * @brief Handles user print flags and triggers the appropriate print functions.
  * 

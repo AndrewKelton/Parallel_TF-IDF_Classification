@@ -1,5 +1,7 @@
 /**
  * @file file_operations.h
+ * @compiler g++ -std=c++17 
+ * 
  * @author Andrew Kelton
  * @brief Provides file handling utilities for loading, reading, and saving data.
  * 
