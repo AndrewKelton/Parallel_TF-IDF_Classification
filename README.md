@@ -7,7 +7,10 @@ Parallel TF-IDF Classification is a high-performance implementation of the Term 
 ### Prerequisites
 - C++ compiler (GCC, Clang, or MSVC)
 - **OleanderStemmingLibrary** (Automatically installed with `scripts/setup.sh`)
-- **Linux Environment** (I used Ubuntu)
+- **Linux Environment**, I used:
+    - **Linux Environment**: Ubuntu 22.04.5 LTS (Jammy Jellyfish)  
+    - **Kernel Version**: 5.15.0-130-generic  
+    - **Architecture**: x86_64  
 
 ### Build Instructions
 #### Build Environment
@@ -76,4 +79,4 @@ chmod +x scripts/cleanup.sh
 ## Notes
 * Dataset Requirement: Ensure BBC-News-Training.csv is available in the project directory.
 * Logging & Output: Results for _Individual Tests_ are stored in test-output/solo/results/, and logs are saved in test-output/solo/logs/. Results for _Comparison Tests_ are stored in test-output/comparison/results/, and logs are saved in test-output/comparison/logs/.
-* Running `scripts/run.sh` may take a long time to finish due to the sequential solution taking quite a bit of time.
+* Running `scripts/run.sh` may take a long time to finish due to the sequential solution taking quite a bit of time. I recommend reducing the number of iterations in `scripts/run.sh` to 5 if you are running this locally.
