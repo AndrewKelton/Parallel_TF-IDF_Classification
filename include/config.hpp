@@ -16,12 +16,12 @@
  * 
  * To enable a feature, modify the flag definition or use `-D<FLAG>=1` during compilation.
  * 
- * @version 0.1
+ * @version 1.0
  * @date 2025-03-12
  */
 
-#ifndef CONFIG_HPP
-#define CONFIG_HPP
+#ifndef _CONFIG_HPP
+#define _CONFIG_HPP
 
 /** @brief Enables detailed output in `/test-output/lengthy/`. Default: Disabled (`0`). */
 #ifndef ENABLE_LENGTHY
@@ -38,4 +38,4 @@
 #define ENABLE_CATS_INFO 0
 #endif
 
-#endif // CONFIG_HPP
+#endif // _CONFIG_HPP

@@ -12,12 +12,12 @@
  * - Time measurement utilities.
  * - Thread-related constants
  * 
- * @version 0.1
+ * @version 1.0
  * @date 2025-03-12
  */
 
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef _UTILS_H
+#define _UTILS_H
 
 #include <map>
 #include <set>
@@ -29,14 +29,13 @@
 #include <stdexcept>
 #include <sstream>
 #include <thread>
-
-using namespace std;
+#include <string>
 
 /** @brief Maximum number of processing sections. */
 #define MAX_SECTIONS 4
 
 /** @brief Maximum number of threads supported by the system. */
-inline const unsigned NUMBER_OF_THREADS_MAX{thread::hardware_concurrency()};
+inline const unsigned NUMBER_OF_THREADS_MAX{std::thread::hardware_concurrency()};
 
 /** 
  * @enum class_type_
@@ -62,7 +61,7 @@ enum text_cat_types_ {
 /** 
  * @brief Maps category names (strings) to their corresponding `text_cat_types_` enum.
  */
-const map<string, text_cat_types_> categories_text = {
+const std::map<std::string, text_cat_types_> categories_text = {
     {"sport", sport_t_},
     {"business", business_t_},
     {"politics", politics_t_},
@@ -73,7 +72,7 @@ const map<string, text_cat_types_> categories_text = {
 /** 
  * @brief Maps `text_cat_types_` enums to their corresponding string representations.
  */
-const map<text_cat_types_, string> text_categories = {
+const std::map<text_cat_types_, std::string> text_categories = {
     {sport_t_, "sport"},
     {business_t_, "business"},
     {politics_t_, "politics"},
@@ -91,13 +90,12 @@ enum section_type_ {
     tfidf_,         ///< TF-IDF computation step.
     categories_,    ///< Category classification step.
     unknown_        ///< Unknown classification step.
-
 };
 
 /** 
  * @brief Names of the different computation sections.
  */
-inline static const string SECTION_NAME[4] = {
+inline static const std::string SECTION_NAME[4] = {
     "Vectorization", "TF-IDF", "Categories", "Unknown Classification"
 };
 
@@ -110,13 +108,13 @@ inline static const string SECTION_NAME[4] = {
  */
 template<typename... Args>
 inline void throw_runtime_error(Args... args) {
-    ostringstream err_response;
+    std::ostringstream err_response;
 
     ((err_response << args << " "), ...);
 
-    string err_msg = err_response.str();
+    std::string err_msg = err_response.str();
     
-    throw runtime_error(err_msg);
+    throw std::runtime_error(err_msg);
 }
 
 /**
@@ -125,7 +123,7 @@ inline void throw_runtime_error(Args... args) {
  * @param type The section type as `section_type_`.
  * @return Corresponding section name as a string.
  */
-inline string get_section_name(section_type_ type) {
+inline std::string get_section_name(section_type_ type) {
     return SECTION_NAME[static_cast<int>(type)];
 }
 
@@ -141,7 +139,7 @@ using _time_point_ = std::chrono::_V2::system_clock::time_point;
  * @return Elapsed time in milliseconds.
  */
 inline double elapsed_time_ms(_time_point_ start, _time_point_ end) {
-    return static_cast<double>(chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
+    return static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 }
 
 /**
@@ -151,7 +149,7 @@ inline double elapsed_time_ms(_time_point_ start, _time_point_ end) {
  * @param end The end time.
  */
 inline void print_elapsed_time_ms(_time_point_ start, _time_point_ end) {
-    cout << elapsed_time_ms(start, end) << " ms" << endl;
+    std::cout << elapsed_time_ms(start, end) << " ms" << std::endl;
 }
 
 /**
@@ -162,7 +160,7 @@ inline void print_elapsed_time_ms(_time_point_ start, _time_point_ end) {
  * @param type The section type.
  */
 inline void print_duration_code(_time_point_ start, _time_point_ end, section_type_ type) {
-    cout << get_section_name(type) << ": ";
+    std::cout << get_section_name(type) << ": ";
     print_elapsed_time_ms(start, end);
 }
 
@@ -185,10 +183,10 @@ inline text_cat_types_ conv_cat_type(int i) {
  * @param type_ The category type enum.
  * @return Corresponding category name as a string.
  */
-inline string conv_cat_type(text_cat_types_ type_) {
+inline std::string conv_cat_type(text_cat_types_ type_) {
     try {
         return text_categories.at(type_);
-    } catch (const out_of_range& e) {
+    } catch (const std::out_of_range& e) {
         return text_categories.at(invalid_t_);
     }
 }
@@ -200,8 +198,8 @@ inline string conv_cat_type(text_cat_types_ type_) {
  * @return Corresponding `text_cat_types_` enum.
  */
 
-inline text_cat_types_ conv_cat_type(string str) {
+inline text_cat_types_ conv_cat_type(std::string str) {
     return categories_text.at(str);
 }
 
-#endif // UTILS_H
+#endif // _UTILS_H

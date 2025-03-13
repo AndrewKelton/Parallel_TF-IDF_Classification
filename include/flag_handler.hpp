@@ -16,20 +16,18 @@
  * - `print_lengthy()`: Prints all detailed information about the corpus, documents, and categories.
  * - `handle_output_flags()`: Checks flags and calls the appropriate printing functions.
  * 
- * @version 0.1
+ * @version 1.0
  * @date 2025-03-12
  */
 
-#ifndef FLAG_HANDLER_HPP
-#define FLAG_HANDLER_HPP
+#ifndef _FLAG_HANDLER_HPP
+#define _FLAG_HANDLER_HPP
 
 #include "config.hpp" 
 #include "document.h"
 #include "categories.h"
 #include "utils.h"
 #include <filesystem>
-
-using namespace std;
 
 /**
  * @brief Prints term-related information for a given corpus.
@@ -39,11 +37,11 @@ using namespace std;
  * 
  * @param corp Pointer to the `Corpus` object.
  */
-inline static void print_terms_info(Corpus * corp) {
+inline static void print_terms_info(corpus::Corpus * corp) {
     try {
         corp->print_all_info();
-    } catch (runtime_error e) {
-        cerr << "Error Printing Corpus: " << e.what() << endl;
+    } catch (std::runtime_error e) {
+        std::cerr << "Error Printing Corpus: " << e.what() << std::endl;
     }
 }
 
@@ -55,18 +53,18 @@ inline static void print_terms_info(Corpus * corp) {
  * 
  * @param cats A vector of `Category` objects to print.
  */
-inline static void print_cat_info(vector<Category>& cats) {
-    if (filesystem::exists(CAT_FILENAME))
-        filesystem::remove(CAT_FILENAME);
+inline static void print_cat_info(std::vector<cats::Category>& cats) {
+    if (std::filesystem::exists(CAT_FILENAME))
+        std::filesystem::remove(CAT_FILENAME);
     
-    ofstream tmp_f{CAT_FILENAME};
+    std::ofstream tmp_f{CAT_FILENAME};
     tmp_f.close();
 
     for (auto& cat : cats) {
         try {
             cat.print_all_info();
-        } catch (runtime_error e) {
-            cerr << "Error Printing " << conv_cat_type(cat.get_type()) << ": " << e.what() << endl;
+        } catch (std::runtime_error e) {
+            std::cerr << "Error Printing " << conv_cat_type(cat.get_type()) << ": " << e.what() << std::endl;
         }
     }
 }
@@ -82,20 +80,20 @@ inline static void print_cat_info(vector<Category>& cats) {
  * @param docs A vector of `Document` objects to print.
  * @param cats A vector of `Category` objects to print.
  */
-inline static void print_lengthy(Corpus * corp, vector<Document> docs, vector<Category>& cats) {
+inline static void print_lengthy(corpus::Corpus * corp, std::vector<docs::Document> docs, std::vector<cats::Category>& cats) {
     print_terms_info(corp);
 
-    if (filesystem::exists(DOC_FILENAME))
-        filesystem::remove(DOC_FILENAME);
+    if (std::filesystem::exists(DOC_FILENAME))
+        std::filesystem::remove(DOC_FILENAME);
 
-    ofstream tmp_f{DOC_FILENAME};
+    std::ofstream tmp_f{DOC_FILENAME};
     tmp_f.close();
 
     for (auto& doc : docs) {
         try {
             doc.print_all_info();
-        } catch (runtime_error e) {
-            cerr << "Error Printing Document #" << to_string(doc.document_id) << ": " << e.what() << endl;
+        } catch (std::runtime_error e) {
+            std::cerr << "Error Printing Document #" << std::to_string(doc.document_id) << ": " << e.what() << std::endl;
         }
     }
 
@@ -115,7 +113,7 @@ inline static void print_lengthy(Corpus * corp, vector<Document> docs, vector<Ca
  * @param documents Reference to a vector of `Document` objects.
  * @param cat_vect Reference to a vector of `Category` objects.
  */
-inline void handle_output_flags(Corpus& corpus, vector<Document>& documents, vector<Category>& cat_vect) {
+inline void handle_output_flags(corpus::Corpus& corpus, std::vector<docs::Document>& documents, std::vector<cats::Category>& cat_vect) {
     #if ENABLE_LENGTHY
     print_lengthy(&corpus, documents, cat_vect);
     #endif
@@ -129,4 +127,4 @@ inline void handle_output_flags(Corpus& corpus, vector<Document>& documents, vec
     #endif
 }
 
-#endif // FLAG_HANDLER_HPP
+#endif // _FLAG_HANDLER_HPP

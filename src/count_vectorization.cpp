@@ -7,14 +7,12 @@
 #include "categories.h"
 #include <set>
 
-using namespace std;
-
-atomic<int> doc_id_count{0}; // document id 
+std::atomic<int> doc_id_count{0}; // document id 
 
 /* words that carry no value and are voided 
  * used from https://towardsdatascience.com/building-a-cross-platform-tfidf-text-summarizer-in-rust-7b05938f4507
 */
-static const set<string> STOPWORDS{
+static const std::set<std::string> STOPWORDS{
     "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", 
     "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", 
     "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", 
@@ -40,9 +38,9 @@ static const set<string> STOPWORDS{
  * against STOPWORDS. Pruning must be done
  * AFTER tokenizing a term.
  */
-static void count_words_doc(Document * doc) {
-    istringstream iss(doc->text);
-    string word;
+static void count_words_doc(docs::Document * doc) {
+    std::istringstream iss(doc->text);
+    std::string word;
 
     while (iss >> word) {
         word = preprocess_prune_term(word);
@@ -55,9 +53,9 @@ static void count_words_doc(Document * doc) {
 }
 
 // preprocess and vectorize a document (helper for threaded)
-static void vectorize_doc_parallel(Document * doc) {
-    doc->document_id = doc_id_count.load(memory_order_acquire);
-    doc_id_count.fetch_add(1, memory_order_release);
+static void vectorize_doc_parallel(docs::Document * doc) {
+    doc->document_id = doc_id_count.load(std::memory_order_acquire);
+    doc_id_count.fetch_add(1, std::memory_order_release);
 
     preprocess_text(doc);
     count_words_doc(doc);
@@ -66,7 +64,7 @@ static void vectorize_doc_parallel(Document * doc) {
 
 
 // preprocess and vectorize a document sequenitally
-static void vectorize_doc_sequenital(Document * doc, int * id) {
+static void vectorize_doc_sequenital(docs::Document * doc, int * id) {
     doc->document_id = *id++;
     preprocess_text(doc);
     count_words_doc(doc);
@@ -75,11 +73,11 @@ static void vectorize_doc_sequenital(Document * doc, int * id) {
 
 
 // main vectorization function for parallel execution
-extern void vectorize_corpus_threaded(Corpus * corpus) {
-    vector<thread> threads;
+extern void vectorize_corpus_threaded(corpus::Corpus * corpus) {
+    std::vector<std::thread> threads;
 
     for (auto& document : (*corpus).documents) {
-        threads.emplace_back(thread(vectorize_doc_parallel, &document));
+        threads.emplace_back(std::thread(vectorize_doc_parallel, &document));
     }
 
     for (auto& t : threads)
@@ -88,7 +86,7 @@ extern void vectorize_corpus_threaded(Corpus * corpus) {
 }
 
 // main vectorization function for sequential execution
-extern void vectorize_corpus_sequential(Corpus * corpus) {
+extern void vectorize_corpus_sequential(corpus::Corpus * corpus) {
     int id = 0;
 
     for (auto& document : (*corpus).documents) {

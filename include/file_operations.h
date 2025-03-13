@@ -15,16 +15,14 @@
  * 
  * @note Requires all input files to be located in the `data` folder.
  * 
- * @version 0.1
+ * @version 1.0
  * @date 2025-03-12
  */
 
-#ifndef FILE_OPERATIONS_H
-#define FILE_OPERATIONS_H
+#ifndef _FILE_OPERATIONS_H
+#define _FILE_OPERATIONS_H
 
 #include "document.h"
-
-using namespace std;
 
 /**
  * @brief Reads a CSV file and loads data into a `Corpus` object.
@@ -36,7 +34,8 @@ using namespace std;
  * @param corpus The `Corpus` object where the documents will be stored.
  * @param file_name The path to the CSV file to be read.
  */
-extern void read_csv_to_corpus(Corpus& corpus, const string& file_name);
+extern void read_csv_to_corpus(corpus::Corpus& corpus, const std::string& file_name);
+
 
 /**
  * @brief Reads and vectorizes unknown text for classification.
@@ -50,7 +49,8 @@ extern void read_csv_to_corpus(Corpus& corpus, const string& file_name);
  * @note Requires one document/article per line in the .txt file. Can have
  * more than one document/article, but they must be on seperate lines.
  */
-extern void read_unknown_text(Corpus& corpus, const string& file_name);
+extern void read_unknown_text(corpus::Corpus& corpus, const std::string& file_name);
+
 
 /**
  * @brief Converts a results `.txt` file to CSV for Python preprocessing and graphing.
@@ -63,19 +63,22 @@ extern void read_unknown_text(Corpus& corpus, const string& file_name);
  */
 extern void convert_results_txt_to_csv(unsigned int par_or_seq, bool comp_or_solo);
 
+
 /**
  * @brief Returns the name of the input file.
  * 
- * @return The name of the file as a string.
+ * @return The name of the file as a std::string.
  */
-extern string get_input_file_name();
+extern std::string get_input_file_name();
+
 
 /**
  * @brief Reads and returns unknown document categories from `correct_unknown.txt`.
  * 
- * @return A vector of strings containing the correct categories of the 
+ * @return A vector of std::strings containing the correct categories of the 
  * unknown input documents.
  */
-extern vector<string> read_unknown_cats();
+extern std::vector<std::string> read_unknown_cats();
 
-#endif // FILE_OPERATIONS_H
+
+#endif // _FILE_OPERATIONS_H

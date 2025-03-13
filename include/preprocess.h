@@ -9,18 +9,15 @@
  * in `Document` objects. It uses the Oleander Stemming Library to reduce words 
  * to their root forms (e.g., "enjoying" → "enjoy"). 
  * 
- * @version 0.1
+ * @version 1.0
  * @date 2025-03-12
  * @see https://github.com/Blake-Madden/OleanderStemmingLibrary
  */
 
-#ifndef PREPROCESS_H
-#define PREPROCESS_H
+#ifndef _PREPROCESS_H
+#define _PREPROCESS_H
 
 #include "document.h"
-
-using namespace std;
-
 
 /**
  * @brief Reduces a given word to its root form using stemming.
@@ -42,7 +39,7 @@ using namespace std;
  * @param str The word to be stemmed.
  * @return The stemmed version of the input word.
  */
-extern string preprocess_prune_term(string str);
+extern std::string preprocess_prune_term(std::string str);
 
 /**
  * @brief Applies text preprocessing to a document.
@@ -52,6 +49,6 @@ extern string preprocess_prune_term(string str);
  * 
  * @param doc Pointer to the `Document` object to preprocess.
  */
-extern void preprocess_text(Document * doc);
+extern void preprocess_text(docs::Document * doc);
 
-#endif // PREPROCESS_H
+#endif // _PREPROCESS_H

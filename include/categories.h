@@ -16,25 +16,44 @@
  * also contains utility functions for managing categories, checking if a document belongs to a 
  * specific category, and handling category-related data efficiently.
  * 
- * @version 0.1
+ * @version 1.0
  * @date 2025-03-12
  */
 
-#ifndef CATEGORIES_H
-#define CATEGORIES_H
+#ifndef _CATEGORIES_H
+#define _CATEGORIES_H
 
 #include <vector>
 #include <unordered_map>
 #include <fstream>
-
 #include "utils.h"
-
-using namespace std;
 
 #define MAX_CATEGORIES 5
 
-const string CAT_FILENAME = "test-output/lengthy/category-info.txt";
-class Corpus; // forward declaration
+const std::string CAT_FILENAME = "test-output/lengthy/category-info.txt";
+
+/**
+ * @namespace corpus
+ * @brief Forward declarations for `corpus::Corpus`
+ */
+namespace corpus {
+    class Corpus; // forward declaration
+}
+
+/**
+ * @namespace cats
+ * @brief Provides functionality for classifying documents into categories based on their content.
+ * 
+ * @details This namespace includes classes, structs, and functions to classify documents into predefined
+ * categories by analyzing their terms using techniques like term frequency-inverse document frequency (TF-IDF). 
+ * It offers parallel and sequential methods for determining the most important terms for each category, 
+ * as well as functions to manage classification results and print them in a readable format.
+ * 
+ * The key class in this namespace is `Category`, which encapsulates the logic for computing, storing, 
+ * and retrieving the most important terms for each category. The namespace also provides utilities for
+ * performing classification of documents and managing classification accuracy.
+ */
+namespace cats { 
 
 /**
  * @class Category
@@ -49,9 +68,6 @@ class Corpus; // forward declaration
  * in the category, and supports efficient sorting and querying of the terms.
  * 
  * @note This class also handles serialization of category data to an output file for later use.
- * 
- * @version 0.1
- * @date 2025-03-12
  */
 class Category {
 
@@ -59,7 +75,7 @@ class Category {
 
         text_cat_types_ category_type;                     ///< Category type (text_cat_types_)
         int number_of_docs;                                ///< Number of documents in this category
-        vector<pair<string, double>> most_important_terms; ///< List of top terms in the category sorted by TF-IDF
+        std::vector<std::pair<std::string, double>> most_important_terms; ///< List of top terms in the category sorted by TF-IDF
     
         /**
          * @brief Sorts the terms of the category by their TF-IDF value in descending order.
@@ -69,7 +85,7 @@ class Category {
          * @param terms An unordered map of terms and their corresponding TF-IDF scores.
          * @return A sorted vector of term-TF-IDF pairs.
          */
-        vector<pair<string, double>> sort_unordered_umap(unordered_map<string, double> terms);
+        std::vector<std::pair<std::string, double>> sort_unordered_umap(std::unordered_map<std::string, double> terms);
 
         /**
          * @brief Retrieves the nth most important term for the category.
@@ -80,7 +96,7 @@ class Category {
          * @param used A list of previously used terms to avoid duplicates.
          * @return The nth most important term and its TF-IDF score.
          */
-        pair<string, double> search_nth_important_term(vector<vector<pair<string, double>>> all_tfidf_terms, vector<pair<string, double>> used);
+        std::pair<std::string, double> search_nth_important_term(std::vector<std::vector<std::pair<std::string, double>>> all_tfidf_terms, std::vector<std::pair<std::string, double>> used);
 
         /**
          * @brief Stores the TF-IDF values of all terms for the category.
@@ -90,10 +106,10 @@ class Category {
          * 
          * @param doc_tf_idf A map of terms and their corresponding TF-IDF values for the document.
          */
-        void put_tf_idf_all(unordered_map<string, double> doc_tf_idf);
+        void put_tf_idf_all(std::unordered_map<std::string, double> doc_tf_idf);
 
     public:
-        unordered_map<string, double> tf_idf_all; ///< TF-IDF terms of all documents in the category
+        std::unordered_map<std::string, double> tf_idf_all; ///< TF-IDF terms of all documents in the category
 
         /**
          * @brief Prints all the important information for the category.
@@ -102,7 +118,12 @@ class Category {
          * terms and their TF-IDF scores, to an output file.
          */
         void print_all();
-        
+
+        /**
+         * @name Constructors & Operators
+         * @{
+         */
+                
         /**
          * @brief Regular constructor to create a Category from the category type.
          * 
@@ -110,16 +131,28 @@ class Category {
          */
         Category(int category_type) : category_type{static_cast<text_cat_types_>(category_type)} {}
 
-        // Copy constructor, assignment operator, move constructor, and move assignment operator
+        /** 
+         * @brief Copy Constructor 
+         */ 
         Category(const Category&) = default;
+
+        /** 
+         * @brief Copy Assignment Operator 
+         */
         Category& operator=(const Category&) = delete;  
 
+        /** 
+         * @brief Move Constructor 
+         */
         Category(Category&& other) noexcept
             : category_type{other.category_type},
             most_important_terms{std::move(other.most_important_terms)},
             tf_idf_all{std::move(other.tf_idf_all)}  // Move tf_idf_all!
         {}
 
+        /** 
+         * @brief Move Assignment Operator 
+         */
         Category& operator=(Category&& other) noexcept {
             if (this != &other) {
                 category_type = other.category_type;
@@ -128,6 +161,9 @@ class Category {
             }
             return *this;
         }
+        /**
+         * @}
+         */
 
         /**
          * @brief Gets the category type.
@@ -147,7 +183,7 @@ class Category {
          * 
          * @param corpus The corpus of documents used for calculating TF-IDF.
          */
-        void get_important_terms(Corpus * corpus);
+        void get_important_terms(const corpus::Corpus& corpus);
 
         /**
          * @brief Prints detailed information about the category to a file.
@@ -158,39 +194,35 @@ class Category {
         void print_all_info(); 
 };
 
+
 /**
  * @struct Classified_S
  * @brief Represents the classification results for a document.
  * 
  * This struct holds information about the correct and classified categories of a document.
- * 
- * @version 0.1
- * @date 2025-03-12
  */
 struct Classified_S {
     text_cat_types_ correct_type;    ///< The correct category of the document.
     text_cat_types_ classified_type; ///< The category the document was classified into.
     bool correct;                    ///< Whether the classification was correct.
 };
-using unknown_class = Classified_S;
+using unknown_class = Classified_S;  ///< Use `unkown_class`, I dislike capitals.
 
 /**
  * @struct Classification_S
  * @brief Represents the results of a classification process for a set of documents.
  * 
- * This struct holds a collection of documents with their classification results and the 
+ * @details This struct holds a collection of documents with their classification results and the 
  * overall classification accuracy.
- * 
- * @version 0.1
- * @date 2025-03-12
  */
 struct Classification_S {
-    vector<unknown_class> unknown_doc; ///< List of documents with classification results.
+    std::vector<unknown_class> unknown_doc; ///< List of documents with classification results.
     int correct_count;                 ///< Number of correctly classified documents.
     int total_count;                   ///< Total number of documents classified.
     double correct_db;                 ///< Classification accuracy as a decimal (correct/total).
 };
 using unknown_classification_s = Classification_S;
+
 
 /**
  * @brief Get important terms for a Category using parallel processing (5 threads, 1 per Category).
@@ -202,7 +234,8 @@ using unknown_classification_s = Classification_S;
  * @param cats A vector to store the resulting Category objects.
  * @param catint The category type to process.
  */
-extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, text_cat_types_ catint);
+extern void get_single_cat_par(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint);
+
 
 /**
  * @brief Get important terms for a Category using sequential processing.
@@ -214,7 +247,8 @@ extern void get_single_cat_par(Corpus * corpus, vector<Category>& cats, text_cat
  * @param cats A vector to store the resulting Category objects. The categories will be filled with the most important terms.
  * @param catint The category type to process, represented as a value from `text_cat_types_`.
  */
-extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, text_cat_types_ catint);
+extern void get_single_cat_seq(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint);
+
 
 /**
  * @brief Initializes the classification process for a set of documents.
@@ -229,7 +263,8 @@ extern void get_single_cat_seq(Corpus * corpus, vector<Category>& cats, text_cat
  * @param correct_types A vector of correct category labels corresponding to the documents in `unknown_corpus`.
  * @return A `Classification_S` struct containing the classification results, including the count of correct classifications.
  */
-extern unknown_classification_s init_classification(Corpus * unknown_corpus, vector<Category> cat_vect, vector<string> correct_types);
+extern unknown_classification_s init_classification(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types);
+
 
 /**
  * @brief Classifies a single document into one of the categories.
@@ -243,7 +278,8 @@ extern unknown_classification_s init_classification(Corpus * unknown_corpus, vec
  * @param correct_type The correct category label for the document.
  * @return A `Classified_S` struct containing the classification results for the document.
  */
-extern unknown_class classify_text(const unordered_map<string, double>& unknownText, vector<Category> cat_vect, string correct_type);
+extern unknown_class classify_text(const std::unordered_map<std::string, double>& unknownText, std::vector<Category> cat_vect, std::string correct_type);
+
 
 /**
  * @brief Prints the classification results for a set of documents.
@@ -257,17 +293,22 @@ extern unknown_class classify_text(const unordered_map<string, double>& unknownT
  */
 extern void print_classifications(unknown_classification_s classifications);
 
+
 /**
  * @brief Deprecated function to get important terms for all categories.
  * 
  * This function was used to retrieve the important terms for all categories in the corpus. 
  * It has been replaced by more efficient methods of parallel and sequential processing. 
- * Use `get_single_cat_par` for parallel implementation, and `get_single_cat_seq` for 
- * sequential implementation.
  * 
  * @param corpus The corpus of documents used for calculating TF-IDF.
  * @return A vector of `Category` objects, each containing the most important terms for its category.
+ * 
+ * @deprecated This is a deprecated function, please use `get_single_cat_par()` or `get_single_cat_seq()`.
  */
-extern vector<Category> get_all_category_important_terms(Corpus * corpus);
+extern std::vector<Category> get_all_category_important_terms(const corpus::Corpus& corpus);
 
-#endif // CATEGORIES_H
+
+} // namespace cats
+
+
+#endif // _CATEGORIES_H

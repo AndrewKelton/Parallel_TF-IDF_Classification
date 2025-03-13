@@ -1,6 +1,6 @@
 ### This directory contains the source code for this project.
 
-- Main files for testing such as: main-test-parallel.cpp, main-test-sequential.cpp.
+- Source files, function definitions from function declatations in include/
 - Implementations of parallel and sequential TF-IDF vectorization.
 - File operations, reading input, rewriting output, processing output for graphing.
 - Definitions of the Corpus, Document, and Category classes.
