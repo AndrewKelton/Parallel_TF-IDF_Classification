@@ -1,7 +1,7 @@
 # Parallel TF-IDF Classification
 
 ## Documentation
-Check out the documentation at my website!
+Check out the Doxyfile documentation!
 <a href="https://andrewkelton.me/parallel-tf-idf-project/index.html" target="_blank">Documentation</a>
 
 ## Introduction
