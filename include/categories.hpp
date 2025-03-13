@@ -1,5 +1,6 @@
 /**
  * @file categories.hpp
+ * @ingroup HeaderFiles
  * 
  * @author Andrew Kelton
  * @brief Contains Category class and functions to classify Document(s).

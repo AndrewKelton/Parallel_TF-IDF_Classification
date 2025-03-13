@@ -1,5 +1,6 @@
 /**
  * @file flag_handler.hpp
+ * @ingroup HeaderFiles
  * 
  * @author Andrew Kelton
  * @brief Handles user print flags and triggers the appropriate print functions.

@@ -1,6 +1,13 @@
 /**
+ * @defgroup UsageTestFiles Usage Test Files
+ * @brief Group containing all test files, showing project's usage.
+ * @{
+ */
+
+/**
  * @file main-test-parallel.cpp
  * @brief Main program for testing parallel TF-IDF computation with command-line input.
+ * @ingroup UsageTestFiles
  * 
  * @details This file contains the main function that performs parallel TF-IDF computation. 
  * The program accepts a command-line input in the form of a `.csv` file, where each line 
@@ -171,3 +178,5 @@ int main(int argc, char * argv[]) {
 
     return 0;
 }
+
+/** @} */ // End of UsageTestFiles group

@@ -1,5 +1,12 @@
 /**
+ * @defgroup HeaderFiles Header Files
+ * @brief Group containing all header files.
+ * @{
+ */
+
+/**
  * @file utils.hpp
+ * @ingroup HeaderFiles
  * 
  * @author Andrew Kelton
  * @brief Header-only utility library with common data types and functions.
@@ -198,5 +205,7 @@ inline std::string conv_cat_type(text_cat_types_ type_) {
 inline text_cat_types_ conv_cat_type(std::string str) {
     return categories_text.at(str);
 }
+
+/** @} */ // End of UsageTestFiles group
 
 #endif // _UTILS_HPP

@@ -1,5 +1,6 @@
 /**
  * @file file_operations.hpp 
+ * @ingroup HeaderFiles
  * 
  * @author Andrew Kelton
  * @brief Provides file handling utilities for loading, reading, and saving data.

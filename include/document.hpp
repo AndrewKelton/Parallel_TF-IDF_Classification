@@ -1,5 +1,6 @@
 /**
  * @file document.hpp
+ * @ingroup HeaderFiles
  * 
  * @author Andrew Kelton
  * @brief Defines the Document and Corpus classes and their related functions.

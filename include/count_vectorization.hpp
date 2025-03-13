@@ -1,5 +1,6 @@
 /**
  * @file count_vectorization.hpp
+ * @ingroup HeaderFiles
  * 
  * @author Andrew Kelton
  * @brief Provides functions to vectorize a Corpus object.

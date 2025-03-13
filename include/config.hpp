@@ -1,5 +1,6 @@
 /**
  * @file config.hpp
+ * @ingroup HeaderFiles
  * 
  * @author Andrew Kelton
  * @brief Contains default flag features for controlling the generation of output files.

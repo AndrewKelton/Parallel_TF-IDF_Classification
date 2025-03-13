@@ -1,6 +1,7 @@
 /**
  * @file main-test-non-optimized-parallel.cpp
  * @brief Main program for testing parallel TF-IDF computation with a fixed number of threads.
+ * @ingroup UsageTestFiles
  * 
  * @details This file contains the main function for testing parallel TF-IDF computation. 
  * The program uses parallel processing with a fixed number of threads, though the implementation 

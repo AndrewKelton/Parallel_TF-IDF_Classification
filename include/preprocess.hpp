@@ -1,5 +1,6 @@
 /**
  * @file preprocess.hpp
+ * @ingroup HeaderFiles
  * 
  * @author Andrew Kelton
  * @brief Handles text preprocessing tasks such as stemming and text normalization.
