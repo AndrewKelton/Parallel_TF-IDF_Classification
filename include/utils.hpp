@@ -169,7 +169,6 @@ inline void print_duration_code(_time_point_ start, _time_point_ end, section_ty
  * @param i Integer representing the category.
  * @return Corresponding `text_cat_types_` enum value.
  */
-
 inline text_cat_types_ conv_cat_type(int i) {
     if (i > 5)
         return invalid_t_;
@@ -196,7 +195,6 @@ inline std::string conv_cat_type(text_cat_types_ type_) {
  * @param str Category name as a string.
  * @return Corresponding `text_cat_types_` enum.
  */
-
 inline text_cat_types_ conv_cat_type(std::string str) {
     return categories_text.at(str);
 }
