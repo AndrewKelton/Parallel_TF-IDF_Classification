@@ -5,7 +5,8 @@
 obj/
 .vscode/
 build/
-# docs/
+docs/html
+docs/latex
 # test-output/
 
 
@@ -17,3 +18,4 @@ test[1-9]
 # README.md
 
 CMakeLists.txt
+# docs/html
