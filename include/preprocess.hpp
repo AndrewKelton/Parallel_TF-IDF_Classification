@@ -1,6 +1,5 @@
 /**
- * @file preprocess.h
- * @compiler g++ -std=c++17 
+ * @file preprocess.hpp
  * 
  * @author Andrew Kelton
  * @brief Handles text preprocessing tasks such as stemming and text normalization.
@@ -14,10 +13,10 @@
  * @see https://github.com/Blake-Madden/OleanderStemmingLibrary
  */
 
-#ifndef _PREPROCESS_H
-#define _PREPROCESS_H
+#ifndef _PREPROCESS_HPP
+#define _PREPROCESS_HPP
 
-#include "document.h"
+#include "document.hpp"
 
 /**
  * @brief Reduces a given word to its root form using stemming.
@@ -51,4 +50,4 @@ extern std::string preprocess_prune_term(std::string str);
  */
 extern void preprocess_text(docs::Document * doc);
 
-#endif // _PREPROCESS_H
+#endif // _PREPROCESS_HPP

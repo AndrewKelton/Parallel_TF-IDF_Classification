@@ -1,6 +1,5 @@
 /**
- * @file count_vectorization.h
- * @compiler g++ -std=c++17 
+ * @file count_vectorization.hpp
  * 
  * @author Andrew Kelton
  * @brief Provides functions to vectorize a Corpus object.
@@ -16,10 +15,10 @@
  * @date 2025-03-12
  */
 
-#ifndef _COUNT_VECTORIZATION_H
-#define _COUNT_VECTORIZATION_H
+#ifndef _COUNT_VECTORIZATION_HPP
+#define _COUNT_VECTORIZATION_HPP
 
-#include "document.h"
+#include "document.hpp"
 
 
 /**
@@ -57,4 +56,4 @@ extern void vectorize_corpus_threaded(corpus::Corpus * corpus);
 extern void vectorize_corpus_sequential(corpus::Corpus * corpus);
 
 
-#endif // _COUNT_VECTORIZATION_H
+#endif // _COUNT_VECTORIZATION_HPP

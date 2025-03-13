@@ -2,8 +2,8 @@
  * source file for categories.h
  */
 
-#include "categories.h"
-#include "document.h"
+#include "categories.hpp"
+#include "document.hpp"
 #include <mutex>
 #include <algorithm>
 #include <exception>

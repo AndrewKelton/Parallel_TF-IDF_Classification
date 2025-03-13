@@ -2,9 +2,9 @@
  * source file for preprocess.h
  */
 
-#include "preprocess.h"
+#include "preprocess.hpp"
 #include "english_stem.h"
-#include "utils.h"
+#include "utils.hpp"
 #include <locale>
 #include <codecvt>
 

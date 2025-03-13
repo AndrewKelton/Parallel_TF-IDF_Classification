@@ -1,6 +1,5 @@
 /**
- * @file utils.h
- * @compiler g++ -std=c++17 
+ * @file utils.hpp
  * 
  * @author Andrew Kelton
  * @brief Header-only utility library with common data types and functions.
@@ -202,4 +201,4 @@ inline text_cat_types_ conv_cat_type(std::string str) {
     return categories_text.at(str);
 }
 
-#endif // _UTILS_H
+#endif // _UTILS_HPP

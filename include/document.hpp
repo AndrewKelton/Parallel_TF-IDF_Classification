@@ -1,6 +1,5 @@
 /**
- * @file document.h
- * @compiler g++ -std=c++17 
+ * @file document.hpp
  * 
  * @author Andrew Kelton
  * @brief Defines the Document and Corpus classes and their related functions.
@@ -8,16 +7,16 @@
  * @date 2025-03-12
  */
 
-#ifndef _DOCUMENT_H
-#define _DOCUMENT_H
+#ifndef _DOCUMENT_HPP
+#define _DOCUMENT_HPP
 
 #include <atomic>
 #include <cmath>
 #include <cstdarg>
 #include <sstream>
 #include <fstream>
-#include "utils.h"
-#include "categories.h"
+#include "utils.hpp"
+#include "categories.hpp"
 
 const std::string DOC_FILENAME{"test-output/lengthy/document-info.txt"}; ///< Document lengthy info output file
 const std::string COR_FILENAME{"test-output/lengthy/corpus-info.txt"};   ///< Corpus lengthy info output file
@@ -279,4 +278,4 @@ namespace corpus {
 
 } // namespace corpus
 
-#endif // _DOCUMENT_H
+#endif // _DOCUMENT_HPP

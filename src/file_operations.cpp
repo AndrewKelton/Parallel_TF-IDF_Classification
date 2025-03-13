@@ -2,9 +2,9 @@
  * source file for file_operations.h
  */
 
-#include "file_operations.h"
-#include "categories.h"
-#include "utils.h"
+#include "file_operations.hpp"
+#include "categories.hpp"
+#include "utils.hpp"
 #include <fstream>
 
 static std::string input_file_name;

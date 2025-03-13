@@ -1,17 +1,22 @@
-/* main-test-parrallel.cpp
+/**
+ * @file main-test-parallel.cpp
+ * @brief Main program for testing parallel TF-IDF computation with command-line input.
  * 
- * Contains main for testing parallel tfidf with 
- * command line input. Command Line input should be
- * a '.csv' file in the following format:
+ * @details This file contains the main function that performs parallel TF-IDF computation. 
+ * The program accepts a command-line input in the form of a `.csv` file, where each line 
+ * contains a document's category and text.
+ * 
+ * The expected format for the input `.csv` file is as follows:
+ * 
  * --------------------
  * category,text
- * category.x,text.x 
+ * category.x,text.x
  * --------------------
  * 
- * NOTE that you do not need the labels: 'category,text'
- * at the top of the file. HOWEVER, you must not have a
- * space between 'category,text' and/or 'category.x,text.x'
+ * @note The input file should not contain the labels "category,text" at the top. 
+ * Additionally, there must not be any spaces between "category,text" and "category.x,text.x".
  */
+
 
 
 /* 
@@ -23,8 +28,8 @@
  * 
  */
 
-#include "count_vectorization.h"
-#include "file_operations.h"
+#include "count_vectorization.hpp"
+#include "file_operations.hpp"
 #include "flag_handler.hpp"
 
 using namespace std;

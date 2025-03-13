@@ -7,7 +7,8 @@ CXXFLAGS += -std=c++17 -Wall -Wextra -pthread \
 		   -Iinclude -Iinclude/OleanderStemmingLibrary/src \
 		   -Wdeprecated-declarations -Wno-unused-function \
 		   -Wno-unused-variable -Wno-unused-parameter \
-		   -Wno-catch-value -Wno-unused-value -Wno-sign-compare
+		   -Wno-catch-value -Wno-unused-value \
+		   -Wno-sign-compare -Wno-unused-but-set-variable
 
 
 # Project directories #

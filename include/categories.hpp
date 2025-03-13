@@ -1,5 +1,5 @@
 /**
- * @file categories.h
+ * @file categories.hpp
  * @compiler g++ -std=c++17 
  * 
  * @author Andrew Kelton
@@ -20,13 +20,13 @@
  * @date 2025-03-12
  */
 
-#ifndef _CATEGORIES_H
-#define _CATEGORIES_H
+#ifndef _CATEGORIES_HPP
+#define _CATEGORIES_HPP
 
 #include <vector>
 #include <unordered_map>
 #include <fstream>
-#include "utils.h"
+#include "utils.hpp"
 
 #define MAX_CATEGORIES 5
 
@@ -311,4 +311,4 @@ extern std::vector<Category> get_all_category_important_terms(const corpus::Corp
 } // namespace cats
 
 
-#endif // _CATEGORIES_H
+#endif // _CATEGORIES_HPP

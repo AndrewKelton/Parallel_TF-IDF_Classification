@@ -2,9 +2,9 @@
  * source file for count_vectorization.h
  */
 
-#include "count_vectorization.h"
-#include "preprocess.h"
-#include "categories.h"
+#include "count_vectorization.hpp"
+#include "preprocess.hpp"
+#include "categories.hpp"
 #include <set>
 
 std::atomic<int> doc_id_count{0}; // document id 

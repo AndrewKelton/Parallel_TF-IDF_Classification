@@ -2,8 +2,8 @@
  * source file for document.h
  */
 
-#include "document.h"
-#include "categories.h"
+#include "document.hpp"
+#include "categories.hpp"
 #include <fstream>
 
 namespace docs {

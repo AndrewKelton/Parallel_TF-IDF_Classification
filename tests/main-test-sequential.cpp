@@ -1,23 +1,25 @@
 /**
- * main-test-sequential.cpp
+ * @file main-test-sequential.cpp
+ * @brief Main program for testing sequential TF-IDF computation.
  * 
- *
+ * @details This file contains the main function for testing the sequential TF-IDF computation, 
+ * where documents are processed one at a time without parallelization.
  * 
- * Contains main for testing sequential tfidf with 
- * command line input. Command Line input should be
- * a '.csv' file in the following format:
+ * The program accepts command-line input in the form of a `.csv` file, with each line containing 
+ * a document's category and text. The expected format for the input file is as follows:
+ * 
  * --------------------
  * category,text
- * category.x,text.x 
+ * category.x,text.x
  * --------------------
  * 
- * NOTE that you do not need the labels: 'category,text'
- * at the top of the file. HOWEVER, you must not have a
- * space between 'category,text' and/or 'category.x,text.x'
+ * @note The input file should not contain the labels "category,text" at the top. 
+ * Additionally, there must not be any spaces between "category,text" and "category.x,text.x".
  */
 
-#include "count_vectorization.h"
-#include "file_operations.h"
+
+#include "count_vectorization.hpp"
+#include "file_operations.hpp"
 #include "flag_handler.hpp"
 
 using namespace std;

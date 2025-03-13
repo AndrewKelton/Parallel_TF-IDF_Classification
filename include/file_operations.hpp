@@ -1,6 +1,5 @@
 /**
- * @file file_operations.h
- * @compiler g++ -std=c++17 
+ * @file file_operations.hpp 
  * 
  * @author Andrew Kelton
  * @brief Provides file handling utilities for loading, reading, and saving data.
@@ -19,10 +18,10 @@
  * @date 2025-03-12
  */
 
-#ifndef _FILE_OPERATIONS_H
-#define _FILE_OPERATIONS_H
+#ifndef _FILE_OPERATIONS_HPP
+#define _FILE_OPERATIONS_HPP
 
-#include "document.h"
+#include "document.hpp"
 
 /**
  * @brief Reads a CSV file and loads data into a `Corpus` object.
@@ -81,4 +80,4 @@ extern std::string get_input_file_name();
 extern std::vector<std::string> read_unknown_cats();
 
 
-#endif // _FILE_OPERATIONS_H
+#endif // _FILE_OPERATIONS_HPP
