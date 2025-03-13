@@ -17,8 +17,6 @@
  * Additionally, there must not be any spaces between "category,text" and "category.x,text.x".
  */
 
-
-
 /* 
  * **** NOTE TO SELF **** * 
  * 
@@ -28,12 +26,15 @@
  * 
  */
 
+
+// #include <iostream>
+// #include <unordered_map>
+// #include <cmath>
 #include "count_vectorization.hpp"
 #include "file_operations.hpp"
 #include "flag_handler.hpp"
 
 using namespace std;
-
 
 int main(int argc, char * argv[]) {
 
@@ -63,7 +64,7 @@ int main(int argc, char * argv[]) {
     corpus::Corpus corpus;
     try {
         read_csv_to_corpus(ref(corpus), argv[1]);
-    } catch (const exception &e) {
+    } catch (runtime_error e) {
         cerr << "Error: " << argv[1] << " " << e.what() << endl;
         return EXIT_FAILURE;
     }
@@ -90,7 +91,7 @@ int main(int argc, char * argv[]) {
     try {
         corpus.tfidf_documents();
     } catch (exception e) {
-        cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
+        cerr << "Error in corpus.tfidf_documents(): " << e.what() << endl;
         return EXIT_FAILURE;
     }
 
@@ -106,8 +107,8 @@ int main(int argc, char * argv[]) {
 
     try {
         for (int i = 0; i < 5; i++) {
-            cat_threads.emplace_back([&]() {
-                cats::get_single_cat_par(corpus, cat_vect, conv_cat_type(i));
+            cat_threads.emplace_back([&, i]() {
+                cats::get_single_cat_par(corpus, ref(cat_vect), conv_cat_type(i));
             });
         }
     } catch (exception e) {
@@ -133,26 +134,27 @@ int main(int argc, char * argv[]) {
         read_unknown_text(ref(unknown_corpus), "data/unknown_text.txt");
     } catch (runtime_error e) {
         cerr << "Error: " << argv[1] << " " << e.what() << endl;
+        return EXIT_FAILURE;
     }
     
     try {
-        vectorize_corpus_threaded(&unknown_corpus); // multi-threaded parallelization
+        vectorize_corpus_threaded(&unknown_corpus);
     } catch (exception e) {
         cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
         return EXIT_FAILURE;
     }
 
     try {
-        unknown_corpus.tfidf_documents_seq();
+        unknown_corpus.tfidf_documents();
     } catch (exception e) {
         cerr << "Error in vectorize_corpus_threaded: " << e.what() << endl;
         return EXIT_FAILURE;
     }
 
-    vector<string> unknown_cats_correct = read_unknown_cats(); // read in correct classifications
+    vector<string> unknown_cats_correct = read_unknown_cats();
 
-    // classify unknown corpus
-    cats::print_classifications(cats::init_classification(unknown_corpus, cat_vect, unknown_cats_correct));
+    // classify unknown documents
+    cats::print_classifications(cats::init_classification(ref(unknown_corpus), ref(cat_vect), unknown_cats_correct));
     end = chrono::high_resolution_clock::now();
     print_duration_code(start, end, unknown_);
 

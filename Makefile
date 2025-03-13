@@ -84,40 +84,44 @@ $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-
+# output files
+PARALLEL_RES = results/parallel-results.txt
+PARALLEL_LOG = logs/parallel-errors.log
+SEQUENTIAL_RES = results/sequential-results.txt
+SEQUENTIAL_LOG = logs/sequential-errors.log
 
 # Comparison tester, run both parallel.cpp & sequential.cpp
 test: $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC)
 	@echo "Running main-test-parallel with input data/BBC-News-Training.csv..."
-	@./$(PARALLEL_EXEC) data/BBC-News-Training.csv comparison > $(TST_DIR)/$(OUTPUT_DIR)/$(COMP_DIR)/results/parallel-results.txt 2> $(TST_DIR)/$(OUTPUT_DIR)/$(COMP_DIR)/logs/parallel-errors.log
+	@./$(PARALLEL_EXEC) data/BBC-News-Training.csv comparison > $(TST_DIR)/$(OUTPUT_DIR)/$(COMP_DIR)/$(PARALLEL_RES) 2> $(TST_DIR)/$(OUTPUT_DIR)/$(COMP_DIR)/$(PARALLEL_LOG)
 	@echo "main-test-parallel results saved in $(TST_DIR)/$(OUTPUT_DIR)/$(COMP_DIR)/results/parallel-results.txt"
 	@echo "main-test-parallel error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/$(COMP_DIR)/logs/parallel-results.log"
 
 	@echo "Running main-test-sequential with input data/BBC-News-Training.csv..."
-	@./$(SEQUENTIAL_EXEC) data/BBC-News-Training.csv comparison > $(TST_DIR)/$(OUTPUT_DIR)/$(COMP_DIR)/results/sequential-results.txt 2> $(TST_DIR)/$(OUTPUT_DIR)/$(COMP_DIR)/logs/sequential-errors.log
+	@./$(SEQUENTIAL_EXEC) data/BBC-News-Training.csv comparison > $(TST_DIR)/$(OUTPUT_DIR)/$(COMP_DIR)/$(SEQUENTIAL_RES) 2> $(TST_DIR)/$(OUTPUT_DIR)/$(COMP_DIR)/$(SEQUENTIAL_LOG)
 	@echo "main-test-sequential results saved in $(TST_DIR)/$(OUTPUT_DIR)/$(COMP_DIR)/results/sequential-results.txt"
 	@echo "main-test-sequential error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/$(COMP_DIR)/logs/sequential-errors.log"
 
 # Run parallel test only (parallel.cpp)
 par-test: $(PARALLEL_EXEC)
 	@echo "Running ONLY main-test-parallel with input data/BBC-News-Training.csv..."
-	@./$(PARALLEL_EXEC) data/BBC-News-Training.csv solo > $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/results/parallel-results-singleton.txt 2> $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/logs/parallel-errors-singleton.log
-	@echo "main-test-parallel results saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/results/parallel-results-singleton.txt"
-	@echo "main-test-parallel error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/logs/parallel-errors-singleton.log"
+	@./$(PARALLEL_EXEC) data/BBC-News-Training.csv solo > $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/$(PARALLEL_RES) 2> $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/$(PARALLEL_LOG)
+	@echo "main-test-parallel results saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/$(PARALLEL_RES)"
+	@echo "main-test-parallel error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/$(PARALLEL_LOG)"
 
 # Run parallel test only (parallel.cpp)
 seq-test: $(SEQUENTIAL_EXEC)
 	@echo "Running ONLY main-test-sequential  with input data/BBC-News-Training.csv..."
-	@./$(SEQUENTIAL_EXEC) data/BBC-News-Training.csv solo > $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/results/sequential-results-singleton.txt 2> $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/logs/sequential-errors-singleton.log
-	@echo "main-test-sequential results saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/results/sequential-results-singleton.txt"
-	@echo "main-test-sequential error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/logs/sequential-errors-singleton.log"
+	@./$(SEQUENTIAL_EXEC) data/BBC-News-Training.csv solo > $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/$(SEQUENTIAL_RES) 2> $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/$(SEQUENTIAL_LOG)
+	@echo "main-test-sequential results saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/$(SEQUENTIAL_RES)"
+	@echo "main-test-sequential error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/$(SEQUENTIAL_LOG)"
 
 # Run non-optimized parallel test only (parallel.cpp)
 non-opt-par-test: $(NON_OPT_PARALLEL_EXEC)
 	@echo "Running ONLY main-test-non-optimized-parallel with input data/BBC-News-Training.csv..."
-	@./$(NON_OPT_PARALLEL_EXEC) data/BBC-News-Training.csv solo > $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/results/non-opt-parallel-results-singleton.txt 2> $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/logs/non-opt-parallel-errors-singleton.log
-	@echo "main-test-non-opt-parallel results saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/results/non-opt-parallel-results-singleton.txt"
-	@echo "main-test-non-opt-parallel error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/logs/non-opt-parallel-errors-singleton.log"
+	@./$(NON_OPT_PARALLEL_EXEC) data/BBC-News-Training.csv solo > $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/results/non-opt-parallel-results.txt 2> $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/logs/non-opt-parallel-errors.log
+	@echo "main-test-non-opt-parallel results saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/results/non-opt-parallel-results.txt"
+	@echo "main-test-non-opt-parallel error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SOLO_DIR)/logs/non-opt-parallel-errors.log"
 
 
 # Files for zip to ignore
@@ -133,9 +137,13 @@ zip:
 zip-all:
 	zip -r Parallel_TF-IDF_Classification.zip . -x "*.git*" "*.DS_Store" "test/build/*" ".gitignore" "*.zip"
 
+
 # Clean build and test output
 clean:
-	rm -rf $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC) $(NON_OPT_PARALLEL_EXEC) $(TST_DIR)/$(BUILD_DIR)
-
+	rm -rf $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC) $(NON_OPT_PARALLEL_EXEC) $(TST_DIR)/$(BUILD_DIR) 
+# $(TST_DIR)/$(OUTPUT_DIR)/solo/$(PARALLEL_RES) $(TST_DIR)/$(OUTPUT_DIR)/solo/$(SEQUENTIAL_RES) \
+# $(TST_DIR)/$(OUTPUT_DIR)/solo/$(PARALLEL_LOG) $(TST_DIR)/$(OUTPUT_DIR)/solo/$(SEQUENTIAL_LOG) \
+# $(TST_DIR)/$(OUTPUT_DIR)/comparison/$(PARALLEL_RES) $(TST_DIR)/$(OUTPUT_DIR)/comparison/$(SEQUENTIAL_RES) \ 
+# $(TST_DIR)/$(OUTPUT_DIR)/comparison/$(PARALLEL_LOG) $(TST_DIR)/$(OUTPUT_DIR)/comparison/$(SEQUENTIAL_LOG) 
 
 .PHONY: all test clean zip zip-all

@@ -13,18 +13,22 @@ static std::string input_file_name;
 static const std::string sl{"/"}; // general purpose slash
 
 /* constants for directory paths */
-static const std::string base_test_dir{"test-output"};
+static const std::string base_test_dir{"tests/test-output"};
 static const std::string processed_csv_dir{base_test_dir + sl + "processed-data-results"};
 static const std::string comp_test_dir{base_test_dir + sl + "comparison"};
 static const std::string solo_test_dir{base_test_dir + sl + "solo"};
 static const std::string res_test_dir{"results"};
 
-/* constants for .txt files (results) paths */
-static const std::string res_par_txt{comp_test_dir + sl + res_test_dir + sl + "parallel-results.txt"};
-static const std::string res_seq_txt{comp_test_dir + sl + res_test_dir + sl + "sequential-results.txt"};
+// output end file names
+static const std::string par_res_file{"parallel-results.txt"};
+static const std::string seq_res_file{"sequential-results.txt"};
 
-static const std::string res_par_txt_singleton{solo_test_dir + sl + res_test_dir + sl + "parallel-results-singleton.txt"};
-static const std::string res_seq_txt_singleton{solo_test_dir + sl + res_test_dir + sl + "sequential-results-singleton.txt"};
+/* constants for .txt files (results) paths */
+static const std::string res_par_txt{comp_test_dir + sl + res_test_dir + sl + par_res_file};
+static const std::string res_seq_txt{comp_test_dir + sl + res_test_dir + sl + seq_res_file};
+
+static const std::string res_par_txt_singleton{solo_test_dir + sl + res_test_dir + sl + par_res_file};
+static const std::string res_seq_txt_singleton{solo_test_dir + sl + res_test_dir + sl + seq_res_file};
 
 /* constants for processed csv files */
 static const std::string processed_par_csv{processed_csv_dir + sl + "parallel-processed.csv"};

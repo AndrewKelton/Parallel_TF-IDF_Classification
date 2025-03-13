@@ -4,6 +4,7 @@
 
 #include "categories.hpp"
 #include "document.hpp"
+#include "utils.hpp"
 #include <mutex>
 #include <algorithm>
 #include <exception>
@@ -13,6 +14,7 @@
 std::mutex mtx; // global mtx for emplacing Category to thread
 
 namespace cats {
+    
     // return sorted std::vector of tfidf terms
     std::vector<std::pair<std::string, double>> Category::sort_unordered_umap(std::unordered_map<std::string, double> terms) {
         if (terms.empty())
@@ -87,7 +89,7 @@ namespace cats {
 
     void Category::get_important_terms(const corpus::Corpus& corpus) {
 
-        this->most_important_terms.reserve(5);                   // reserve 5 slots of memory
+        this->most_important_terms.reserve(5);                                       // reserve 5 slots of memory
         std::vector<std::vector<std::pair<std::string, double>>> vectored_all_umaps; // std::vectorized sorted tfidf mapping
         
         // sort all the terms for each Document in the Category
@@ -99,11 +101,11 @@ namespace cats {
                 vectored_all_umaps.emplace_back(sort_unordered_umap(document.tf_idf));
                 put_tf_idf_all(document.tf_idf);
             } catch (const std::runtime_error& e) {
-                std::cerr << "Error Category::get_important_terms: " << e.what() << std::endl;
-                break;
+                std::cerr << "RuntimeError in Category::sort_unordered_umap: " << e.what() << std::endl;
+                throw std::runtime_error("RuntimeError in Category::get_important_terms");
             } catch (const std::exception& e) {
-                std::cerr << "Error Category::get_important_terms: " << e.what() << std::endl;
-                break;
+                std::cerr << "Exception in Category::sort_unordered_umap: " << e.what() << std::endl;
+                throw std::runtime_error("Exception in Category::get_important_terms"); 
             } 
         }
 
@@ -112,11 +114,11 @@ namespace cats {
             try {
                 most_important_terms.emplace_back(search_nth_important_term(vectored_all_umaps, most_important_terms));
             } catch (const std::runtime_error& e) {
-                std::cerr << "Error in Category::get_important_terms: " << e.what() << std::endl;
-                return;
+                std::cerr << "RuntimeError in Category::search_nth_important_term: " << e.what() << std::endl;
+                throw std::runtime_error("RuntimeError in Category::get_important_terms");
             } catch (const std::exception& e) {
-                std::cerr << "Error in Category::get_important_terms: " << e.what() << std::endl;
-                return;
+                std::cerr << "Exception in Category::search_nth_important_term: " << e.what() << std::endl;
+                throw std::runtime_error("Exception in Category::get_important_terms"); 
             }
         }
     }
@@ -151,7 +153,15 @@ namespace cats {
     // parallel
     extern void get_single_cat_par(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint) {
         Category cat(catint);
-        cat.get_important_terms(corpus);
+        try {
+            cat.get_important_terms(corpus);
+        } catch (const std::runtime_error &e) {
+            std::cerr << "RuntimeError in get_single_cat_par: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        } catch (const std::exception &e) {
+            std::cerr << "Exception in get_single_cat_par: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        }
         
         {
             std::lock_guard<std::mutex> lock(mtx);
@@ -162,7 +172,15 @@ namespace cats {
     // sequential
     extern void get_single_cat_seq(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint) {
         Category cat(catint);
-        cat.get_important_terms(corpus);
+        try {
+            cat.get_important_terms(corpus);
+        } catch (const std::runtime_error &e) {
+            std::cerr << "RuntimeError in get_single_cat_seq: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        } catch (const std::exception &e) {
+            std::cerr << "Exception in get_single_cat_seq: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        }
         cats.emplace_back(std::move(cat));
     }
 
@@ -263,7 +281,15 @@ namespace cats {
         for (int i = 0; i < MAX_CATEGORIES; i++) {
             std::cout << "getting important categories for " << conv_cat_type(conv_cat_type(i)) << std::endl;
             category_threads.emplace_back([&] {
-                categories_list[i].get_important_terms(corpus);
+                try {
+                    categories_list[i].get_important_terms(corpus);
+                } catch (const std::runtime_error &e) {
+                    std::cerr << "RuntimeError get_all_category_important_terms: " << e.what() << std::endl;
+                    return;
+                } catch (const std::exception &e) {
+                    std::cerr << "Exception get_all_category_important_terms: " << e.what() << std::endl;
+                    return;
+                }
             });
         }
 
