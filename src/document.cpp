@@ -178,7 +178,7 @@ namespace corpus {
 
     // print king
     void Corpus::print_all_info() {
-        std::ofstream file{COR_FILENAME};
+        std::ofstream file{docs::COR_FILENAME};
 
         if (!file) {
             throw std::runtime_error("File Error in print_all_info");

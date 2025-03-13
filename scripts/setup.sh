@@ -1,35 +1,35 @@
-#!/bin/bash
+# !/bin/bash
 
-# Sets up the project directory for testing
+# Sets up the project directory for testing and installs required dependencies
 
-# Directories for output testing
-BUILD_TEST_DIR="./build"
-BASE_TEST_DIR="./test-output"
-LENGTHY_TEST_DIR="./lengthy"
-COMP_TEST_DIR="./comparison"
-SOLO_TEST_DIR="./solo"
-RES_TEST_DIR="./results"
-LOG_TEST_DIR="./logs"
-PROCESSED_DATA_CSV_DIR="./processed-data-results"
-GRAPHS_DIR="./graphs"
-INCLUDE_DIR="./include"
-STEM_LIB_DIR="$INCLUDE_DIR/OleanderStemmingLibrary"
-# ML_LIB_DIR="$INCLUDE_DIR/mlpack"
+set -e
+
+ENV_FILE="scripts/.env"
+
+if [ ! -f "$ENV_FILE" ]; then
+    echo "Error: $ENV_FILE file not found!"
+    exit 1
+fi
+
+source $ENV_FILE || { echo "Error: Failed to source $ENV_FILE"; exit 1; }
+eval $(cat $ENV_FILE) || { echo "Error: Failed to evaluate $ENV_FILE"; exit 1; }
  
+
 # welcome message
 echo -e "\n"
-echo "==========================================="
-echo "    🚀 Welcome to the Parallel TF-IDF    "
-echo "      Classification Setup Script! 🎉    "
-echo "==========================================="
+echo "=============================================="
+echo "      🚀 Welcome to the Parallel TF-IDF       "
+echo "       Classification Setup Script! 🎉        "
+echo "=============================================="
 echo -e "\n"
-echo "This script will create necessary directories"
-echo "and check for required dependencies."
+echo "This script will create necessary directories,"
+echo "check for required dependencies, and install"
+echo "             them if necessary.              "
 echo -e "\n"
 
 sleep 3
 
-echo -e "installing required dependencies...\n"
+echo -e "installing required dependencies..."
 
 # Ensure required dependencies are installed
 if [ -d "$STEM_LIB_DIR" ] && [ "$(ls -A "$STEM_LIB_DIR" 2>/dev/null)" ]; then
@@ -50,66 +50,59 @@ else
     fi
 fi
 
-# if [ -d "$ML_LIB_DIR" ] && [ "$(ls -A "$ML_LIB_DIR" 2>/dev/null)" ]; then
-#     echo "mlpack is already installed..."
-# else 
-#     echo "mlpack not found. Cloning into $ML_LIB_DIR..."
-# 
-#     # Remove the directory if it exists but is empty
-#     if [ -d "$ML_LIB_DIR" ]; then
-#         rm -rf "$ML_LIB_DIR"
-#     fi
-# 
-#     git clone https://github.com/mlpack/mlpack.git "$ML_LIB_DIR"
-# 
-#     if [ $? -ne 0 ]; then
-#         echo "Error: Failed to clone mlpack. Check your internet connection and try again."
-#         exit 1
-#     fi
-# fi
-
 echo ""
 
+while true 
+do
+    read -p "Would you like to setup test directories (y/n)? " response
+    
+    if [ "$response" == "y" ] || [ "$response" == "Y" ]; then
+        ALL_TEST_DIRS=( "$TEST_DIR" "$BASE_TEST_OUT_DIR" "$LENGTHY_TEST_DIR" "$COMP_TEST_DIR" "$SOLO_TEST_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$PROCESSED_DATA_CSV_DIR" "$GRAPHS_DIR")
 
-ALL_TEST_DIRS=("$BASE_TEST_DIR" "$LENGTHY_TEST_DIR" "$COMP_TEST_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$SOLO_TEST_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$PROCESSED_DATA_CSV_DIR" "$GRAPHS_DIR")
+        echo -e "Setting up testing directories...\n" 
 
-echo -e "Setting up testing directories...\n" 
+        # create build directory
+        mkdir -p "$BUILD_TEST_DIR"
 
-# create build directory
-mkdir -p "$BUILD_TEST_DIR"
+        # Check/Create directory for each 
+        # required directory for testing 
+        for DIR in "${ALL_TEST_DIRS[@]}"; do
+            if [ ! -d "$DIR" ] && [ "$DIR" != "$RES_TEST_DIR" ] && [ "$DIR" != "$LOG_TEST_DIR" ]; then
+                echo -e "Creating directory: $DIR"
+                mkdir -p "$DIR"
+            elif ( [ ! -d "$SOLO_TEST_DIR$DIR" ] || [ ! -d "$COMP_TEST_DIR$DIR" ] ) && [ "$DIR" == "$RES_TEST_DIR" ]; then
+                echo -e "Creating directory: $SOLO_TEST_DIR$DIR"
+                mkdir -p "$SOLO_TEST_DIR$DIR"
+                echo -e "Creating directory: $COMP_TEST_DIR$DIR"
+                mkdir -p "$COMP_TEST_DIR$DIR"
+            elif ( [ ! -d "$SOLO_TEST_DIR$DIR" ] || [ ! -d "$COMP_TEST_DIR$DIR" ] ) && [ "$DIR" == "$LOG_TEST_DIR" ]; then
+                echo -e "Creating directory: $SOLO_TEST_DIR$DIR"
+                mkdir -p "$SOLO_TEST_DIR$DIR"
+                echo -e "Creating directory: $COMP_TEST_DIR$DIR"
+                mkdir -p "$COMP_TEST_DIR$DIR"
+            fi
+        done        
+        echo -e "Test Directories Created...\n"
+        break
 
-# Check/Create directory for each 
-# required directory for testing 
-for DIR in "${ALL_TEST_DIRS[@]}"; do
-    if [ ! -d "$DIR" ]; then
-        echo "Creating directory: $DIR\n"
-        mkdir -p "$DIR"
-
-        if [ "$DIR" == "$GRAPHS_DIR" ]; then
-            echo -e
-        fi
-    fi
-
-    if [ "$DIR" == "$LOG_TEST_DIR" ]; then
-        cd ".."  
-    elif [ "$DIR" != "$RES_TEST_DIR" ] && [ "$DIR" != "$PROCESSED_DATA_CSV_DIR" ] && [ "$DIR" != "$LENGTHY_TEST_DIR" ]; then
-        cd "$DIR" 
+    elif [ "$response" == "n" ] || [ "$response" == "N" ]; then
+        break
     fi
 done
 
 
 # create DESCRIPTION file for test-output
-cd ".."
 
-echo "
-### This directory stores output files generated during testing, graphs, and logs.
+    echo "
+    ### This directory stores output files generated during testing, logs, and graphs.
 
-- processed-data-results/: Contains CSV 2 files with test results, 1. parallel tests, 2. sequential tests.
-- graphs/: Stores generated graphs comparing sequential vs parallel performance.
-- logs/: Holds logs related to test runs.
+    - processed-data-results/: Contains 2 CSV files with test results, 1. parallel tests, 2. sequential tests.
+    - graphs/: Stores generated graphs comparing sequential vs parallel performance.
+    - .../results/: Holds output stdout from tests.
+    - .../logs/: Holds logs related to test runs.
 
-This directory is cleaned up by cleanup.sh and will delete all data, unless specified.
-" > README.md
+    This directory is cleaned up by cleanup.sh and will delete all data, unless specified.
+    " > $BASE_TEST_OUT_DIR/README.md
 
 
 echo "Setup Complete!"
