@@ -1,6 +1,5 @@
 /**
  * @file categories.hpp
- * @compiler g++ -std=c++17 
  * 
  * @author Andrew Kelton
  * @brief Contains Category class and functions to classify Document(s).
