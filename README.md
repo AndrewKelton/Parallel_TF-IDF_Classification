@@ -6,6 +6,7 @@ Parallel TF-IDF Classification is a high-performance implementation of the Term 
 ## Installation
 ### Prerequisites
 - C++ compiler (GCC, Clang, or MSVC)
+- **CPP_STANDARD** C++17 REQUIRED!!!
 - **OleanderStemmingLibrary** (Automatically installed with `scripts/setup.sh`)
 - **Linux Environment**, I used:
     - **Linux Environment**: Ubuntu 22.04.5 LTS (Jammy Jellyfish)  
