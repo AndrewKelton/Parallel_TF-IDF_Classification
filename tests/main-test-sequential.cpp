@@ -1,4 +1,9 @@
 /**
+ * \mainpage
+ * # Created by Andrew Kelton
+ */
+
+/**
  * @file main-test-sequential.cpp
  * @brief Main program for testing sequential TF-IDF computation.
  * @ingroup UsageTestFiles
