@@ -1,5 +1,5 @@
 Vectorization: 95 ms
-TF-IDF: 1707 ms
+TF-IDF: 1613 ms
 Categories: 113 ms
 # of total unknown Documents: 92
 # of total correctly Classfied: 5
@@ -97,4 +97,4 @@ entertainment	sport	False
 business	tech	False
 tech	entertainment	False
 tech	entertainment	False
-Unknown Classification: 815 ms
+Unknown Classification: 830 ms

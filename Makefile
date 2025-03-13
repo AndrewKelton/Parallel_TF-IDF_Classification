@@ -125,7 +125,7 @@ non-opt-par-test: $(NON_OPT_PARALLEL_EXEC)
 
 
 # Files for zip to ignore
-IGNORE_FILES= ./include/mlpack/* ./include/OleanderStemmingLibrary/* ./build/* ./data/* ./test/* ./test_output/* README.md .vscode/* /test/*
+IGNORE_FILES= ./include/mlpack/* ./include/OleanderStemmingLibrary/* ./build/* ./data/* ./test_output/* README.md .vscode/* 
 
 # Zip targets
 zip-unused:
