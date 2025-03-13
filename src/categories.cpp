@@ -124,7 +124,7 @@ namespace cats {
     }
 
     void Category::print_all_info() {
-        std::ofstream file{CAT_FILENAME, std::ios::app};
+        std::ofstream file{cats::CAT_FILENAME, std::ios::app};
 
         if (!file) {
             throw std::runtime_error("File Error in print_all_info");

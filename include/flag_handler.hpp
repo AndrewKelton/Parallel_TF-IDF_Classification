@@ -53,10 +53,10 @@ inline static void print_terms_info(corpus::Corpus * corp) {
  * @param cats A vector of `Category` objects to print.
  */
 inline static void print_cat_info(std::vector<cats::Category>& cats) {
-    if (std::filesystem::exists(CAT_FILENAME))
-        std::filesystem::remove(CAT_FILENAME);
+    if (std::filesystem::exists(cats::CAT_FILENAME))
+        std::filesystem::remove(cats::CAT_FILENAME);
     
-    std::ofstream tmp_f{CAT_FILENAME};
+    std::ofstream tmp_f{cats::CAT_FILENAME};
     tmp_f.close();
 
     for (auto& cat : cats) {
@@ -82,10 +82,10 @@ inline static void print_cat_info(std::vector<cats::Category>& cats) {
 inline static void print_lengthy(corpus::Corpus * corp, std::vector<docs::Document> docs, std::vector<cats::Category>& cats) {
     print_terms_info(corp);
 
-    if (std::filesystem::exists(DOC_FILENAME))
-        std::filesystem::remove(DOC_FILENAME);
+    if (std::filesystem::exists(docs::DOC_FILENAME))
+        std::filesystem::remove(docs::DOC_FILENAME);
 
-    std::ofstream tmp_f{DOC_FILENAME};
+    std::ofstream tmp_f{docs::DOC_FILENAME};
     tmp_f.close();
 
     for (auto& doc : docs) {

@@ -18,8 +18,6 @@
 #include "utils.hpp"
 #include "categories.hpp"
 
-const std::string DOC_FILENAME{"test-output/lengthy/document-info.txt"}; ///< Document lengthy info output file
-const std::string COR_FILENAME{"test-output/lengthy/corpus-info.txt"};   ///< Corpus lengthy info output file
 class Category; ///< Forward declaration
 
 
@@ -50,6 +48,9 @@ class Category; ///< Forward declaration
  * and `print_all_info()` to output document details to a file.
  */ 
 namespace docs { 
+    
+    const std::string DOC_FILENAME{"test-output/lengthy/document-info.txt"}; ///< Document lengthy info output file
+    const std::string COR_FILENAME{"test-output/lengthy/corpus-info.txt"};   ///< Corpus lengthy info output file
 
     /**
      * @class Document
