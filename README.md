@@ -1,5 +1,9 @@
 # Parallel TF-IDF Classification
 
+## Documentation
+Check out the documentation at my website!
+<a href="https://andrewkelton.me/parallel-tf-idf-project/index.html" target="_blank">Documentation</a>
+
 ## Introduction
 Parallel TF-IDF Classification is a high-performance implementation of the Term Frequency-Inverse Document Frequency (TF-IDF) algorithm for document classification. This project leverages parallel computing to efficiently process large text datasets. This project also compares the times and accuracy between the parallel method and the sequential method. Files use a Doxygen comment format.
 
