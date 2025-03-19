@@ -1,0 +1,521 @@
+Section,Time (ms)
+Vectorization,1595 
+TF-IDF,53058 
+Categories,448 
+Unknown Classification,1028 
+Accuracy,84.7826
+Vectorization,1618 
+TF-IDF,52456 
+Categories,437 
+Unknown Classification,1035 
+Accuracy,84.7826
+Vectorization,1610 
+TF-IDF,53006 
+Categories,436 
+Unknown Classification,1032 
+Accuracy,84.7826
+Vectorization,1595 
+TF-IDF,52065 
+Categories,434 
+Unknown Classification,1020 
+Accuracy,84.7826
+Vectorization,1607 
+TF-IDF,52539 
+Categories,437 
+Unknown Classification,1027 
+Accuracy,84.7826
+Vectorization,1614 
+TF-IDF,52827 
+Categories,449 
+Unknown Classification,1020 
+Accuracy,84.7826
+Vectorization,1750 
+TF-IDF,52174 
+Categories,435 
+Unknown Classification,1033 
+Accuracy,84.7826
+Vectorization,1588 
+TF-IDF,52457 
+Categories,435 
+Unknown Classification,1019 
+Accuracy,84.7826
+Vectorization,1593 
+TF-IDF,53018 
+Categories,435 
+Unknown Classification,1025 
+Accuracy,84.7826
+Vectorization,1567 
+TF-IDF,52674 
+Categories,442 
+Unknown Classification,1031 
+Accuracy,84.7826
+Vectorization,1588 
+TF-IDF,52950 
+Categories,440 
+Unknown Classification,1044 
+Accuracy,84.7826
+Vectorization,1608 
+TF-IDF,53023 
+Categories,442 
+Unknown Classification,1035 
+Accuracy,84.7826
+Vectorization,1612 
+TF-IDF,52615 
+Categories,447 
+Unknown Classification,1033 
+Accuracy,84.7826
+Vectorization,1589 
+TF-IDF,51898 
+Categories,436 
+Unknown Classification,1026 
+Accuracy,84.7826
+Vectorization,1612 
+TF-IDF,52933 
+Categories,438 
+Unknown Classification,1032 
+Accuracy,84.7826
+Vectorization,1620 
+TF-IDF,52702 
+Categories,440 
+Unknown Classification,1020 
+Accuracy,84.7826
+Vectorization,1613 
+TF-IDF,52940 
+Categories,440 
+Unknown Classification,1034 
+Accuracy,84.7826
+Vectorization,1613 
+TF-IDF,52600 
+Categories,437 
+Unknown Classification,1030 
+Accuracy,84.7826
+Vectorization,1609 
+TF-IDF,53153 
+Categories,441 
+Unknown Classification,1027 
+Accuracy,84.7826
+Vectorization,1614 
+TF-IDF,52931 
+Categories,440 
+Unknown Classification,1044 
+Accuracy,84.7826
+Vectorization,1593 
+TF-IDF,53028 
+Categories,435 
+Unknown Classification,1035 
+Accuracy,84.7826
+Vectorization,1609 
+TF-IDF,53114 
+Categories,450 
+Unknown Classification,1020 
+Accuracy,84.7826
+Vectorization,1616 
+TF-IDF,52938 
+Categories,456 
+Unknown Classification,1029 
+Accuracy,84.7826
+Vectorization,1609 
+TF-IDF,52846 
+Categories,438 
+Unknown Classification,1032 
+Accuracy,84.7826
+Vectorization,1626 
+TF-IDF,53015 
+Categories,437 
+Unknown Classification,1022 
+Accuracy,84.7826
+Vectorization,1603 
+TF-IDF,53417 
+Categories,438 
+Unknown Classification,1029 
+Accuracy,84.7826
+Vectorization,1624 
+TF-IDF,53148 
+Categories,437 
+Unknown Classification,1029 
+Accuracy,84.7826
+Vectorization,1614 
+TF-IDF,52908 
+Categories,438 
+Unknown Classification,1043 
+Accuracy,84.7826
+Vectorization,1605 
+TF-IDF,53623 
+Categories,441 
+Unknown Classification,1039 
+Accuracy,84.7826
+Vectorization,1613 
+TF-IDF,52146 
+Categories,440 
+Unknown Classification,1027 
+Accuracy,84.7826
+Vectorization,1677 
+TF-IDF,51896 
+Categories,434 
+Unknown Classification,1027 
+Accuracy,84.7826
+Vectorization,1598 
+TF-IDF,52112 
+Categories,442 
+Unknown Classification,1021 
+Accuracy,84.7826
+Vectorization,1596 
+TF-IDF,52736 
+Categories,437 
+Unknown Classification,1024 
+Accuracy,84.7826
+Vectorization,1653 
+TF-IDF,53139 
+Categories,440 
+Unknown Classification,1033 
+Accuracy,84.7826
+Vectorization,1611 
+TF-IDF,53209 
+Categories,436 
+Unknown Classification,1025 
+Accuracy,84.7826
+Vectorization,1605 
+TF-IDF,52564 
+Categories,442 
+Unknown Classification,1035 
+Accuracy,84.7826
+Vectorization,1612 
+TF-IDF,53978 
+Categories,438 
+Unknown Classification,1025 
+Accuracy,84.7826
+Vectorization,1620 
+TF-IDF,53187 
+Categories,442 
+Unknown Classification,1037 
+Accuracy,84.7826
+Vectorization,1631 
+TF-IDF,53011 
+Categories,435 
+Unknown Classification,1028 
+Accuracy,84.7826
+Vectorization,1608 
+TF-IDF,52728 
+Categories,440 
+Unknown Classification,1032 
+Accuracy,84.7826
+Vectorization,1604 
+TF-IDF,53287 
+Categories,441 
+Unknown Classification,1038 
+Accuracy,84.7826
+Vectorization,1617 
+TF-IDF,53098 
+Categories,438 
+Unknown Classification,1022 
+Accuracy,84.7826
+Vectorization,1601 
+TF-IDF,53170 
+Categories,435 
+Unknown Classification,1024 
+Accuracy,84.7826
+Vectorization,1635 
+TF-IDF,52021 
+Categories,440 
+Unknown Classification,1027 
+Accuracy,84.7826
+Vectorization,1619 
+TF-IDF,52556 
+Categories,436 
+Unknown Classification,1030 
+Accuracy,84.7826
+Vectorization,1607 
+TF-IDF,51987 
+Categories,434 
+Unknown Classification,1035 
+Accuracy,84.7826
+Vectorization,1595 
+TF-IDF,51815 
+Categories,436 
+Unknown Classification,1026 
+Accuracy,84.7826
+Vectorization,1610 
+TF-IDF,52210 
+Categories,437 
+Unknown Classification,1023 
+Accuracy,84.7826
+Vectorization,1595 
+TF-IDF,51751 
+Categories,437 
+Unknown Classification,1021 
+Accuracy,84.7826
+Vectorization,1598 
+TF-IDF,52203 
+Categories,437 
+Unknown Classification,1027 
+Accuracy,84.7826
+Vectorization,1603 
+TF-IDF,53048 
+Categories,436 
+Unknown Classification,1035 
+Accuracy,84.7826
+Vectorization,1591 
+TF-IDF,52421 
+Categories,438 
+Unknown Classification,1023 
+Accuracy,84.7826
+Vectorization,1608 
+TF-IDF,52497 
+Categories,437 
+Unknown Classification,1026 
+Accuracy,84.7826
+Vectorization,1617 
+TF-IDF,52444 
+Categories,436 
+Unknown Classification,1023 
+Accuracy,84.7826
+Vectorization,1610 
+TF-IDF,52365 
+Categories,437 
+Unknown Classification,1027 
+Accuracy,84.7826
+Vectorization,1598 
+TF-IDF,51944 
+Categories,437 
+Unknown Classification,1034 
+Accuracy,84.7826
+Vectorization,1599 
+TF-IDF,52095 
+Categories,435 
+Unknown Classification,1034 
+Accuracy,84.7826
+Vectorization,1615 
+TF-IDF,51929 
+Categories,439 
+Unknown Classification,1021 
+Accuracy,84.7826
+Vectorization,1592 
+TF-IDF,51746 
+Categories,435 
+Unknown Classification,1023 
+Accuracy,84.7826
+Vectorization,1569 
+TF-IDF,51814 
+Categories,440 
+Unknown Classification,1021 
+Accuracy,84.7826
+Vectorization,1588 
+TF-IDF,52287 
+Categories,436 
+Unknown Classification,1029 
+Accuracy,84.7826
+Vectorization,1583 
+TF-IDF,51861 
+Categories,436 
+Unknown Classification,1022 
+Accuracy,84.7826
+Vectorization,1626 
+TF-IDF,52576 
+Categories,438 
+Unknown Classification,1028 
+Accuracy,84.7826
+Vectorization,1593 
+TF-IDF,52154 
+Categories,436 
+Unknown Classification,1022 
+Accuracy,84.7826
+Vectorization,1598 
+TF-IDF,52391 
+Categories,440 
+Unknown Classification,1030 
+Accuracy,84.7826
+Vectorization,1602 
+TF-IDF,51895 
+Categories,439 
+Unknown Classification,1027 
+Accuracy,84.7826
+Vectorization,1648 
+TF-IDF,52095 
+Categories,440 
+Unknown Classification,1041 
+Accuracy,84.7826
+Vectorization,1603 
+TF-IDF,51700 
+Categories,438 
+Unknown Classification,1026 
+Accuracy,84.7826
+Vectorization,1602 
+TF-IDF,52332 
+Categories,438 
+Unknown Classification,1028 
+Accuracy,84.7826
+Vectorization,1610 
+TF-IDF,52219 
+Categories,437 
+Unknown Classification,1027 
+Accuracy,84.7826
+Vectorization,1611 
+TF-IDF,52085 
+Categories,445 
+Unknown Classification,1025 
+Accuracy,84.7826
+Vectorization,1612 
+TF-IDF,52077 
+Categories,437 
+Unknown Classification,1040 
+Accuracy,84.7826
+Vectorization,1621 
+TF-IDF,52236 
+Categories,436 
+Unknown Classification,1028 
+Accuracy,84.7826
+Vectorization,1682 
+TF-IDF,51685 
+Categories,437 
+Unknown Classification,1026 
+Accuracy,84.7826
+Vectorization,1599 
+TF-IDF,52209 
+Categories,436 
+Unknown Classification,1022 
+Accuracy,84.7826
+Vectorization,1594 
+TF-IDF,51927 
+Categories,438 
+Unknown Classification,1033 
+Accuracy,84.7826
+Vectorization,1592 
+TF-IDF,52275 
+Categories,437 
+Unknown Classification,1029 
+Accuracy,84.7826
+Vectorization,1620 
+TF-IDF,52056 
+Categories,437 
+Unknown Classification,1023 
+Accuracy,84.7826
+Vectorization,1598 
+TF-IDF,52381 
+Categories,444 
+Unknown Classification,1021 
+Accuracy,84.7826
+Vectorization,1605 
+TF-IDF,51459 
+Categories,438 
+Unknown Classification,1060 
+Accuracy,84.7826
+Vectorization,1719 
+TF-IDF,52197 
+Categories,440 
+Unknown Classification,1041 
+Accuracy,84.7826
+Vectorization,1697 
+TF-IDF,52319 
+Categories,439 
+Unknown Classification,1034 
+Accuracy,84.7826
+Vectorization,1720 
+TF-IDF,51824 
+Categories,438 
+Unknown Classification,1032 
+Accuracy,84.7826
+Vectorization,1605 
+TF-IDF,52056 
+Categories,436 
+Unknown Classification,1025 
+Accuracy,84.7826
+Vectorization,1594 
+TF-IDF,52233 
+Categories,438 
+Unknown Classification,1023 
+Accuracy,84.7826
+Vectorization,1603 
+TF-IDF,51954 
+Categories,437 
+Unknown Classification,1032 
+Accuracy,84.7826
+Vectorization,1602 
+TF-IDF,52103 
+Categories,438 
+Unknown Classification,1024 
+Accuracy,84.7826
+Vectorization,1605 
+TF-IDF,52086 
+Categories,435 
+Unknown Classification,1024 
+Accuracy,84.7826
+Vectorization,1590 
+TF-IDF,52367 
+Categories,436 
+Unknown Classification,1021 
+Accuracy,84.7826
+Vectorization,1584 
+TF-IDF,51563 
+Categories,442 
+Unknown Classification,1028 
+Accuracy,84.7826
+Vectorization,1583 
+TF-IDF,52042 
+Categories,435 
+Unknown Classification,1022 
+Accuracy,84.7826
+Vectorization,1610 
+TF-IDF,51592 
+Categories,436 
+Unknown Classification,1023 
+Accuracy,84.7826
+Vectorization,1630 
+TF-IDF,52158 
+Categories,435 
+Unknown Classification,1030 
+Accuracy,84.7826
+Vectorization,1596 
+TF-IDF,51617 
+Categories,436 
+Unknown Classification,1034 
+Accuracy,84.7826
+Vectorization,1594 
+TF-IDF,51577 
+Categories,437 
+Unknown Classification,1020 
+Accuracy,84.7826
+Vectorization,1614 
+TF-IDF,51997 
+Categories,437 
+Unknown Classification,1026 
+Accuracy,84.7826
+Vectorization,1678 
+TF-IDF,51713 
+Categories,438 
+Unknown Classification,1026 
+Accuracy,84.7826
+Vectorization,1589 
+TF-IDF,52211 
+Categories,437 
+Unknown Classification,1038 
+Accuracy,84.7826
+Vectorization,1591 
+TF-IDF,51648 
+Categories,434 
+Unknown Classification,1019 
+Accuracy,84.7826
+Vectorization,1614 
+TF-IDF,52168 
+Categories,436 
+Unknown Classification,1025 
+Accuracy,84.7826
+Vectorization,1620 
+TF-IDF,55812 
+Categories,438 
+Unknown Classification,1034 
+Accuracy,84.7826
+Vectorization,1597 
+TF-IDF,53073 
+Categories,435 
+Unknown Classification,1047 
+Accuracy,84.7826
+Vectorization,1589 
+TF-IDF,53813 
+Categories,442 
+Unknown Classification,1047 
+Accuracy,84.7826
+Vectorization,1594 
+TF-IDF,52812 
+Categories,436 
+Unknown Classification,1041 
+Accuracy,86.9565

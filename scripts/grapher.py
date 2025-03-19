@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-MAIN_DIR="test-output/processed-data-results/"
+MAIN_DIR="tests/test-output/processed-data-results/"
 RES_PAR=MAIN_DIR + "parallel-processed.csv"
 RES_SEQ=MAIN_DIR + "sequential-processed.csv"
 
@@ -39,6 +39,7 @@ def main():
     df_seq = df_seq.groupby("Section", as_index=False)["Time (ms)"].mean().rename(columns={"Time (ms)": "Time_seq"})
 
     df_merge = pd.merge(df_seq, df_par, on="Section")
+    df_merge = df_merge[df_merge["Section"] != "Accuracy"]
     df_merge["Time_rat"] = df_merge["Time_seq"] / df_merge["Time_par"]
 
     df_merge["Section"] = df_merge["Section"].replace({
@@ -50,15 +51,22 @@ def main():
 
     # plot
     plt.figure(figsize=(10, 6))
-    plt.bar(df_merge["Section"], df_merge["Time_rat"], color="skyblue")
+    bars = plt.bar(df_merge["Section"], df_merge["Time_rat"], color="skyblue")
+    # plt.bar(df_merge["Section"], df_merge["Time_rat"], color="skyblue")
     plt.xlabel("Sections")
     plt.ylabel("Ratio (Sequential / Parallel)")
     plt.title("Ratio of Sequential to Parallel Processing Time of TF-IDF Vectorization Over 100 Iterations")
     plt.xticks(rotation=45, ha="right")
+
+    # Add y-values next to the bars
+    for bar in bars:
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width() / 2, yval, round(yval, 2), ha='center', va='bottom', fontsize=10)
+
     plt.tight_layout()
 
     # save
-    plt.savefig("test-output/graphs/time_ratio_plot.pdf", format="pdf")
+    plt.savefig("tests/test-output/graphs/time_ratio_plot.pdf", format="pdf")
     plt.close()
 
 

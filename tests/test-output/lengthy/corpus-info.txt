@@ -1,4 +1,4 @@
 Info for Corpus: 
-# of Documents: 1490
+# of Documents: 2796
 # Threads Used: 64
-# of Documents Sent to a Single Thread: 23
+# of Documents Sent to a Single Thread: 0

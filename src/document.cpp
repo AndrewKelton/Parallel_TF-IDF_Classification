@@ -153,11 +153,11 @@ namespace corpus {
             document->tf_idf[word] = freq * idf_corpus(num_doc_term(word));
     }
 
-    int Corpus::get_num_unique_terms() {
+    int Corpus::get_num_unique_terms() const {
         return inverse_document_frequency.size();
     }
 
-    unsigned Corpus::get_number_of_docs_per_thread() {
+    unsigned Corpus::get_number_of_docs_per_thread() const {
         if (num_of_docs < NUMBER_OF_THREADS_MAX) 
             num_of_docs;
 

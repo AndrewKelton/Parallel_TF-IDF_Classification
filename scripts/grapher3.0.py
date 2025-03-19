@@ -44,8 +44,8 @@ def main():
     width = 0.35  # Bar width
 
     plt.figure(figsize=(10, 6))
-    plt.bar(x - width/2, time_seq, width, label="Sequential", color="lightcoral")
-    plt.bar(x + width/2, time_par, width, label="Parallel", color="skyblue")
+    bars_seq = plt.bar(x - width/2, time_seq, width, label="Sequential", color="lightcoral")
+    bars_par = plt.bar(x + width/2, time_par, width, label="Parallel", color="skyblue")
 
     # Labels and formatting for all sections
     plt.xlabel("Sections")
@@ -54,6 +54,15 @@ def main():
     plt.xticks(x, sections, rotation=45, ha="right")
     plt.legend()
     plt.tight_layout()
+
+    # Print y-values next to bars
+    for bar in bars_seq:
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width() / 2, yval, round(yval, 2), ha='center', va='bottom', fontsize=10)
+
+    for bar in bars_par:
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width() / 2, yval, round(yval, 2), ha='center', va='bottom', fontsize=10)
 
     # Save the plot for all sections
     plt.savefig("tests/test-output/graphs/time_comparison_plot.pdf", format="pdf")
@@ -69,8 +78,8 @@ def main():
 
     # Plot the accuracy comparison without log transformation
     plt.figure(figsize=(8, 6))
-    plt.bar([0], time_seq_accuracy, width, label="Sequential", color="lightcoral")
-    plt.bar([1], time_par_accuracy, width, label="Parallel", color="skyblue")
+    bars_seq_acc = plt.bar([0], time_seq_accuracy, width, label="Sequential", color="lightcoral")
+    bars_par_acc = plt.bar([1], time_par_accuracy, width, label="Parallel", color="skyblue")
 
     # Labels and formatting for accuracy section
     plt.xlabel("Accuracy")
@@ -79,6 +88,15 @@ def main():
     plt.xticks([0, 1], ["Sequential", "Parallel"])
     plt.legend()
     plt.tight_layout()
+
+    # Print y-values next to bars for accuracy plot
+    for bar in bars_seq_acc:
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width() / 2, yval, round(yval, 2), ha='center', va='bottom', fontsize=10)
+
+    for bar in bars_par_acc:
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width() / 2, yval, round(yval, 2), ha='center', va='bottom', fontsize=10)
 
     # Save the plot for accuracy
     plt.savefig("tests/test-output/graphs/accuracy_comparison_plot.pdf", format="pdf")

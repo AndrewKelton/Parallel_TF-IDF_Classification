@@ -4,8 +4,14 @@
  * 
  * @author Andrew Kelton
  * @brief Defines the Document and Corpus classes and their related functions.
- * @version 1.0
- * @date 2025-03-12
+ * 
+ * @version 1.1
+ * @date 2025-03-19
+ * 
+ * @par Changelog:
+ * - Moved `get_number_of_docs_per_thread()` in corpus::Corpus from private -> public.
+ * - Changed `get_number_of_docs_per_thread()` to a `const` function.
+ * 
  */
 
 #ifndef _DOCUMENT_HPP
@@ -219,7 +225,7 @@ namespace corpus {
              * 
              * @return The count of unique terms across all documents.
              */
-            int get_num_unique_terms();
+            int get_num_unique_terms() const;
 
             /**
              * @brief Prints corpus statistics to a file.
@@ -231,6 +237,12 @@ namespace corpus {
              * @throws std::runtime_error
              */
             void print_all_info();
+
+            /**
+             * @brief Determines the optimal number of documents per thread for parallel processing.
+             * @return The computed number of documents to assign per thread.
+             */
+            unsigned get_number_of_docs_per_thread() const;
 
         private: 
         
@@ -261,12 +273,6 @@ namespace corpus {
              * @param document Pointer to the `Document` object being processed.
              */
             void emplace_tfidf_document(docs::Document * document);
-
-            /**
-             * @brief Determines the optimal number of documents per thread for parallel processing.
-             * @return The computed number of documents to assign per thread.
-             */
-            unsigned get_number_of_docs_per_thread();
 
             /** @brief Returns formatted number of threads used for processing. */
             std::string print_number_threads_used() const;

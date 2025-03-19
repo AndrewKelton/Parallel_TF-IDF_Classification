@@ -15,8 +15,18 @@
  * 
  * @note Requires all input files to be located in the `data` folder.
  * 
- * @version 1.0
- * @date 2025-03-12
+ * @version 1.1
+ * @date 2025-03-19
+ * 
+ * @par Changelog:
+ * - Improved file writing efficiency in `write_sections_csv()` function.
+ * - Improved CSV formatted output.
+ * - @brief Example of new CSV format:
+ * ```csv
+ * Vectorization,TF-IDF,Categories,Unknown Classification,Accuracy
+ * 100,1581,558,1275,48.913
+ * ```
+ * 
  */
 
 #ifndef _FILE_OPERATIONS_HPP

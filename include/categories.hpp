@@ -16,8 +16,14 @@
  * also contains utility functions for managing categories, checking if a document belongs to a 
  * specific category, and handling category-related data efficiently.
  * 
- * @version 1.0
- * @date 2025-03-12
+ * @version 2.0
+ * @date 2025-03-19
+ * 
+ * @par Changelog:
+ * - Removed `init_classification()` and replaced with `init_classification_par()` and `init_classification_seq()`.
+ * - `init_classification_par()`: multi-threaded (parallel) classification
+ * - `init_classification_seq()`: sequential classification 
+ * 
  */
 
 #ifndef _CATEGORIES_HPP
@@ -252,7 +258,7 @@ namespace cats {
 
 
     /**
-     * @brief Initializes the classification process for a set of documents.
+     * @brief Initializes the classification process for a set of documents sequentially.
      * 
      * This function sets up the classification process, creating the necessary classification structures 
      * and comparing the documents in the unknown corpus against the given category types.
@@ -264,7 +270,22 @@ namespace cats {
      * @param correct_types A vector of correct category labels corresponding to the documents in `unknown_corpus`.
      * @return A `Classification_S` struct containing the classification results, including the count of correct classifications.
      */
-    extern unknown_classification_s init_classification(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types);
+    extern unknown_classification_s init_classification_seq(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types);
+   
+    /**
+     * @brief Initializes the classification process for a set of documents parallelized.
+     * 
+     * This function sets up the classification process, creating the necessary classification structures 
+     * and comparing the documents in the unknown corpus against the given category types.
+     * It returns the classification results, including the number of correctly classified documents and 
+     * their respective categories.
+     * 
+     * @param unknown_corpus The corpus of documents to classify. It must be a valid pointer to a `Corpus` object.
+     * @param cat_vect A vector of `Category` objects to compare against. It should contain the precomputed categories.
+     * @param correct_types A vector of correct category labels corresponding to the documents in `unknown_corpus`.
+     * @return A `Classification_S` struct containing the classification results, including the count of correct classifications.
+     */
+    extern unknown_classification_s init_classification_par(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types);
 
 
     /**

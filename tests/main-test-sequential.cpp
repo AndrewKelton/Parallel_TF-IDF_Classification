@@ -135,7 +135,7 @@ int main(int argc, char * argv[]) {
     vector<string> unknown_cats_correct = read_unknown_cats(); // read in correct classifications
 
     // classify unknown corpus
-    cats::print_classifications(cats::init_classification(unknown_corpus, cat_vect, unknown_cats_correct));
+    cats::print_classifications(cats::init_classification_seq(unknown_corpus, cat_vect, unknown_cats_correct));
     end = chrono::high_resolution_clock::now();
     print_duration_code(start, end, unknown_);
 

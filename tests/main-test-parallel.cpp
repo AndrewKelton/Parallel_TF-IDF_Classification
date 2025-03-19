@@ -161,7 +161,7 @@ int main(int argc, char * argv[]) {
     vector<string> unknown_cats_correct = read_unknown_cats();
 
     // classify unknown documents
-    cats::print_classifications(cats::init_classification(ref(unknown_corpus), ref(cat_vect), unknown_cats_correct));
+    cats::print_classifications(cats::init_classification_par(ref(unknown_corpus), ref(cat_vect), unknown_cats_correct));
     end = chrono::high_resolution_clock::now();
     print_duration_code(start, end, unknown_);
 
