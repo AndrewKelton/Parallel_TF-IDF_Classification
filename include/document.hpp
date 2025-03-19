@@ -50,8 +50,8 @@ class Category; ///< Forward declaration
  */ 
 namespace docs { 
     
-    const std::string DOC_FILENAME{"test-output/lengthy/document-info.txt"}; ///< Document lengthy info output file
-    const std::string COR_FILENAME{"test-output/lengthy/corpus-info.txt"};   ///< Corpus lengthy info output file
+    const std::string DOC_FILENAME{"tests/test-output/lengthy/document-info.txt"}; ///< Document lengthy info output file
+    const std::string COR_FILENAME{"tests/test-output/lengthy/corpus-info.txt"};   ///< Corpus lengthy info output file
 
     /**
      * @class Document

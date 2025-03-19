@@ -1,9 +1,18 @@
 # !/bin/bash
 
-S_DIR="./scripts"
+set -e
+ENV_FILE="scripts/.env"
 
-"$S_DIR/setup.sh"
-"$S_DIR/run.sh"
+if [ ! -f "$ENV_FILE" ]; then
+    echo "Error: $ENV_FILE file not found!"
+    exit 1
+fi
+
+source $ENV_FILE || { echo "Error: Failed to source $ENV_FILE"; exit 1; }
+eval $(cat $ENV_FILE) || { echo "Error: Failed to evaluate $ENV_FILE"; exit 1; }
+
+"$SCRIPT_DIR/setup.sh"
+"$SCRIPT_DIR/run.sh"
 
 while true
 do
@@ -15,4 +24,4 @@ do
     fi
 done
 
-"$S_DIR/cleanup.sh"
+"$SCRIPT_DIR/cleanup.sh"

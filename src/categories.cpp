@@ -12,6 +12,7 @@
 #include <fstream>
 
 std::mutex mtx; // global mtx for emplacing Category to thread
+std::mutex tf_idf_mutex;
 
 namespace cats {
     
@@ -66,6 +67,9 @@ namespace cats {
     void Category::put_tf_idf_all(std::unordered_map<std::string, double> doc_tf_idf) {
         std::unordered_map<std::string, int> word_count;
         int i{0};
+
+        // std::lock_guard<std::mutex> lock(tf_idf_mutex);  // Protects tf_idf_all
+
         for (auto& tf_idf : doc_tf_idf) {
             i++;
             // cout << tf_idf.first << " " << tf_idf.second << std::endl;
@@ -88,7 +92,6 @@ namespace cats {
 
 
     void Category::get_important_terms(const corpus::Corpus& corpus) {
-
         this->most_important_terms.reserve(5);                                       // reserve 5 slots of memory
         std::vector<std::vector<std::pair<std::string, double>>> vectored_all_umaps; // std::vectorized sorted tfidf mapping
         
@@ -152,9 +155,12 @@ namespace cats {
 
     // parallel
     extern void get_single_cat_par(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint) {
+        std::lock_guard<std::mutex> lock(mtx); /* MOVING LOCK HERE INCREASED ACCURACY BY MINIMUM 60% */
         Category cat(catint);
+        
         try {
             cat.get_important_terms(corpus);
+            cats.emplace_back(std::move(cat));
         } catch (const std::runtime_error &e) {
             std::cerr << "RuntimeError in get_single_cat_par: " << e.what() << std::endl;
             exit(EXIT_FAILURE);
@@ -164,8 +170,8 @@ namespace cats {
         }
         
         {
-            std::lock_guard<std::mutex> lock(mtx);
-            cats.emplace_back(std::move(cat));
+            // std::lock_guard<std::mutex> lock(mtx); /* HAVING LOCK HERE DECREASED ACCURACY BY MINIMUM 60% */
+            // cats.emplace_back(std::move(cat));
         }
     }
 
@@ -215,6 +221,7 @@ namespace cats {
 
         int i{0};
         for (const auto& cat_tf_idf : cat_vect) {
+
             double similarity = cosine_similarity(unknownText, cat_tf_idf.tf_idf_all);
             if (similarity > maxSimilarity) {
                 maxSimilarity = similarity;

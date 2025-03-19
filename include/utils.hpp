@@ -36,6 +36,8 @@
 #include <sstream>
 #include <thread>
 #include <string>
+#include <cstring>  // Required for strerror
+#include <cerrno>   // Required for errno
 
 /** @brief Maximum number of processing sections. */
 #define MAX_SECTIONS 4

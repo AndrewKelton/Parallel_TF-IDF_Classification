@@ -118,12 +118,21 @@ static void write_sections_csv(std::vector<std::pair<std::string, std::string>> 
         file.seekp(0, std::ios::end);
         
         if (file.tellp() == 0) 
-            file << "Section,Time (ms)\n";
+            file << "Vectorization,TF-IDF,Categories,Unknown Classification,Accuracy\n";  // Header row
+
+        std::unordered_map<std::string, std::string> section_mapping;
         
         for (const auto& sec_time : pln_txt) {
-            std::string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms")); // 'stem' the output
-            file << sec_time.first << "," << no_ms_time << "\n";
+            std::string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms") - 1); // 'stem' the output
+            section_mapping[sec_time.first] = no_ms_time;
         }
+
+        // print mapping in csv format
+        file << section_mapping["Vectorization"] << ","
+             << section_mapping["TF-IDF"] << ","
+             << section_mapping["Categories"] << ","
+             << section_mapping["Unknown Classification"] << ","
+             << section_mapping["Accuracy"] << std::endl;
     }
 }
 

@@ -28,7 +28,8 @@ namespace docs {
         std::ofstream file{DOC_FILENAME, std::ios::app};
 
         if (!file) {
-            throw std::runtime_error("File Error in print_all_info");
+            std::cerr << "Failed to open file: " << DOC_FILENAME << " Error: " << strerror(errno) << std::endl;
+            throw std::runtime_error("File Error in Document::print_all_info");
             return;
         }
 
@@ -181,7 +182,8 @@ namespace corpus {
         std::ofstream file{docs::COR_FILENAME};
 
         if (!file) {
-            throw std::runtime_error("File Error in print_all_info");
+            std::cerr << "Failed to open file: " << docs::COR_FILENAME << " Error: " << strerror(errno) << std::endl;
+            throw std::runtime_error("File Error in Document::print_all_info");
             return;
         }
 

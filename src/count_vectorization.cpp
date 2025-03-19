@@ -65,7 +65,7 @@ static void vectorize_doc_parallel(docs::Document * doc) {
 
 // preprocess and vectorize a document sequenitally
 static void vectorize_doc_sequenital(docs::Document * doc, int * id) {
-    doc->document_id = *id++;
+    // doc->document_id = *id++;
     preprocess_text(doc);
     count_words_doc(doc);
     (*doc).calculate_term_frequency_doc();
@@ -91,7 +91,7 @@ extern void vectorize_corpus_sequential(corpus::Corpus * corpus) {
 
     for (auto& document : (*corpus).documents) {
         vectorize_doc_sequenital(&document, &id);
-        // document.document_id = id++;
-        // corpus->num_of_docs++;
+        document.document_id = id++;
+        corpus->num_of_docs++;
     }
 }
