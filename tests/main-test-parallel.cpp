@@ -115,7 +115,7 @@ int main(int argc, char * argv[]) {
     try {
         for (int i = 0; i < 5; i++) {
             cat_threads.emplace_back([&, i]() {
-                cats::get_single_cat_par(corpus, ref(cat_vect), conv_cat_type(i));
+                cats::par::get_single_cat_par(corpus, ref(cat_vect), conv_cat_type(i));
             });
         }
     } catch (exception e) {
@@ -161,9 +161,11 @@ int main(int argc, char * argv[]) {
     vector<string> unknown_cats_correct = read_unknown_cats();
 
     // classify unknown documents
-    cats::print_classifications(cats::init_classification_par(ref(unknown_corpus), ref(cat_vect), unknown_cats_correct));
+    cats::par::init_classification_par(ref(unknown_corpus), ref(cat_vect), unknown_cats_correct);
     end = chrono::high_resolution_clock::now();
     print_duration_code(start, end, unknown_);
+    cats::print_classifications();
+    // cats::print_classifications(cats::init_classification_par(ref(unknown_corpus), ref(cat_vect), unknown_cats_correct));
 
     // convert txt results to csv for python graphing
     try {

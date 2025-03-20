@@ -1,5 +1,5 @@
 /* document.cpp
- * source file for document.h
+ * source file for document.hpp
  */
 
 #include "document.hpp"

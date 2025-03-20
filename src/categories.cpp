@@ -1,5 +1,5 @@
 /* categories.cpp
- * source file for categories.h
+ * source file for categories.hpp
  */
 
 #include "categories.hpp"
@@ -14,7 +14,8 @@
 std::mutex mtx; // global mtx for emplacing Category to thread
 std::mutex tf_idf_mutex;
 
-namespace cats {
+namespace cats { // namespace cats
+    unknown_classification_s u_classified = Unknown_Classification_Corp_S();
     
     // return sorted std::vector of tfidf terms
     std::vector<std::pair<std::string, double>> Category::sort_unordered_umap(std::unordered_map<std::string, double> terms) {
@@ -58,7 +59,7 @@ namespace cats {
         return current_high;
     }
 
-    void Category::print_all() {
+    void Category::print_all() const {
         for (auto& [term, tf_idf] : this->tf_idf_all) {
             std::cout << term << ": " << tf_idf << std::endl;
         }
@@ -126,7 +127,7 @@ namespace cats {
         }
     }
 
-    void Category::print_all_info() {
+    void Category::print_all_info() const {
         std::ofstream file{cats::CAT_FILENAME, std::ios::app};
 
         if (!file) {
@@ -141,53 +142,6 @@ namespace cats {
         }
         file << "\n";
         file.close();
-    }
-
-    // initialize categories std::vector
-    static std::vector<Category> init_categories() {
-        std::vector<Category> categories_list;
-
-        for (int i = 0; i < MAX_CATEGORIES; i++)
-            categories_list.emplace_back(i);
-        
-        return categories_list;
-    }
-
-    // parallel
-    extern void get_single_cat_par(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint) {
-        std::lock_guard<std::mutex> lock(mtx); /* MOVING LOCK HERE INCREASED ACCURACY BY MINIMUM 60% */
-        Category cat(catint);
-
-        try {
-            cat.get_important_terms(corpus);
-            cats.emplace_back(std::move(cat));
-        } catch (const std::runtime_error &e) {
-            std::cerr << "RuntimeError in get_single_cat_par: " << e.what() << std::endl;
-            exit(EXIT_FAILURE);
-        } catch (const std::exception &e) {
-            std::cerr << "Exception in get_single_cat_par: " << e.what() << std::endl;
-            exit(EXIT_FAILURE);
-        }
-        
-        {
-            // std::lock_guard<std::mutex> lock(mtx); /* HAVING LOCK HERE DECREASED ACCURACY BY MINIMUM 60% */
-            // cats.emplace_back(std::move(cat));
-        }
-    }
-
-    // sequential
-    extern void get_single_cat_seq(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint) {
-        Category cat(catint);
-        try {
-            cat.get_important_terms(corpus);
-        } catch (const std::runtime_error &e) {
-            std::cerr << "RuntimeError in get_single_cat_seq: " << e.what() << std::endl;
-            exit(EXIT_FAILURE);
-        } catch (const std::exception &e) {
-            std::cerr << "Exception in get_single_cat_seq: " << e.what() << std::endl;
-            exit(EXIT_FAILURE);
-        }
-        cats.emplace_back(std::move(cat));
     }
 
 
@@ -243,101 +197,17 @@ namespace cats {
         return unknown_classification;
     }
 
-    std::atomic<int> correct_count{0}; // atomic counter for correct classifications
-
-    // commit classification changes to the unknown_classification_s structure
-    static void commit_classification_changes(unknown_classification_s& u_classified, std::unordered_map<std::string, double> tf_idf, std::vector<Category> cat_vect, std::string correct_type) {
-        try {    
-            unknown_class result = classify_text(tf_idf, cat_vect, correct_type);
-            if (result.correct)
-                correct_count.fetch_add(1, std::memory_order_release);
-            std::lock_guard<std::mutex> lock(mtx);
-            u_classified.unknown_doc.emplace_back(result);
-        } catch (std::exception &e) {
-            std::cerr << "Failure in commit_classification_changes: " << "Error: " << strerror(errno) << std::endl;
-            return;
-        }
-    }
-
-    extern unknown_classification_s init_classification_par(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types) {
-        unknown_classification_s u_classified;
-        u_classified.correct_count = 0;
-        u_classified.total_count = unknown_corpus.documents.size();
-        
-        unsigned int number_of_docs_in_thread{unknown_corpus.get_number_of_docs_per_thread()};
-        int num_of_docs{unknown_corpus.num_of_docs};
-        unsigned number_of_docs_in_last_thread = num_of_docs % number_of_docs_in_thread;
-        std::vector<std::thread> threads;
-
-        // load balanced threads accordingly
-        for (int i = 0; i < num_of_docs; i+=number_of_docs_in_thread) {
-            threads.emplace_back([&u_classified, num_of_docs, i, number_of_docs_in_thread, number_of_docs_in_last_thread, &unknown_corpus, &cat_vect, &correct_types]() mutable {
-                int x{0};
-                try {
-                    if (i == num_of_docs - number_of_docs_in_thread && number_of_docs_in_last_thread > 0) {
-                        for ( x = 0; x < number_of_docs_in_last_thread; x++) 
-                            try {
-                                commit_classification_changes(std::ref(u_classified), unknown_corpus.documents.at(x+i).tf_idf, cat_vect, correct_types.at(x+i));
-                            } catch (std::out_of_range &e) {
-                                std::cerr << "Error: " << " in init_classification_par, i=" << i << ", x=" << x << std::endl << e.what() << std::endl;
-                                exit(EXIT_FAILURE);
-                            }
-                    } else {
-                        for ( x = 0; x < number_of_docs_in_thread; x++) {
-                            try {
-                                commit_classification_changes(std::ref(u_classified), unknown_corpus.documents.at(x+i).tf_idf, cat_vect, correct_types.at(x+i));
-                            } catch (std::out_of_range &e) {
-                                std::cerr << "Error: " << " in init_classification_par, i=" << i << ", x=" << x << std::endl << e.what() << std::endl;
-                                exit(EXIT_FAILURE);
-                            }
-                        }
-                    }   
-                } catch (std::out_of_range &e) {
-                    std::cerr << "Error: " << " in init_classification_par, i=" << i << ", x=" << x << std::endl << e.what() << std::endl;
-                    exit(EXIT_FAILURE);
-                }
-            });
-        }
-
-        for (auto& t : threads)
-            t.join();
-        
-        u_classified.correct_count = correct_count.load();
-        u_classified.correct_db = static_cast<double>(u_classified.correct_count) / u_classified.total_count * 100;
-
-        return u_classified;
-    }
-
-    extern unknown_classification_s init_classification_seq(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types) {
-        unknown_classification_s u_classified;
-        u_classified.correct_count = 0;
-        u_classified.total_count = unknown_corpus.documents.size();
-
-        for (int i = 0; i < u_classified.total_count; i++) {
-            u_classified.unknown_doc.emplace_back(classify_text(unknown_corpus.documents.at(i).tf_idf, cat_vect, correct_types.at(i)));
-            
-            if (u_classified.unknown_doc.at(i).correct)
-                u_classified.correct_count++;
-        }
-
-        u_classified.correct_db = static_cast<double>(u_classified.correct_count) / u_classified.total_count * 100;
-
-        return u_classified;
-    }
-
-    extern void print_classifications(unknown_classification_s classified) {
-        std::cout << "# of total unknown Documents: " << classified.total_count << std::endl;
-        std::cout << "# of total correctly Classfied: " << classified.correct_count << std::endl;
-        std::cout << "% Classifed Correctly: " << classified.correct_db << "%" << std::endl;
+    extern void print_classifications() {
+        std::cout << "# of total unknown Documents: " << u_classified.total_count << std::endl;
+        std::cout << "# of total correctly Classfied: " << u_classified.correct_count << std::endl;
+        std::cout << "% Classifed Correctly: " << u_classified.correct_db << "%" << std::endl;
         std::cout << "Actual\tClassified\tCorrect" << std::endl;
         
-        if (classified.unknown_doc.empty()) {
+        if (u_classified.unknown_doc.empty()) {
             std::cerr << "No documents classified!" << std::endl;
         }
 
-
-        for (auto doc : classified.unknown_doc) {
-            // if (classified.unknown_doc.at(i).correct_type == )
+        for (auto doc : u_classified.unknown_doc) {
             std::cout << conv_cat_type(doc.correct_type) << "\t" << conv_cat_type(doc.classified_type) << "\t";
             
             if (doc.correct)
@@ -347,20 +217,17 @@ namespace cats {
             
             std::cout << std::endl;
         }
-
-        // for (int i = 0; i < classified.total_count; i++) {
-        //     // if (classified.unknown_doc.at(i).correct_type == )
-        //     std::cout << conv_cat_type(classified.unknown_doc.at(i).correct_type) << "\t" << conv_cat_type(classified.unknown_doc.at(i).classified_type) << "\t";
-        //     
-        //     if (classified.unknown_doc.at(i).correct)
-        //         std::cout << "True";
-        //     else 
-        //         std::cout << "False";
-        //     
-        //     std::cout << std::endl;
-        // }
     }
 
+    // initialize categories std::vector
+    static std::vector<Category> init_categories() {
+        std::vector<Category> categories_list;
+
+        for (int i = 0; i < MAX_CATEGORIES; i++)
+            categories_list.emplace_back(i);
+        
+        return categories_list;
+    }
 
     // deprecated function
     extern std::vector<Category> get_all_category_important_terms(const corpus::Corpus& corpus) {
@@ -386,5 +253,141 @@ namespace cats {
             thread.join();
 
         return categories_list;
+    }
+}
+
+/* Parallel Functions */
+namespace cats::par { // namespace cats::par
+    std::atomic<int> correct_count{0};
+    std::atomic<int> total_count{0};
+    std::mutex c_mtx;
+
+    extern void get_single_cat_par(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint) {
+        std::lock_guard<std::mutex> lock(mtx); /* MOVING LOCK HERE INCREASED ACCURACY BY ABOUT 60% */
+        Category cat(catint);
+
+        try {
+            cat.get_important_terms(corpus);
+            cats.emplace_back(std::move(cat));
+        } catch (const std::runtime_error &e) {
+            std::cerr << "RuntimeError in get_single_cat_par: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        } catch (const std::exception &e) {
+            std::cerr << "Exception in get_single_cat_par: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        
+      /*{
+            std::lock_guard<std::mutex> lock(mtx); ** HAVING LOCK HERE DECREASED ACCURACY BY ABOUT 60% **
+            cats.emplace_back(std::move(cat));
+        }*/
+    }
+
+    // commit classification changes to the unknown_classification_par_s structure
+    static void commit_classification_changes(std::unordered_map<std::string, double> tf_idf, std::vector<Category> cat_vect, std::string correct_type) {
+        try {    
+            unknown_class result = classify_text(tf_idf, cat_vect, correct_type);
+            if (result.correct)
+                correct_count.fetch_add(1, std::memory_order_release);
+            total_count.fetch_add(1, std::memory_order_release);
+
+            std::lock_guard<std::mutex> lock(c_mtx);
+            u_classified.unknown_doc.emplace_back(result);
+        } catch (std::exception &e) {
+            std::cerr << "Failure in commit_classification_changes: " << "Error: " << strerror(errno) << std::endl;
+            return;
+        }
+    }
+    
+    extern void init_classification_par(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types) {
+        unsigned int number_of_docs_in_thread{unknown_corpus.get_number_of_docs_per_thread()};
+        int num_of_docs{unknown_corpus.num_of_docs};
+        unsigned number_of_docs_in_last_thread = num_of_docs % number_of_docs_in_thread;
+        std::vector<std::thread> threads;
+
+        // load balanced threads accordingly
+        for (int i = 0; i < num_of_docs; i+=number_of_docs_in_thread) {
+            threads.emplace_back([num_of_docs, i, number_of_docs_in_thread, number_of_docs_in_last_thread, &unknown_corpus, &cat_vect, &correct_types]() mutable {
+                int x{0};
+                try {
+                    if (i == num_of_docs - number_of_docs_in_thread && number_of_docs_in_last_thread > 0) {
+                        for ( x = 0; x < number_of_docs_in_last_thread; x++) 
+                            try {
+                                commit_classification_changes(unknown_corpus.documents.at(x+i).tf_idf, cat_vect, correct_types.at(x+i));
+                            } catch (std::out_of_range &e) {
+                                std::cerr << "Error: " << " in init_classification_par, i=" << i << ", x=" << x << std::endl << e.what() << std::endl;
+                                exit(EXIT_FAILURE);
+                            }
+                    } else {
+                        for ( x = 0; x < number_of_docs_in_thread; x++) {
+                            try {
+                                commit_classification_changes(unknown_corpus.documents.at(x+i).tf_idf, cat_vect, correct_types.at(x+i));
+                            } catch (std::out_of_range &e) {
+                                std::cerr << "Error: " << " in init_classification_par, i=" << i << ", x=" << x << std::endl << e.what() << std::endl;
+                                exit(EXIT_FAILURE);
+                            }
+                        }
+                    }   
+                } catch (std::out_of_range &e) {
+                    std::cerr << "Error: " << " in init_classification_par, i=" << i << ", x=" << x << std::endl << e.what() << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+            });
+        }
+
+        for (auto& t : threads)
+            t.join();
+
+        u_classified.correct_count = correct_count.load();
+        u_classified.total_count = total_count.load();
+
+        u_classified.correct_db = static_cast<double>(u_classified.correct_count) / u_classified.total_count * 100;
+    }
+}
+
+/* Sequential Functions */
+namespace cats::seq { // namespace cats::seq
+
+    extern void get_single_cat_seq(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint) {
+        Category cat(catint);
+        try {
+            cat.get_important_terms(corpus);
+        } catch (const std::runtime_error &e) {
+            std::cerr << "RuntimeError in get_single_cat_seq: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        } catch (const std::exception &e) {
+            std::cerr << "Exception in get_single_cat_seq: " << e.what() << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        cats.emplace_back(std::move(cat));
+    }
+
+    extern void init_classification_seq(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types) {
+        u_classified.correct_count = 0; // ensure set to 0
+        u_classified.total_count = 0;   // ensure set to 0
+        int num_of_docs{static_cast<int>(unknown_corpus.documents.size())};
+
+        for (int i = 0; i < num_of_docs; i++) {
+            if (i >= unknown_corpus.documents.size() || i >= correct_types.size()) {
+                std::cerr << "Index out of range: " << i << std::endl;
+            } else {
+                try {
+                    auto doc = unknown_corpus.documents.at(i);
+                    auto correct_type = correct_types.at(i);
+                    auto result = classify_text(doc.tf_idf, cat_vect, correct_type);
+            
+                    u_classified.total_count++;
+                    if (result.correct)
+                        u_classified.correct_count++;
+
+                    u_classified.unknown_doc.emplace_back(result);
+                } catch (const std::out_of_range& e) {
+                    std::cerr << "Caught exception: " << e.what() << std::endl;
+                    std::cerr << "Index: " << i << ", unknown_corpus.documents.size(): " << unknown_corpus.documents.size() << ", correct_types.size(): " << correct_types.size() << std::endl;
+                }
+            }
+        }
+
+        u_classified.correct_db = static_cast<double>(u_classified.correct_count) / u_classified.total_count * 100;
     }
 }

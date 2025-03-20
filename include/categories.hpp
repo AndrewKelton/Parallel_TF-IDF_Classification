@@ -16,13 +16,11 @@
  * also contains utility functions for managing categories, checking if a document belongs to a 
  * specific category, and handling category-related data efficiently.
  * 
- * @version 2.0
+ * @version 3.0
  * @date 2025-03-19
  * 
  * @par Changelog:
- * - Removed `init_classification()` and replaced with `init_classification_par()` and `init_classification_seq()`.
- * - `init_classification_par()`: multi-threaded (parallel) classification
- * - `init_classification_seq()`: sequential classification 
+ * - Moved sequential and parallel functions into their own namespaces.
  * 
  */
 
@@ -80,8 +78,8 @@ namespace cats {
 
         private:
 
-            text_cat_types_ category_type;                     ///< Category type (text_cat_types_)
-            int number_of_docs;                                ///< Number of documents in this category
+            text_cat_types_ category_type;  ///< Category type (text_cat_types_)
+            int number_of_docs;             ///< Number of documents in this category
             std::vector<std::pair<std::string, double>> most_important_terms; ///< List of top terms in the category sorted by TF-IDF
         
             /**
@@ -124,7 +122,7 @@ namespace cats {
              * This function prints detailed information about the category, including the most important
              * terms and their TF-IDF scores, to an output file.
              */
-            void print_all();
+            void print_all() const;
 
             /**
              * @name Constructors & Operators
@@ -177,7 +175,7 @@ namespace cats {
              * 
              * @return The type of the category as a text_cat_types_.
              */
-            text_cat_types_ get_type() {
+            text_cat_types_ get_type() const {
                 return category_type;
             }
         
@@ -198,7 +196,7 @@ namespace cats {
              * This function writes the category type and the most important terms to a file, 
              * including their TF-IDF scores.
              */
-            void print_all_info(); 
+            void print_all_info() const; 
     };
 
 
@@ -213,23 +211,77 @@ namespace cats {
         text_cat_types_ classified_type; ///< The category the document was classified into.
         bool correct;                    ///< Whether the classification was correct.
     };
-    using unknown_class = Classified_S;  ///< Use `unkown_class`, I dislike capitals.
+    using unknown_class = Classified_S;  ///< Use `unknown_class`, I dislike capitals.
 
     /**
-     * @struct Classification_S
+     * @struct Classification_Parallel_S
      * @brief Represents the results of a classification process for a set of documents.
      * 
      * @details This struct holds a collection of documents with their classification results and the 
      * overall classification accuracy.
      */
-    struct Classification_S {
+    struct Unknown_Classification_Corp_S {
+
+        Unknown_Classification_Corp_S() 
+            : correct_count{0},
+              total_count{0},
+              correct_db{0.0} {}
+
         std::vector<unknown_class> unknown_doc; ///< List of documents with classification results.
         int correct_count;                 ///< Number of correctly classified documents.
         int total_count;                   ///< Total number of documents classified.
         double correct_db;                 ///< Classification accuracy as a decimal (correct/total).
     };
-    using unknown_classification_s = Classification_S;
+    using unknown_classification_s = Unknown_Classification_Corp_S; ///< Use `unknown_classification_s`, I dislike capitals.
+    extern unknown_classification_s u_classified; ///< cats::object for unknown classification data
 
+
+    /**
+     * @brief Classifies a single document into one of the categories.
+     * 
+     * This function compares a document’s terms (provided as a map of TF-IDF values) against 
+     * the precomputed categories and classifies the document into the most appropriate category.
+     * It also checks if the classification is correct by comparing it with the correct category.
+     * 
+     * @param unknownText An unordered map of terms and their corresponding TF-IDF values for the document.
+     * @param cat_vect A vector of `Category` objects to compare against.
+     * @param correct_type The correct category label for the document.
+     * @return A `Classified_S` struct containing the classification results for the document.
+     */
+    extern unknown_class classify_text(const std::unordered_map<std::string, double>& unknownText, std::vector<Category> cat_vect, std::string correct_type);
+
+
+    /**
+     * @brief Deprecated function to get important terms for all categories.
+     * 
+     * This function was used to retrieve the important terms for all categories in the corpus. 
+     * It has been replaced by more efficient methods of parallel and sequential processing. 
+     * 
+     * @param corpus The corpus of documents used for calculating TF-IDF.
+     * @return A vector of `Category` objects, each containing the most important terms for its category.
+     * 
+     * @deprecated This is a deprecated function, please use `get_single_cat_par()` or `get_single_cat_seq()`.
+     */
+    extern std::vector<Category> get_all_category_important_terms(const corpus::Corpus& corpus);
+
+     /**
+     * @brief Prints the classification results for a set of documents.
+     * 
+     * This function prints the classification results for a set of documents, showing both 
+     * the correct categories and the categories the documents were classified into. It also 
+     * computes and displays the overall classification accuracy.
+     * 
+     */
+    extern void print_classifications();
+
+} // namespace cats
+
+/**
+ * @namespace cats::par
+ * @brief Provides parallel functionality for classifying trained/untrained documents into categories.
+ * 
+ */
+namespace cats::par {
 
     /**
      * @brief Get important terms for a Category using parallel processing (5 threads, 1 per Category).
@@ -243,6 +295,47 @@ namespace cats {
      */
     extern void get_single_cat_par(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint);
 
+
+    /**
+     * @brief Initializes the classification process for a set of documents parallelized.
+     * 
+     * This function sets up the classification process, creating the necessary classification structures 
+     * and comparing the documents in the unknown corpus against the given category types.
+     * It returns the classification results, including the number of correctly classified documents and 
+     * their respective categories.
+     * 
+     * @param unknown_corpus The corpus of documents to classify. It must be a valid pointer to a `Corpus` object.
+     * @param cat_vect A vector of `Category` objects to compare against. It should contain the precomputed categories.
+     * @param correct_types A vector of correct category labels corresponding to the documents in `unknown_corpus`.
+     * @return A `Classification_S` struct containing the classification results, including the count of correct classifications.
+     */
+    extern void init_classification_par(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types);
+
+    /**
+     * @brief Prints the classification results for a set of documents.
+     * 
+     * This function prints the classification results for a set of documents, showing both 
+     * the correct categories and the categories the documents were classified into. It also 
+     * computes and displays the overall classification accuracy.
+     * 
+     */
+    extern void print_classifications();
+} // namspace cats::par
+
+
+/**
+ * @namespace cats::seq
+ * @brief Provides sequential functionality for classifying trained/untrained documents into categories.
+ */
+namespace cats::seq {
+
+    /**
+     * @struct Classification_S
+     * @brief Represents the results of a classification process for a set of documents.
+     * 
+     * @details This struct holds a collection of documents with their classification results and the 
+     * overall classification accuracy.
+     */
 
     /**
      * @brief Get important terms for a Category using sequential processing.
@@ -270,67 +363,9 @@ namespace cats {
      * @param correct_types A vector of correct category labels corresponding to the documents in `unknown_corpus`.
      * @return A `Classification_S` struct containing the classification results, including the count of correct classifications.
      */
-    extern unknown_classification_s init_classification_seq(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types);
-   
-    /**
-     * @brief Initializes the classification process for a set of documents parallelized.
-     * 
-     * This function sets up the classification process, creating the necessary classification structures 
-     * and comparing the documents in the unknown corpus against the given category types.
-     * It returns the classification results, including the number of correctly classified documents and 
-     * their respective categories.
-     * 
-     * @param unknown_corpus The corpus of documents to classify. It must be a valid pointer to a `Corpus` object.
-     * @param cat_vect A vector of `Category` objects to compare against. It should contain the precomputed categories.
-     * @param correct_types A vector of correct category labels corresponding to the documents in `unknown_corpus`.
-     * @return A `Classification_S` struct containing the classification results, including the count of correct classifications.
-     */
-    extern unknown_classification_s init_classification_par(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types);
+    extern void init_classification_seq(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types);
 
-
-    /**
-     * @brief Classifies a single document into one of the categories.
-     * 
-     * This function compares a document’s terms (provided as a map of TF-IDF values) against 
-     * the precomputed categories and classifies the document into the most appropriate category.
-     * It also checks if the classification is correct by comparing it with the correct category.
-     * 
-     * @param unknownText An unordered map of terms and their corresponding TF-IDF values for the document.
-     * @param cat_vect A vector of `Category` objects to compare against.
-     * @param correct_type The correct category label for the document.
-     * @return A `Classified_S` struct containing the classification results for the document.
-     */
-    extern unknown_class classify_text(const std::unordered_map<std::string, double>& unknownText, std::vector<Category> cat_vect, std::string correct_type);
-
-
-    /**
-     * @brief Prints the classification results for a set of documents.
-     * 
-     * This function prints the classification results for a set of documents, showing both 
-     * the correct categories and the categories the documents were classified into. It also 
-     * computes and displays the overall classification accuracy.
-     * 
-     * @param classifications The classification results for the set of documents, represented by an 
-     *        `unknown_classification_s` structure.
-     */
-    extern void print_classifications(unknown_classification_s classifications);
-
-
-    /**
-     * @brief Deprecated function to get important terms for all categories.
-     * 
-     * This function was used to retrieve the important terms for all categories in the corpus. 
-     * It has been replaced by more efficient methods of parallel and sequential processing. 
-     * 
-     * @param corpus The corpus of documents used for calculating TF-IDF.
-     * @return A vector of `Category` objects, each containing the most important terms for its category.
-     * 
-     * @deprecated This is a deprecated function, please use `get_single_cat_par()` or `get_single_cat_seq()`.
-     */
-    extern std::vector<Category> get_all_category_important_terms(const corpus::Corpus& corpus);
-
-
-} // namespace cats
+} // namspace cats::seq
 
 
 #endif // _CATEGORIES_HPP

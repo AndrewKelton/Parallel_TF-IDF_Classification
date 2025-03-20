@@ -1,5 +1,5 @@
 /* preprocess.cpp
- * source file for preprocess.h
+ * source file for preprocess.hpp
  */
 
 #include "preprocess.hpp"

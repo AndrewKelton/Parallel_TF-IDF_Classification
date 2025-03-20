@@ -94,7 +94,7 @@ int main(int argc, char * argv[]) {
     vector<cats::Category> cat_vect;
     try {
         for (int i = 0; i < 5; i++) 
-            cats::get_single_cat_seq(corpus, ref(cat_vect), conv_cat_type(i));
+            cats::seq::get_single_cat_seq(corpus, ref(cat_vect), conv_cat_type(i));
         
     } catch (exception e) {
         cerr << "Error in get_single_cat_seq: " << e.what() << endl;
@@ -135,9 +135,11 @@ int main(int argc, char * argv[]) {
     vector<string> unknown_cats_correct = read_unknown_cats(); // read in correct classifications
 
     // classify unknown corpus
-    cats::print_classifications(cats::init_classification_seq(unknown_corpus, cat_vect, unknown_cats_correct));
+    cats::seq::init_classification_seq(ref(unknown_corpus), cat_vect, ref(unknown_cats_correct));
     end = chrono::high_resolution_clock::now();
     print_duration_code(start, end, unknown_);
+    cats::print_classifications();
+    // cats::print_classifications(cats::init_classification_seq(unknown_corpus, cat_vect, unknown_cats_correct));
 
     // convert txt results to csv for python graphing
     try {

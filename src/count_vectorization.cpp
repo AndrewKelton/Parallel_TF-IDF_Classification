@@ -1,5 +1,5 @@
 /* count_vectorization.cpp
- * source file for count_vectorization.h
+ * source file for count_vectorization.hpp
  */
 
 #include "count_vectorization.hpp"

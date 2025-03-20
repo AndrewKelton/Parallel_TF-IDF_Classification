@@ -1,5 +1,5 @@
 /* file_operations.cpp
- * source file for file_operations.h
+ * source file for file_operations.hpp
  */
 
 #include "file_operations.hpp"
