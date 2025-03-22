@@ -1,3 +1,21 @@
+#grapher3.0.py
+
+'''
+
+       || ===== * ==== * ==== * !!!!!!!!!! * ==== * ==== * ===== ||
+       || ===== * ==== * ==== * ! NOTICE ! * ==== * ==== * ===== ||
+       || ===== * ==== * ==== * !!!!!!!!!! * ==== * ==== * ===== ||
+       ||                                                        ||
+       ||       This python file is only used to graph           ||
+       ||        certain metrics being recorded during           ||
+       ||           during runs of this project.                 ||
+       ||                                                        ||
+       ||  To view outputted graphs, visit 'test-output/graphs'  ||
+       ||                                                        ||
+       || ===== + ==== + ==== + ========== + ==== + ==== + ===== ||
+
+'''
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import os
