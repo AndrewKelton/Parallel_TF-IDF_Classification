@@ -91,15 +91,8 @@ int main(int argc, char * argv[]) {
     
     /* -- Category Section -- */
     start = chrono::high_resolution_clock::now();
-    vector<cats::Category> cat_vect;
-    try {
-        for (int i = 0; i < 5; i++) 
-            cats::seq::get_single_cat_seq(corpus, ref(cat_vect), conv_cat_type(i));
-        
-    } catch (exception e) {
-        cerr << "Error in get_single_cat_seq: " << e.what() << endl;
-        exit(1);
-    }
+    vector<cats::Category> cat_vect = cats::seq::get_all_cat_seq(corpus);
+    
     end = chrono::high_resolution_clock::now();
     print_duration_code(start, end, categories_);
     /* -- Category Section END -- */

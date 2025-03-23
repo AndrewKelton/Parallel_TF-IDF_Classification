@@ -109,22 +109,7 @@ int main(int argc, char * argv[]) {
 
     /* -- Category Section -- */
     start = chrono::high_resolution_clock::now();
-    vector<thread> cat_threads;
-    vector<cats::Category> cat_vect;
-
-    try {
-        for (int i = 0; i < 5; i++) {
-            cat_threads.emplace_back([&, i]() {
-                cats::par::get_single_cat_par(corpus, ref(cat_vect), conv_cat_type(i));
-            });
-        }
-    } catch (exception e) {
-        cerr << "Error in get_single_cat_par: " << e.what() << endl;
-        return EXIT_FAILURE;
-    }
-
-    for (auto& cat : cat_threads)
-        cat.join();
+    vector<cats::Category> cat_vect = cats::par::get_all_cat_par(corpus);
     
     end = chrono::high_resolution_clock::now();
     print_duration_code(start, end, categories_);

@@ -16,11 +16,13 @@
  * also contains utility functions for managing categories, checking if a document belongs to a 
  * specific category, and handling category-related data efficiently.
  * 
- * @version 3.0
- * @date 2025-03-19
+ * @version 3.1
+ * @date 2025-03-22
  * 
  * @par Changelog:
- * - Moved sequential and parallel functions into their own namespaces.
+ * - Created functions: `get_all_cat_seq` and `get_all_cat_par`.
+ * -- Iterates through all category types, returning a `vector<Category>`
+ *    containing the category info. Allows user to only have to call the function.
  * 
  */
 
@@ -295,6 +297,18 @@ namespace cats::par {
      */
     extern void get_single_cat_par(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint);
 
+    /**
+     * @brief Get important terms for all Category objects using parallel processing (5 threads, 1 per Category).
+     * 
+     * This function computes the most important terms for all 5 categories using parallel processing,
+     * with each thread handling one category type. 
+     * 
+     * @param corpus The corpus of documents used for calculating TF-IDF.
+     * @param cats A vector to store the resulting Category objects.
+     * @param catint The category type to process.
+     * @return A `vector<Category>` containing all processed category data.
+     */
+    extern std::vector<cats::Category> get_all_cat_par(const corpus::Corpus&  corpus);
 
     /**
      * @brief Initializes the classification process for a set of documents parallelized.
@@ -311,15 +325,6 @@ namespace cats::par {
      */
     extern void init_classification_par(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types);
 
-    /**
-     * @brief Prints the classification results for a set of documents.
-     * 
-     * This function prints the classification results for a set of documents, showing both 
-     * the correct categories and the categories the documents were classified into. It also 
-     * computes and displays the overall classification accuracy.
-     * 
-     */
-    extern void print_classifications();
 } // namspace cats::par
 
 
@@ -328,14 +333,6 @@ namespace cats::par {
  * @brief Provides sequential functionality for classifying trained/untrained documents into categories.
  */
 namespace cats::seq {
-
-    /**
-     * @struct Classification_S
-     * @brief Represents the results of a classification process for a set of documents.
-     * 
-     * @details This struct holds a collection of documents with their classification results and the 
-     * overall classification accuracy.
-     */
 
     /**
      * @brief Get important terms for a Category using sequential processing.
@@ -348,7 +345,19 @@ namespace cats::seq {
      * @param catint The category type to process, represented as a value from `text_cat_types_`.
      */
     extern void get_single_cat_seq(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint);
-
+    
+    /**
+     * @brief Get important terms for all Category objects using sequential processing.
+     * 
+     * This function computes the most important terms for a category sequentially, 
+     * processing one category type at a time.
+     * 
+     * @param corpus The corpus of documents used for calculating TF-IDF. It must be a valid pointer to a `Corpus` object.
+     * @param cats A vector to store the resulting Category objects. The categories will be filled with the most important terms.
+     * @param catint The category type to process, represented as a value from `text_cat_types_`.
+     * @return A `vector<Category>` containing all processed category data.
+     */
+    extern std::vector<cats::Category> get_all_cat_seq(const corpus::Corpus&  corpus);
 
     /**
      * @brief Initializes the classification process for a set of documents sequentially.

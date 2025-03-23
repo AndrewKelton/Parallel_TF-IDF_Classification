@@ -283,6 +283,26 @@ namespace cats::par { // namespace cats::par
         }*/
     }
 
+    extern std::vector<cats::Category> get_all_cat_par(const corpus::Corpus& corpus) {
+        std::vector<std::thread> cat_threads;
+        std::vector<cats::Category> cat_vect;
+
+        try {
+            for (int i = 0; i < 5; i++) {
+                cat_threads.emplace_back([&, i]() {
+                    cats::par::get_single_cat_par(corpus, ref(cat_vect), conv_cat_type(i));
+                });
+            }
+        } catch (std::exception e) {
+            std::cerr << "Error in get_single_cat_par: " << e.what() << std::endl;
+        }
+
+        for (auto& cat : cat_threads)
+            cat.join();
+
+        return cat_vect;
+    }
+
     // commit classification changes to the unknown_classification_par_s structure
     static void commit_classification_changes(std::unordered_map<std::string, double> tf_idf, std::vector<Category> cat_vect, std::string correct_type) {
         try {    
@@ -360,6 +380,19 @@ namespace cats::seq { // namespace cats::seq
             exit(EXIT_FAILURE);
         }
         cats.emplace_back(std::move(cat));
+    }
+
+    extern std::vector<cats::Category> get_all_cat_seq(const corpus::Corpus&  corpus) {
+        std::vector<cats::Category> cat_vect;
+        try {
+            for (int i = 0; i < 5; i++) 
+                cats::seq::get_single_cat_seq(corpus, ref(cat_vect), conv_cat_type(i));
+            
+        } catch (std::exception e) {
+            std::cerr << "Error in get_single_cat_seq: " << e.what() << std::endl;
+        }
+
+        return cat_vect;
     }
 
     extern void init_classification_seq(const corpus::Corpus& unknown_corpus, std::vector<Category> cat_vect, std::vector<std::string> correct_types) {
