@@ -69,13 +69,14 @@ chmod +x scripts/cleanup.sh
 * Ensure correctness in parallel optimization
 
 ## Tasks
-* Implement parallel vectorization and TF-IDF compution
+* Implement parallel and sequential vectorization and TF-IDF compution
 * Implement classifier using cosine similarity
 * Measure times of computation in different sections of code
 * Measure accuracy of classification
 * Compare Parallel and Sequential times and accuracy
 
 ## Goals
+* Provide a parallel TF-IDF vectorizer/classifier for efficient performance.
 * Prove parallel TF-IDF is more efficient than its sequential implementation
 * Ensure correctness in parallel TF-IDF computation
 * Successfully classify documents using TF-IDF scores
