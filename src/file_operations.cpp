@@ -10,29 +10,29 @@
 static std::string input_file_name;
 
 /* --- Constants --- */
-static const std::string sl{"/"}; // general purpose slash
-
-/* constants for directory paths */
-static const std::string base_test_dir{"tests/test-output"};
-static const std::string processed_csv_dir{base_test_dir + sl + "processed-data-results"};
-static const std::string comp_test_dir{base_test_dir + sl + "comparison"};
-static const std::string solo_test_dir{base_test_dir + sl + "solo"};
-static const std::string res_test_dir{"results"};
-
-// output end file names
-static const std::string par_res_file{"parallel-results.txt"};
-static const std::string seq_res_file{"sequential-results.txt"};
-
-/* constants for .txt files (results) paths */
-static const std::string res_par_txt{comp_test_dir + sl + res_test_dir + sl + par_res_file};
-static const std::string res_seq_txt{comp_test_dir + sl + res_test_dir + sl + seq_res_file};
-
-static const std::string res_par_txt_singleton{solo_test_dir + sl + res_test_dir + sl + par_res_file};
-static const std::string res_seq_txt_singleton{solo_test_dir + sl + res_test_dir + sl + seq_res_file};
-
-/* constants for processed csv files */
-static const std::string processed_par_csv{processed_csv_dir + sl + "parallel-processed.csv"};
-static const std::string processed_seq_csv{processed_csv_dir + sl + "sequential-processed.csv"};
+// static const std::string sl{"/"}; // general purpose slash
+// 
+// /* constants for directory paths */
+// static const std::string base_test_dir{"tests/test-output"};
+// static const std::string processed_csv_dir{base_test_dir + sl + "processed-data-results"};
+// static const std::string comp_test_dir{base_test_dir + sl + "comparison"};
+// static const std::string solo_test_dir{base_test_dir + sl + "solo"};
+// static const std::string res_test_dir{"results"};
+// 
+// // output end file names
+// static const std::string par_res_file{"parallel-results.txt"};
+// static const std::string seq_res_file{"sequential-results.txt"};
+// 
+// /* constants for .txt files (results) paths */
+// static const std::string res_par_txt{comp_test_dir + sl + res_test_dir + sl + par_res_file};
+// static const std::string res_seq_txt{comp_test_dir + sl + res_test_dir + sl + seq_res_file};
+// 
+// static const std::string res_par_txt_singleton{solo_test_dir + sl + res_test_dir + sl + par_res_file};
+// static const std::string res_seq_txt_singleton{solo_test_dir + sl + res_test_dir + sl + seq_res_file};
+// 
+// /* constants for processed csv files */
+// static const std::string processed_par_csv{processed_csv_dir + sl + "parallel-processed.csv"};
+// static const std::string processed_seq_csv{processed_csv_dir + sl + "sequential-processed.csv"};
 /* --- Constants --- */
 
 
@@ -88,100 +88,24 @@ extern void read_csv_to_corpus(corpus::Corpus& corpus, const std::string& file_n
 }    
 
 // return .txt file name for results to csv
-static std::string get_txt_name(unsigned int par_or_seq /** 0 = parallel, 1 = sequential*/, bool comp_or_solo) {
-    if (par_or_seq != 0 && par_or_seq != 1)
-        throw std::runtime_error("invalid params in 'get_file_name'");
-    else if (par_or_seq == 0) {
-        return comp_or_solo ? res_par_txt_singleton : res_par_txt;
-    }
-
-    return comp_or_solo ? res_seq_txt_singleton : res_seq_txt;
-}
-
-// return .csv file name from .txt result file name
-static std::string get_csv_name(const std::string& txt_file_name) {
-    std::string file_txt_path;
-
-    if (txt_file_name.find("parallel") != std::string::npos)
-        return processed_par_csv;
-    return processed_seq_csv;
-}
-
-// actually write plain text file results to csv file
-static void write_sections_csv(std::vector<std::pair<std::string, std::string>> pln_txt, const std::string& txt_file_name, bool comp_or_solo) {
-    std::string file_name = get_csv_name(txt_file_name);
-    std::ofstream file(file_name, std::ios::app); // append to csv
-
-    if (!file) {
-        throw_runtime_error("error writing to csv");
-    } else {
-        file.seekp(0, std::ios::end);
-        
-        if (file.tellp() == 0) 
-            file << "Vectorization,TF-IDF,Categories,Unknown Classification,Accuracy\n";  // Header row
-
-        std::unordered_map<std::string, std::string> section_mapping;
-        
-        for (const auto& sec_time : pln_txt) {
-            std::string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms") - 1); // 'stem' the output
-            section_mapping[sec_time.first] = no_ms_time;
-        }
-
-        // print mapping in csv format
-        file << section_mapping["Vectorization"] << ","
-             << section_mapping["TF-IDF"] << ","
-             << section_mapping["Categories"] << ","
-             << section_mapping["Unknown Classification"] << ","
-             << section_mapping["Accuracy"] << std::endl;
-    }
-}
-
-// main function to convert txt to csv
-extern void convert_results_txt_to_csv(unsigned int par_or_seq, bool comp_or_solo) {
-    std::string file_name;
-
-    try {
-        file_name = get_txt_name(par_or_seq, comp_or_solo);
-    } catch (std::runtime_error e) {
-        std::cerr << "Cannot open file convert_results_txt_to_csv: " << e.what() << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    std::ifstream file{file_name};
-
-    if (!file.is_open()) 
-        throw_runtime_error("convert_results_txt_to_csv");
-
-    else {
-        std::vector<std::pair<std::string, std::string>> res_pln_txt;
-        std::pair<std::string, std::string> percent_to_end;
-        std::string line;
-
-        while (getline(file, line)) {
-            
-            // ignore non time data
-            if (line.find(':') == std::string::npos || line.find('#') != std::string::npos)
-                continue;
-            
-            if (line.find('%') != std::string::npos) {
-                std::pair<std::string, std::string> split = split_string(line, ':');
-                percent_to_end = std::pair<std::string, std::string>{"Accuracy", split.second.substr(0, split.second.size() - 1)};
-                continue;
-            }
-
-            std::pair<std::string, std::string> split = split_string(line, ':');
-            res_pln_txt.emplace_back(split);
-        }
-        res_pln_txt.emplace_back(percent_to_end);
-
-        try {
-            write_sections_csv(res_pln_txt, file_name, comp_or_solo);
-        } catch (std::runtime_error e) {
-            std::cerr << "Error in convert_results_txt_to_csv: " << e.what() << std::endl;
-            exit(EXIT_FAILURE);
-        }
-    }
-}
+// static std::string get_txt_name(unsigned int par_or_seq /** 0 = parallel, 1 = sequential*/, bool comp_or_solo) {
+//     if (par_or_seq != 0 && par_or_seq != 1)
+//         throw std::runtime_error("invalid params in 'get_file_name'");
+//     else if (par_or_seq == 0) {
+//         return comp_or_solo ? res_par_txt_singleton : res_par_txt;
+//     }
+// 
+//     return comp_or_solo ? res_seq_txt_singleton : res_seq_txt;
+// }
+// 
+// // return .csv file name from .txt result file name
+// static std::string get_csv_name(const std::string& txt_file_name) {
+//     std::string file_txt_path;
+// 
+//     if (txt_file_name.find("parallel") != std::string::npos)
+//         return processed_par_csv;
+//     return processed_seq_csv;
+// }
 
 extern std::string get_input_file_name() {
     return input_file_name;
@@ -205,12 +129,12 @@ extern void read_unknown_text(corpus::Corpus& corpus, const std::string& file_na
     file.close();
 }
 
-extern std::vector<std::string> read_unknown_cats() {
+extern std::vector<std::string> read_unknown_cats(const std::string& file_name) {
     std::vector<std::string> correct_cats;
-    std::ifstream file{"data/correct_unknown.txt"};
-    
+    std::ifstream file{file_name};
+
     if (!file.is_open())
-        throw std::runtime_error("file cannot be opened...");
+        throw std::runtime_error("File cannot be opened: " + file_name);
 
     std::string line;
     while (getline(file, line)) {
@@ -218,4 +142,78 @@ extern std::vector<std::string> read_unknown_cats() {
     }
 
     return correct_cats;
+}
+
+// actually write plain text file results to csv file
+// static void write_sections_csv(std::vector<std::pair<std::string, std::string>> pln_txt, const std::string& txt_file_name) {
+//     std::string file_name = get_csv_name(txt_file_name);
+//     std::ofstream file(file_name, std::ios::app); // append to csv
+// 
+//     if (!file) {
+//         throw_runtime_error("error writing to csv");
+//     } else {
+//         file.seekp(0, std::ios::end);
+//         
+//         if (file.tellp() == 0) 
+//             file << "Vectorization,TF-IDF,Categories,Unknown Classification,Accuracy\n";  // Header row
+// 
+//         std::unordered_map<std::string, std::string> section_mapping;
+//         
+//         for (const auto& sec_time : pln_txt) {
+//             std::string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms") - 1); // 'stem' the output
+//             section_mapping[sec_time.first] = no_ms_time;
+//         }
+// 
+//         // print mapping in csv format
+//         file << section_mapping["Vectorization"] << ","
+//              << section_mapping["TF-IDF"] << ","
+//              << section_mapping["Categories"] << ","
+//              << section_mapping["Unknown Classification"] << ","
+//              << section_mapping["Accuracy"] << std::endl;
+//     }
+// }
+
+extern void convert_results_txt_to_csv(const std::string& txt_file_name, const std::string& csv_file_name) {
+    std::ifstream file{txt_file_name};
+    if (!file.is_open()) 
+        throw std::runtime_error("Cannot open file: " + txt_file_name);
+
+    std::vector<std::pair<std::string, std::string>> res_pln_txt;
+    std::pair<std::string, std::string> percent_to_end;
+    std::string line;
+
+    while (getline(file, line)) {
+        if (line.find(':') == std::string::npos || line.find('#') != std::string::npos)
+            continue;
+
+        if (line.find('%') != std::string::npos) {
+            std::pair<std::string, std::string> split = split_string(line, ':');
+            percent_to_end = {"Accuracy", split.second.substr(0, split.second.size() - 1)};
+            continue;
+        }
+
+        res_pln_txt.emplace_back(split_string(line, ':'));
+    }
+    res_pln_txt.emplace_back(percent_to_end);
+    file.close();
+
+    std::ofstream out_file(csv_file_name, std::ios::app);
+    if (!out_file) 
+        throw std::runtime_error("Error writing to CSV: " + csv_file_name);
+
+    out_file.seekp(0, std::ios::end);
+    if (out_file.tellp() == 0)
+        out_file << "Vectorization,TF-IDF,Categories,Unknown Classification,Accuracy\n";
+
+    std::unordered_map<std::string, std::string> section_mapping;
+    for (const auto& sec_time : res_pln_txt) {
+        std::string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms") - 1);
+        section_mapping[sec_time.first] = no_ms_time;
+    }
+
+    out_file << section_mapping["Vectorization"] << ","
+             << section_mapping["TF-IDF"] << ","
+             << section_mapping["Categories"] << ","
+             << section_mapping["Unknown Classification"] << ","
+             << section_mapping["Accuracy"] << std::endl;
 }

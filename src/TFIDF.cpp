@@ -131,7 +131,7 @@ void TFIDF::TFIDF_::process_un_trained_data() {
 
     if (task_settings.classify_unknown) {
         try {
-            un_trained_cats_correct = read_unknown_cats();
+            un_trained_cats_correct = read_unknown_cats(input_files.un_trained_correct_classification_file);
         } catch (std::runtime_error &e) {
             handle_err("Error in read_unknown_cats: " + std::string(e.what()));
             return;
@@ -163,7 +163,7 @@ void TFIDF::TFIDF_::process_un_trained_data() {
 
         if (task_settings.convert_output_to_csv) {
             try {
-                convert_results_txt_to_csv(0, true);
+                convert_results_txt_to_csv(input_files.output_results_file, input_files.processed_data_csv_file);
             } catch (std::runtime_error &e) {
                 handle_err("Error in convert_results_txt_to_csv: " + std::string(e.what()));
                 return;

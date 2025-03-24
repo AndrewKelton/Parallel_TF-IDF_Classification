@@ -46,9 +46,6 @@
  */
 extern void read_csv_to_corpus(corpus::Corpus& corpus, const std::string& file_name);
 
-extern std::string get_input_file_name();
-extern std::vector<std::string> read_unknown_cats(const std::string& file_name);
-
 
 /**
  * @brief Reads and vectorizes unknown text for classification.
@@ -74,7 +71,7 @@ extern void read_unknown_text(corpus::Corpus& corpus, const std::string& file_na
  * @param par_or_seq Determines execution type (0 = parallel, 1 = sequential).
  * @param comp_or_solo Specifies whether to compare results or process a single dataset.
  */
-extern void convert_results_txt_to_csv(const std::string& txt_file_name, const std::string& csv_file_name);
+extern void convert_results_txt_to_csv(unsigned int par_or_seq, bool comp_or_solo);
 
 
 /**
@@ -91,7 +88,7 @@ extern std::string get_input_file_name();
  * @return A vector of std::strings containing the correct categories of the 
  * unknown input documents.
  */
-extern std::vector<std::string> read_unknown_cats(const std::string& file_name);
+extern std::vector<std::string> read_unknown_cats();
 
 
 #endif // _FILE_OPERATIONS_HPP
