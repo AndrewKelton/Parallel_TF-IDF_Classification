@@ -201,6 +201,14 @@ namespace corpus {
             void tfidf_documents();
 
             /**
+            * @brief Computes the TF-IDF values for all documents in parallel.
+            * 
+            * @details This function calculates the Term Frequency-Inverse Document Frequency (TF-IDF) 
+            * for each term in the corpus using multithreading to improve performance.
+            */
+            void tfidf_documents(int num_threads);
+
+            /**
              * @brief Computes the TF-IDF values sequentially (single-threaded).
              * 
              * @details This function computes the TF-IDF scores for each document 
@@ -244,8 +252,15 @@ namespace corpus {
              */
             unsigned get_number_of_docs_per_thread() const;
 
+            /**
+             * @brief Determines the optimal number of documents per thread for parallel processing.
+             * @return The computed number of documents to assign per thread.
+             */
+            unsigned get_number_of_docs_per_thread(int num_of_threads) const;
+
         private: 
-        
+
+            unsigned num_threads_used{1}; ///< Number of threads used.
             unsigned num_doc_per_thread; ///< Number of documents processed per thread.
 
             /**

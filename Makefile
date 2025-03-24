@@ -40,6 +40,54 @@ PARALLEL_SOURCES = $(TST_DIR)/main-test-parallel.cpp $(COMMON_SOURCES)
 PARALLEL_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_SOURCES))
 PARALLEL_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-parallel
 
+PARALLEL_4_SOURCES = $(TST_DIR)/main-test-4threads.cpp $(COMMON_SOURCES)
+PARALLEL_4_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_4_SOURCES))
+PARALLEL_4_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-4threads
+
+PARALLEL_8_SOURCES = $(TST_DIR)/main-test-8threads.cpp $(COMMON_SOURCES)
+PARALLEL_8_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_8_SOURCES))
+PARALLEL_8_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-8threads
+
+PARALLEL_16_SOURCES = $(TST_DIR)/main-test-16threads.cpp $(COMMON_SOURCES)
+PARALLEL_16_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_16_SOURCES))
+PARALLEL_16_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-16threads
+
+PARALLEL_32_SOURCES = $(TST_DIR)/main-test-32threads.cpp $(COMMON_SOURCES)
+PARALLEL_32_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_32_SOURCES))
+PARALLEL_32_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-32threads
+
+PARALLEL_64_SOURCES = $(TST_DIR)/main-test-64threads.cpp $(COMMON_SOURCES)
+PARALLEL_64_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_64_SOURCES))
+PARALLEL_64_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-64threads
+
+PARALLEL_128_SOURCES = $(TST_DIR)/main-test-128threads.cpp $(COMMON_SOURCES)
+PARALLEL_128_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_128_SOURCES))
+PARALLEL_128_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-128threads
+
+PARALLEL_256_SOURCES = $(TST_DIR)/main-test-256threads.cpp $(COMMON_SOURCES)
+PARALLEL_256_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_256_SOURCES))
+PARALLEL_256_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-256threads
+
+PARALLEL_512_SOURCES = $(TST_DIR)/main-test-512threads.cpp $(COMMON_SOURCES)
+PARALLEL_512_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_512_SOURCES))
+PARALLEL_512_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-512threads
+
+PARALLEL_1024_SOURCES = $(TST_DIR)/main-test-1024threads.cpp $(COMMON_SOURCES)
+PARALLEL_1024_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_1024_SOURCES))
+PARALLEL_1024_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-1024threads
+
+THREADS_LIST = 4 8 16 32 64 128 256 512 1024
+PARALLEL_EXECUTABLES = \
+	$(TST_DIR)/$(BUILD_DIR)/main-test-4threads \
+    $(TST_DIR)/$(BUILD_DIR)/main-test-8threads \
+    $(TST_DIR)/$(BUILD_DIR)/main-test-16threads \
+    $(TST_DIR)/$(BUILD_DIR)/main-test-32threads \
+    $(TST_DIR)/$(BUILD_DIR)/main-test-64threads \
+    $(TST_DIR)/$(BUILD_DIR)/main-test-128threads \
+	$(TST_DIR)/$(BUILD_DIR)/main-test-256threads \
+	$(TST_DIR)/$(BUILD_DIR)/main-test-512threads \
+	$(TST_DIR)/$(BUILD_DIR)/main-test-1024threads
+
 # Non-Optimized Parallel test source
 NON_OPT_PARALLEL_SOURCES = $(TST_DIR)/main-test-non-optimized-parallel.cpp $(COMMON_SOURCES)
 NON_OPT_PARALLEL_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(NON_OPT_PARALLEL_SOURCES))
@@ -56,8 +104,35 @@ TARGET_PAR = main-par
 TARGET_SEQ = main-seq
 TARGET_NON = main-non-opt
 
-# Build main-test and seq executables
-all: $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC) 
+# Build targets for the parallel executables with different threads
+all: $(PARALLEL_4_EXEC) $(PARALLEL_8_EXEC) $(PARALLEL_16_EXEC) $(PARALLEL_32_EXEC) $(PARALLEL_64_EXEC) $(PARALLEL_128_EXEC) $(PARALLEL_256_EXEC) $(PARALLEL_512_EXEC) $(PARALLEL_1024_EXEC) $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC) 
+
+$(PARALLEL_4_EXEC): $(PARALLEL_4_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+$(PARALLEL_8_EXEC): $(PARALLEL_8_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+$(PARALLEL_16_EXEC): $(PARALLEL_16_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+$(PARALLEL_32_EXEC): $(PARALLEL_32_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+$(PARALLEL_64_EXEC): $(PARALLEL_64_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+$(PARALLEL_128_EXEC): $(PARALLEL_128_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+$(PARALLEL_256_EXEC): $(PARALLEL_256_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+$(PARALLEL_512_EXEC): $(PARALLEL_512_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+$(PARALLEL_1024_EXEC): $(PARALLEL_1024_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 $(PARALLEL_EXEC): $(PARALLEL_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
@@ -91,10 +166,18 @@ SEQUENTIAL_LOG = logs/sequential-errors.log
 
 # Comparison tester, run both parallel.cpp & sequential.cpp
 test: $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC)
+	@echo "Running parallel tests with different thread configurations..."
+	@for threads in $(THREADS_LIST); do \
+		echo "Running main-test-$$threads with input data/BBC-News-Training.csv..."; \
+		./$(TST_DIR)/$(BUILD_DIR)/main-test-$$threads data/BBC-News-Training.csv comparison > $(TST_DIR)/$(OUTPUT_DIR)/results/parallel-$$-results.txt 2> $(TST_DIR)/$(OUTPUT_DIR)/logs/parallel-$$-errors.log; \
+		echo "main-test-$$threads results saved in $(TST_DIR)/$(OUTPUT_DIR)/results/parallel-$$-results.txt"; \
+		echo "main-test-$$threads error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/logs/parallel-$$-errors.log"; \
+	done
+
 	@echo "Running main-test-parallel with input data/BBC-News-Training.csv..."
 	@./$(PARALLEL_EXEC) data/BBC-News-Training.csv comparison > $(TST_DIR)/$(OUTPUT_DIR)/$(PARALLEL_RES) 2> $(TST_DIR)/$(OUTPUT_DIR)/$(PARALLEL_LOG)
 	@echo "main-test-parallel results saved in $(TST_DIR)/$(OUTPUT_DIR)/results/parallel-results.txt"
-	@echo "main-test-parallel error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/logs/parallel-results.log"
+	@echo "main-test-parallel error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/logs/parallel-errors.log"
 
 	@echo "Running main-test-sequential with input data/BBC-News-Training.csv..."
 	@./$(SEQUENTIAL_EXEC) data/BBC-News-Training.csv comparison > $(TST_DIR)/$(OUTPUT_DIR)/$(SEQUENTIAL_RES) 2> $(TST_DIR)/$(OUTPUT_DIR)/$(SEQUENTIAL_LOG)
@@ -114,6 +197,60 @@ seq-test: $(SEQUENTIAL_EXEC)
 	@./$(SEQUENTIAL_EXEC) data/BBC-News-Training.csv  > $(TST_DIR)/$(OUTPUT_DIR)/$(SEQUENTIAL_RES) 2> $(TST_DIR)/$(OUTPUT_DIR)/$(SEQUENTIAL_LOG)
 	@echo "main-test-sequential results saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SEQUENTIAL_RES)"
 	@echo "main-test-sequential error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/$(SEQUENTIAL_LOG)"
+
+4-test: $(PARALLEL_4_EXEC)	
+	@echo "Running ONLY main0test-4threads.cpp with input data/BBC-News-Training.csv..."
+	@./$(PARALLEL_4_EXEC) > tests/test-output/results/parallel-4-results.txt 2> tests/test-output/logs/parallel-4-errors.log
+	@echo "main-test-4threads results saved in tests/test-output/results/parallel-4-results.txt"
+	@echo "main-test-4threads error logs saved in tests/test-output/logs/parallel-4-errors.txt"
+
+8-test: $(PARALLEL_8_EXEC)	
+	@echo "Running ONLY main0test-8threads.cpp with input data/BBC-News-Training.csv..."
+	@./$(PARALLEL_8_EXEC) > tests/test-output/results/parallel-8-results.txt 2> tests/test-output/logs/parallel-8-errors.log
+	@echo "main-test-8threads results saved in tests/test-output/results/parallel-8-results.txt"
+	@echo "main-test-8threads error logs saved in tests/test-output/logs/parallel-8-errors.txt"
+
+16-test: $(PARALLEL_16_EXEC)	
+	@echo "Running ONLY main0test-16threads.cpp with input data/BBC-News-Training.csv..."
+	@./$(PARALLEL_16_EXEC) > tests/test-output/results/parallel-16-results.txt 2> tests/test-output/logs/parallel-16-errors.log
+	@echo "main-test-16threads results saved in tests/test-output/results/parallel-16-results.txt"
+	@echo "main-test-16threads error logs saved in tests/test-output/logs/parallel-16-errors.txt"
+
+32-test: $(PARALLEL_32_EXEC)	
+	@echo "Running ONLY main0test-32threads.cpp with input data/BBC-News-Training.csv..."
+	@./$(PARALLEL_32_EXEC) > tests/test-output/results/parallel-32-results.txt 2> tests/test-output/logs/parallel-32-errors.log
+	@echo "main-test-32threads results saved in tests/test-output/results/parallel-32-results.txt"
+	@echo "main-test-32threads error logs saved in tests/test-output/logs/parallel-32-errors.txt"
+
+64-test: $(PARALLEL_64_EXEC)	
+	@echo "Running ONLY main0test-64threads.cpp with input data/BBC-News-Training.csv..."
+	@./$(PARALLEL_64_EXEC) > tests/test-output/results/parallel-64-results.txt 2> tests/test-output/logs/parallel-64-errors.log
+	@echo "main-test-64threads results saved in tests/test-output/results/parallel-64-results.txt"
+	@echo "main-test-64threads error logs saved in tests/test-output/logs/parallel-64-errors.txt"
+
+128-test: $(PARALLEL_128_EXEC)	
+	@echo "Running ONLY main0test-128threads.cpp with input data/BBC-News-Training.csv..."
+	@./$(PARALLEL_128_EXEC) > tests/test-output/results/parallel-128-results.txt 2> tests/test-output/logs/parallel-128-errors.log
+	@echo "main-test-128threads results saved in tests/test-output/results/parallel-128-results.txt"
+	@echo "main-test-128threads error logs saved in tests/test-output/logs/parallel-128-errors.txt"
+
+256-test: $(PARALLEL_256_EXEC)	
+	@echo "Running ONLY main0test-256threads.cpp with input data/BBC-News-Training.csv..."
+	@./$(PARALLEL_256_EXEC) > tests/test-output/results/parallel-256-results.txt 2> tests/test-output/logs/parallel-256-errors.log
+	@echo "main-test-256threads results saved in tests/test-output/results/parallel-256-results.txt"
+	@echo "main-test-256threads error logs saved in tests/test-output/logs/parallel-256-errors.txt"
+
+512-test: $(PARALLEL_512_EXEC)	
+	@echo "Running ONLY main0test-512threads.cpp with input data/BBC-News-Training.csv..."
+	@./$(PARALLEL_512_EXEC) > tests/test-output/results/parallel-512-results.txt 2> tests/test-output/logs/parallel-512-errors.log
+	@echo "main-test-512threads results saved in tests/test-output/results/parallel-512-results.txt"
+	@echo "main-test-512threads error logs saved in tests/test-output/logs/parallel-512-errors.txt"
+
+1024-test: $(PARALLEL_1024_EXEC)	
+	@echo "Running ONLY main0test-1024threads.cpp with input data/BBC-News-Training.csv..."
+	@./$(PARALLEL_1024_EXEC) > tests/test-output/results/parallel-1024-results.txt 2> tests/test-output/logs/parallel-1024-errors.log
+	@echo "main-test-1024threads results saved in tests/test-output/results/parallel-1024-results.txt"
+	@echo "main-test-1024threads error logs saved in tests/test-output/logs/parallel-1024-errors.txt"
 
 # Run non-optimized parallel test only (parallel.cpp)
 non-opt-par-test: $(NON_OPT_PARALLEL_EXEC)

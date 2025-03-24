@@ -84,6 +84,32 @@ extern void vectorize_corpus_threaded(corpus::Corpus * corpus) {
     // corpus->num_of_docs.store(doc_id_count.load(memory_order_acquire));
 }
 
+// main vectorization function for parallel execution
+extern void vectorize_corpus_threaded(corpus::Corpus * corpus, int num_threads) {
+    std::vector<std::thread> threads;
+
+    unsigned number_of_docs_in_thread = corpus->get_number_of_docs_per_thread(num_threads);
+    unsigned number_of_docs_in_last_thread = corpus->num_of_docs % number_of_docs_in_thread;
+
+    for (int i = 0; i < corpus->num_of_docs; i+=number_of_docs_in_thread) {
+        threads.emplace_back([&corpus, i, number_of_docs_in_thread, number_of_docs_in_last_thread]() {
+            if (i == corpus->num_of_docs - number_of_docs_in_thread && number_of_docs_in_last_thread > 0) {
+                for (unsigned x = 0; x < number_of_docs_in_last_thread; x++) 
+                    if (i + x < corpus->num_of_docs)
+                        vectorize_doc_parallel(&(corpus->documents[x+i]));
+            } else {
+                for (unsigned x = 0; x < number_of_docs_in_thread; x++) 
+                    if (i + x < corpus->num_of_docs)
+                        vectorize_doc_parallel(&(corpus->documents[x+i]));
+            }
+        });
+    }
+
+    for (auto& t : threads)
+        t.join();
+    // corpus->num_of_docs.store(doc_id_count.load(memory_order_acquire));
+}
+
 // main vectorization function for sequential execution
 extern void vectorize_corpus_sequential(corpus::Corpus * corpus) {
     int id = 0;

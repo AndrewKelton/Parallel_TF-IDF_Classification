@@ -14,11 +14,20 @@ void TFIDF::TFIDF_::process_trained_data() {
     timer.start_timer();
 
     if (task_settings.is_parallel) {
-        try {
-            vectorize_corpus_threaded(&trained_corpus);
-        } catch (std::exception e) {
-            handle_err("Error in vectorize_corpus_parallel: " + std::string(e.what()));
-            return;
+        if (task_settings.num_threads == -1) {
+            try {
+                vectorize_corpus_threaded(&trained_corpus);
+            } catch (std::exception e) {
+                handle_err("Error in vectorize_corpus_parallel: " + std::string(e.what()));
+                return;
+            }
+        } else {
+            try {
+                vectorize_corpus_threaded(&trained_corpus, task_settings.num_threads);
+            } catch (std::exception e) {
+                handle_err("Error in vectorize_corpus_parallel: " + std::string(e.what()));
+                return;
+            }
         }
     } else {
         try {
@@ -39,11 +48,20 @@ void TFIDF::TFIDF_::process_trained_data() {
     timer.start_timer();
 
     if (task_settings.is_parallel) {
-        try {
-            trained_corpus.tfidf_documents();
-        } catch (std::exception &e) {
-            handle_err("Error in tfidf_documents: " + std::string(e.what()));
-            return;
+        if (task_settings.num_threads == -1) {
+            try {
+                trained_corpus.tfidf_documents();
+            } catch (std::exception &e) {
+                handle_err("Error in tfidf_documents: " + std::string(e.what()));
+                return;
+            }
+        } else {
+            try {
+                trained_corpus.tfidf_documents(task_settings.num_threads);
+            } catch (std::exception &e) {
+                handle_err("Error in tfidf_documents: " + std::string(e.what()));
+                return;
+            }
         }
     } else {
         try {
@@ -98,11 +116,20 @@ void TFIDF::TFIDF_::process_un_trained_data() {
     timer.start_timer();
 
     if (task_settings.is_parallel) {
-        try {
-            vectorize_corpus_threaded(&un_trained_corpus);
-        } catch (std::exception &e) {
-            handle_err("Error in vectorize_corpus_threaded: " + std::string(e.what()));
-            return;
+        if (task_settings.num_threads == -1) {
+            try {
+                vectorize_corpus_threaded(&un_trained_corpus);
+            } catch (std::exception &e) {
+                handle_err("Error in vectorize_corpus_threaded: " + std::string(e.what()));
+                return;
+            }
+        } else {
+            try {
+                vectorize_corpus_threaded(&un_trained_corpus, task_settings.num_threads);
+            } catch (std::exception &e) {
+                handle_err("Error in vectorize_corpus_threaded: " + std::string(e.what()));
+                return;
+            }
         }
     } else {
         try {
@@ -114,11 +141,20 @@ void TFIDF::TFIDF_::process_un_trained_data() {
     }
 
     if (task_settings.is_parallel) {
-        try {
-            un_trained_corpus.tfidf_documents();
-        } catch (std::exception &e) {
-            handle_err("Error in tfidf_documents: " + std::string(e.what()));
-            return;
+        if (task_settings.num_threads == -1) {
+            try {
+                un_trained_corpus.tfidf_documents();
+            } catch (std::exception &e) {
+                handle_err("Error in tfidf_documents: " + std::string(e.what()));
+                return;
+            }
+        } else {
+            try {
+                un_trained_corpus.tfidf_documents(task_settings.num_threads);
+            } catch (std::exception &e) {
+                handle_err("Error in tfidf_documents: " + std::string(e.what()));
+                return;
+            }
         }
     } else {
         try {
@@ -165,6 +201,7 @@ void TFIDF::TFIDF_::process_un_trained_data() {
             try {
                 convert_results_txt_to_csv(input_files.output_results_file, input_files.processed_data_csv_file);
             } catch (std::runtime_error &e) {
+                std::cerr << "Error writing to CSV" << std::endl;
                 handle_err("Error in convert_results_txt_to_csv: " + std::string(e.what()));
                 return;
             }

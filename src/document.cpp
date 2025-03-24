@@ -108,9 +108,15 @@ namespace corpus {
         num_doc_per_thread = number_of_docs_in_thread;
         unsigned number_of_docs_in_last_thread = num_of_docs % number_of_docs_in_thread;
 
+        if (num_doc_per_thread == 1) {
+            num_threads_used = num_of_docs;
+        } else {
+            num_threads_used = NUMBER_OF_THREADS_MAX;
+        }
+
         /* every num_doc_per_thread documents gets their own thread!!
-        * done to reduce contention and resource waste.
-        */
+         * done to reduce contention and resource waste.
+         */
         for (int i = 0; i < num_of_docs; i+=number_of_docs_in_thread) {
             threads.emplace_back([this, i, number_of_docs_in_thread, number_of_docs_in_last_thread]() {
                 if (i == num_of_docs - number_of_docs_in_thread && number_of_docs_in_last_thread > 0) {
@@ -119,6 +125,40 @@ namespace corpus {
                 } else {
                     for (unsigned x = 0; x < number_of_docs_in_thread; x++) 
                         emplace_tfidf_document(&documents[x+i]);
+                }
+            });
+        }
+
+        for (auto& t : threads)
+            t.join();
+    }
+
+    void Corpus::tfidf_documents(int num_threads) {
+        std::vector<std::thread> threads;
+
+        unsigned number_of_docs_in_thread = get_number_of_docs_per_thread(num_threads);
+        num_doc_per_thread = number_of_docs_in_thread;
+        unsigned number_of_docs_in_last_thread = num_of_docs % number_of_docs_in_thread;
+
+        if (num_doc_per_thread == 1) {
+            num_threads_used = num_of_docs;
+        } else {
+            num_threads_used = num_threads;
+        }
+        
+        /* every num_doc_per_thread documents gets their own thread!!
+         * done to reduce contention and resource waste.
+         */
+        for (int i = 0; i < num_of_docs; i+=number_of_docs_in_thread) {
+            threads.emplace_back([this, i, number_of_docs_in_thread, number_of_docs_in_last_thread]() {
+                if (i == num_of_docs - number_of_docs_in_thread && number_of_docs_in_last_thread > 0) {
+                    for (unsigned x = 0; x < number_of_docs_in_last_thread; x++) 
+                        if (x + i < num_of_docs)
+                            emplace_tfidf_document(&documents[x+i]);
+                } else {
+                    for (unsigned x = 0; x < number_of_docs_in_thread; x++) 
+                        if (x + i < num_of_docs)
+                            emplace_tfidf_document(&documents[x+i]);
                 }
             });
         }
@@ -162,6 +202,12 @@ namespace corpus {
             num_of_docs;
 
         return static_cast<unsigned>(num_of_docs) / NUMBER_OF_THREADS_MAX;
+    }
+
+    unsigned Corpus::get_number_of_docs_per_thread(int num_of_threads) const {
+        if (num_of_docs <= num_of_threads)
+            return 1;
+        return  static_cast<unsigned>(num_of_docs) / num_of_threads;
     }
 
     /* -- Print Functions -- */

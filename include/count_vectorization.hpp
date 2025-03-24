@@ -37,6 +37,8 @@
  */
 extern void vectorize_corpus_threaded(corpus::Corpus * corpus);
 
+extern void vectorize_corpus_threaded(corpus::Corpus * corpus, int num_threads);
+
 
 /**
  * @brief Vectorizes a corpus sequentially, processing one document at a time.

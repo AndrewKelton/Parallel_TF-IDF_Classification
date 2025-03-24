@@ -10,6 +10,7 @@
 #include <exception>
 #include <sstream>
 #include <fstream>
+#include <queue>
 
 std::mutex mtx; // global mtx for emplacing Category to thread
 std::mutex tf_idf_mutex;
@@ -90,7 +91,6 @@ namespace cats { // namespace cats
             tf_idf_all[w_to_count.first] = tf_idf_all[w_to_count.first] / i;
         }
     }
-
 
     void Category::get_important_terms(const corpus::Corpus& corpus) {
         this->most_important_terms.reserve(5);                                       // reserve 5 slots of memory
@@ -236,9 +236,9 @@ namespace cats { // namespace cats
 
         for (int i = 0; i < MAX_CATEGORIES; i++) {
             std::cout << "getting important categories for " << conv_cat_type(conv_cat_type(i)) << std::endl;
-            category_threads.emplace_back([&] {
+            category_threads.emplace_back([&, i] {
                 try {
-                    categories_list[i].get_important_terms(corpus);
+                    categories_list.at(i).get_important_terms(corpus);
                 } catch (const std::runtime_error &e) {
                     std::cerr << "RuntimeError get_all_category_important_terms: " << e.what() << std::endl;
                     return;
@@ -261,6 +261,10 @@ namespace cats::par { // namespace cats::par
     std::atomic<int> correct_count{0};
     std::atomic<int> total_count{0};
     std::mutex c_mtx;
+
+    extern void get_cat_for_group(std::vector<Category>& cats, docs::Document& document) {
+
+    }
 
     extern void get_single_cat_par(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint) {
         std::lock_guard<std::mutex> lock(mtx); /* MOVING LOCK HERE INCREASED ACCURACY BY ABOUT 60% */
@@ -302,6 +306,80 @@ namespace cats::par { // namespace cats::par
 
         return cat_vect;
     }
+
+//     extern std::vector<cats::Category> get_all_cat_par(const corpus::Corpus& corpus, int num_threads) {
+//         std::vector<std::thread> cat_threads;
+//         std::vector<cats::Category> cat_vect;
+// 
+//         unsigned number_of_docs_in_thread = corpus.get_number_of_docs_per_thread(num_threads);
+//         unsigned number_of_docs_in_last_thread = corpus.num_of_docs % number_of_docs_in_thread;
+// 
+//         for (int i = 0; i < 5; i++) {
+//             cat_vect.emplace_back(i);
+//         }
+// 
+//         // Task queue for documents
+//         std::queue<int> task_queue;
+//         std::mutex q_mtx;
+//         for (int i = 0; i < corpus.num_of_docs; ++i) {
+//             task_queue.push(i);  // Queue all the document indices
+//         }
+// 
+//         for (unsigned i = 0; i < num_threads; i++) {
+//             cat_threads.push_back(std::thread([&]() {
+//                 while (!task_queue.empty()) {
+//                     int doc_idx = -1;
+// 
+//                     {
+//                         std::lock_guard<std::mutex> lock(q_mtx);
+//                         if (!task_queue.empty()) {
+//                             doc_idx = task_queue.front();
+//                             task_queue.pop();
+//                         }
+//                     }
+// 
+//                     if (doc_idx != -1) {
+//                         try {
+//                             
+//                             total_count.fetch_add(1, std::memory_order_release);
+//                         } catch (const std::out_of_range& e) {
+//                             std::cerr << "Error: " << e.what() << std::endl;
+//                         }
+//                     }
+//                 }
+//             }));
+//         }
+
+        /* Do something like this, split docs up send a group to be checked */
+        // for (int i = 0; i < num_of_docs; i+=number_of_docs_in_thread) {
+        //     threads.emplace_back([this, i, number_of_docs_in_thread, number_of_docs_in_last_thread]() {
+        //         if (i == num_of_docs - number_of_docs_in_thread && number_of_docs_in_last_thread > 0) {
+        //             for (unsigned x = 0; x < number_of_docs_in_last_thread; x++) 
+        //                 if (x + i < num_of_docs)
+        //                     emplace_tfidf_document(&documents[x+i]);
+        //         } else {
+        //             for (unsigned x = 0; x < number_of_docs_in_thread; x++) 
+        //                 if (x + i < num_of_docs)
+        //                     emplace_tfidf_document(&documents[x+i]);
+        //         }
+        //     });
+        // }
+
+        // try {
+        //     for (int i = 0; i < 5; i++) {
+        //         cat_threads.emplace_back([&, i]() {
+        //             cats::par::get_single_cat_par(corpus, ref(cat_vect), conv_cat_type(i));
+        //         });
+        //     }
+        // } catch (std::exception e) {
+        //     std::cerr << "Error in get_single_cat_par: " << e.what() << std::endl;
+        // }
+
+//         for (auto& cat : cat_threads)
+//             cat.join();
+// 
+//         return cat_vect;
+//     }
 
     // commit classification changes to the unknown_classification_par_s structure
     static void commit_classification_changes(std::unordered_map<std::string, double> tf_idf, std::vector<Category> cat_vect, std::string correct_type) {
