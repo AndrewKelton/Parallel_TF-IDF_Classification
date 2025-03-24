@@ -2,7 +2,7 @@
 
 # Compiler and Flags
 CXX = g++
-CXXFLAGS += -std=c++17 -Wall -Wextra -pthread \
+CXXFLAGS += -std=c++17 -g -Wall -Wextra -pthread \
 		   -I/opt/homebrew/include -I/opt/homebrew/include/ \
 		   -Iinclude -Iinclude/OleanderStemmingLibrary/src \
 		   -Wdeprecated-declarations -Wno-unused-function \
@@ -31,7 +31,8 @@ COMMON_SOURCES = $(SRC_DIR)/count_vectorization.cpp \
 				 $(SRC_DIR)/categories.cpp \
                  $(SRC_DIR)/document.cpp \
                  $(SRC_DIR)/preprocess.cpp \
-                 $(SRC_DIR)/file_operations.cpp 
+                 $(SRC_DIR)/file_operations.cpp \
+				 $(SRC_DIR)/TFIDF.cpp 
 
 COMMON_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(COMMON_SOURCES))			 
 

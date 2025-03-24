@@ -42,6 +42,12 @@
 /** @brief Maximum number of processing sections. */
 #define MAX_SECTIONS 4
 
+#define DEFAULT_TRAINED_INPUT_FILE "data/BBC-News-Training.csv"
+#define DEFAULT_UN_TRAINED_INPUT_FILE "data/unknown_text.txt"
+#define DEFAULT_UN_TRAINED_CORRECT_INPUT_FILE "data/correct_unknown.txt"
+#define DEFAULT_PROCESSED_DATA_OUTPUT_CSV_FILE "processed.csv"
+
+
 /** @brief Maximum number of threads supported by the system. */
 inline const unsigned NUMBER_OF_THREADS_MAX{std::thread::hardware_concurrency()};
 
@@ -149,6 +155,9 @@ using _time_point_ = std::chrono::_V2::system_clock::time_point;
 inline double elapsed_time_ms(_time_point_ start, _time_point_ end) {
     return static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 }
+// inline double elapsed_time_ms(std::chrono::_V2::system_clock::time_point start, std::chrono::_V2::system_clock::time_point end) {
+//     return static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
+// }
 
 /**
  * @brief Prints elapsed time in milliseconds.
@@ -170,6 +179,10 @@ inline void print_elapsed_time_ms(_time_point_ start, _time_point_ end) {
 inline void print_duration_code(_time_point_ start, _time_point_ end, section_type_ type) {
     std::cout << get_section_name(type) << ": ";
     print_elapsed_time_ms(start, end);
+}
+
+inline void print_duration_code(double duration, section_type_ type) {
+    std::cout << get_section_name(type) << ": " << duration << " ms" << std::endl;
 }
 
 /**
