@@ -14,9 +14,9 @@ unknown_classification_sum = []
 for thread in threads:
     file_name = ''
     if thread == 1:
-        file_name=f'tests/test-output/processed-data-results/sequential-2-processed.csv'
+        file_name=f'tests/test-output/processed-data-results/sequential-3-processed.csv'
     else:
-        file_name = f'tests/test-output/processed-data-results/parallel-{thread}-2-processed.csv'
+        file_name = f'tests/test-output/processed-data-results/parallel-{thread}-3-processed.csv'
     df = pd.read_csv(file_name)
     vectorization_sum.append(df['Vectorization'].mean())
     tfidf_sum.append(df['TF-IDF'].mean())
@@ -43,7 +43,7 @@ plt.plot(threads, speedup_unknown_classification, label='Unknown Classification'
 
 plt.xlabel('Number of Threads')
 plt.ylabel('Speedup')
-plt.title('Speedup Graph for Dataset-2')
+plt.title('Speedup Graph for Dataset-3')
 plt.legend()
 plt.xscale('log', base=2)
 plt.xticks(threads, [f'2^{i}' for i in range(11)])
@@ -51,5 +51,5 @@ plt.grid(True)
 # plt.tight_layout()
 
 # Save the plot as a PDF
-plt.savefig("tests/test-output/graphs/speedup-dataset-2.pdf", format="pdf")
+plt.savefig("tests/test-output/graphs/speedup-dataset-3.pdf", format="pdf")
 plt.show()
