@@ -35,9 +35,10 @@ scripts/all.sh
 
 ## Run Tests
 ### Run Individual Tests
-#### a. Parallel Test
+#### a. Parallel Tests
 ```bash
-make par-test
+make n-test
+# n = number of threads to test
 ```
 #### b. Sequential Test
 ```bash
@@ -48,7 +49,7 @@ make seq-test
 make test
 ```
 
-### Run _n_ Iterations of Run Single Test c
+### Run _n_ Iterations of All Tests
 ```bash
 chmod +x scripts/run.sh
 scripts/run.sh

@@ -37,10 +37,10 @@ COMMON_SOURCES = $(SRC_DIR)/count_vectorization.cpp \
 COMMON_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(COMMON_SOURCES))			 
 
 
-# Parallel test source
-# PARALLEL_SOURCES = $(TST_DIR)/main-test-parallel.cpp $(COMMON_SOURCES)
-# PARALLEL_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_SOURCES))
-# PARALLEL_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-parallel
+# Parallel test sources
+PARALLEL_SOURCES = $(TST_DIR)/main-test-parallel-any.cpp $(COMMON_SOURCES)
+PARALLEL_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_SOURCES))
+PARALLEL_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-parallel-any
 
 PARALLEL_2_SOURCES = $(TST_DIR)/main-test-2threads.cpp $(COMMON_SOURCES)
 PARALLEL_2_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_2_SOURCES))
@@ -113,7 +113,10 @@ TARGET_SEQ = main-seq
 # TARGET_NON = main-non-opt
 
 # Build targets for the parallel executables with different threads
-all: $(PARALLEL_2_EXEC) $(PARALLEL_4_EXEC) $(PARALLEL_8_EXEC) $(PARALLEL_16_EXEC) $(PARALLEL_32_EXEC) $(PARALLEL_64_EXEC) $(PARALLEL_128_EXEC) $(PARALLEL_256_EXEC) $(PARALLEL_512_EXEC) $(PARALLEL_1024_EXEC) $(SEQUENTIAL_EXEC) 
+all: $(PARALLEL_2_EXEC) $(PARALLEL_4_EXEC) $(PARALLEL_8_EXEC) $(PARALLEL_16_EXEC) $(PARALLEL_32_EXEC) $(PARALLEL_64_EXEC) $(PARALLEL_128_EXEC) $(PARALLEL_256_EXEC) $(PARALLEL_512_EXEC) $(PARALLEL_1024_EXEC) $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC) 
+
+any-test: $(PARALLEL_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 $(PARALLEL_2_EXEC): $(PARALLEL_2_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
@@ -192,6 +195,7 @@ test: $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC)
 # 	@./$(PARALLEL_EXEC) data/BBC-News-Training.csv  > $(TST_DIR)/$(OUTPUT_DIR)/$(PARALLEL_RES) 2> $(TST_DIR)/$(OUTPUT_DIR)/$(PARALLEL_LOG)
 # 	@echo "main-test-parallel results saved in $(TST_DIR)/$(OUTPUT_DIR)/$(PARALLEL_RES)"
 # 	@echo "main-test-parallel error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/$(PARALLEL_LOG)"
+
 
 # Run parallel test only (parallel.cpp)
 seq-test: $(SEQUENTIAL_EXEC)
@@ -285,6 +289,6 @@ zip-all:
 
 # Clean build and test output
 clean:
-	rm -rf $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC) $(NON_OPT_PARALLEL_EXEC) $(TST_DIR)/$(BUILD_DIR) 
+	rm -rf $(PARALLEL_EXEC) $(SEQUENTIAL_EXEC) $(NON_OPT_PARALLEL_EXEC) $(TST_DIR)/$(BUILD_DIR) any-test
 
 .PHONY: all test clean zip zip-all
