@@ -1,8 +1,8 @@
 import csv
 import random
 
-input_file = "data/bbc-news-data-fixed.csv"  # Change this to your actual input file
-output_file = "shuffled_output.csv"
+input_file = "data/dataset-3/training-data.csv"  # Change this to your actual input file
+output_file = "data/dataset-3/shuffled_output.csv"
 
 # Read the CSV file
 with open(input_file, "r", encoding="utf-8") as infile:

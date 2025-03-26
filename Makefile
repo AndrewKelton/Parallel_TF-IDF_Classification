@@ -10,8 +10,8 @@ CXXFLAGS += -std=c++17 -g -Wall -Wextra -pthread \
 		   -Wno-catch-value -Wno-unused-value \
 		   -Wno-sign-compare -Wno-unused-but-set-variable
 
-# Dataset number, change to 1 or 2 if using datest-1 or dataset-2
-DS_NUM = 1
+# Dataset number, change to 1,2,3 if using datest-1,dataset-2,dataset-3
+DS_NUM = 3
 
 # Project directories #
 SRC_DIR = src
@@ -41,6 +41,10 @@ COMMON_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)
 # PARALLEL_SOURCES = $(TST_DIR)/main-test-parallel.cpp $(COMMON_SOURCES)
 # PARALLEL_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_SOURCES))
 # PARALLEL_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-parallel
+
+PARALLEL_2_SOURCES = $(TST_DIR)/main-test-2threads.cpp $(COMMON_SOURCES)
+PARALLEL_2_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_2_SOURCES))
+PARALLEL_2_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-2threads
 
 PARALLEL_4_SOURCES = $(TST_DIR)/main-test-4threads.cpp $(COMMON_SOURCES)
 PARALLEL_4_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_4_SOURCES))
@@ -78,8 +82,9 @@ PARALLEL_1024_SOURCES = $(TST_DIR)/main-test-1024threads.cpp $(COMMON_SOURCES)
 PARALLEL_1024_OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR)/%.o, $(PARALLEL_1024_SOURCES))
 PARALLEL_1024_EXEC = $(TST_DIR)/$(BUILD_DIR)/main-test-1024threads
 
-THREADS_LIST = 4 8 16 32 64 128 256 512 1024
+THREADS_LIST = 2 4 8 16 32 64 128 256 512 1024
 PARALLEL_EXECUTABLES = \
+	$(TST_DIR)/$(BUILD_DIR)/main-test-2threads \
 	$(TST_DIR)/$(BUILD_DIR)/main-test-4threads \
     $(TST_DIR)/$(BUILD_DIR)/main-test-8threads \
     $(TST_DIR)/$(BUILD_DIR)/main-test-16threads \
@@ -89,6 +94,7 @@ PARALLEL_EXECUTABLES = \
 	$(TST_DIR)/$(BUILD_DIR)/main-test-256threads \
 	$(TST_DIR)/$(BUILD_DIR)/main-test-512threads \
 	$(TST_DIR)/$(BUILD_DIR)/main-test-1024threads
+
 
 # Non-Optimized Parallel test source
 # NON_OPT_PARALLEL_SOURCES = $(TST_DIR)/main-test-non-optimized-parallel.cpp $(COMMON_SOURCES)
@@ -107,7 +113,10 @@ TARGET_SEQ = main-seq
 # TARGET_NON = main-non-opt
 
 # Build targets for the parallel executables with different threads
-all: $(PARALLEL_4_EXEC) $(PARALLEL_8_EXEC) $(PARALLEL_16_EXEC) $(PARALLEL_32_EXEC) $(PARALLEL_64_EXEC) $(PARALLEL_128_EXEC) $(PARALLEL_256_EXEC) $(PARALLEL_512_EXEC) $(PARALLEL_1024_EXEC) $(SEQUENTIAL_EXEC) 
+all: $(PARALLEL_2_EXEC) $(PARALLEL_4_EXEC) $(PARALLEL_8_EXEC) $(PARALLEL_16_EXEC) $(PARALLEL_32_EXEC) $(PARALLEL_64_EXEC) $(PARALLEL_128_EXEC) $(PARALLEL_256_EXEC) $(PARALLEL_512_EXEC) $(PARALLEL_1024_EXEC) $(SEQUENTIAL_EXEC) 
+
+$(PARALLEL_2_EXEC): $(PARALLEL_2_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 $(PARALLEL_4_EXEC): $(PARALLEL_4_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
@@ -190,6 +199,13 @@ seq-test: $(SEQUENTIAL_EXEC)
 	@./$(SEQUENTIAL_EXEC) $(DS_NUM)  > $(TST_DIR)/$(OUTPUT_DIR)/results/sequential-$(DS_NUM)-results.txt 2> $(TST_DIR)/$(OUTPUT_DIR)/logs/sequential-$(DS_NUM)-errors.log
 	@echo "main-test-sequential results saved in $(TST_DIR)/$(OUTPUT_DIR)/results/sequential-$(DS_NUM)-results.txt 2>"
 	@echo "main-test-sequential error logs saved in $(TST_DIR)/$(OUTPUT_DIR)/logs/sequential-$(DS_NUM)-errors.log"
+
+2-test: $(PARALLEL_2_EXEC)	
+	@echo "Running ONLY main-test-2threads.cpp with input from data/dataset-$(DS_NUM)..."
+	@./$(PARALLEL_2_EXEC) $(DS_NUM) > tests/test-output/results/parallel-2-$(DS_NUM)-results.txt 2> tests/test-output/logs/parallel-2-errors.log
+	@echo "main-test-2threads results saved in tests/test-output/results/parallel-2-$(DS_NUM)-results.txt"
+	@echo "main-test-2threads error logs saved in tests/test-output/logs/parallel-2-$(DS_NUM)-errors.log"
+
 
 4-test: $(PARALLEL_4_EXEC)	
 	@echo "Running ONLY main-test-4threads.cpp with input from data/dataset-$(DS_NUM)..."

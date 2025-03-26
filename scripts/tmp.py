@@ -18,9 +18,9 @@ def process_file(input_file, output_file, removed_words_file):
 
 if __name__ == '__main__':
     
-    input_filename = "data/dataset-1/unknown_text_unfixed.txt" 
-    output_filename = "data/dataset-1/un-trained-data.txt"
-    removed_words_filename = "data/dataset-1/un-trained-correct-data.txt"
+    input_filename = "data/dataset-3/unknown_text_unfixed.txt" 
+    output_filename = "data/dataset-3/un-trained-data.txt"
+    removed_words_filename = "data/dataset-3/un-trained-correct-data.txt"
 
     process_file(input_filename, output_filename, removed_words_filename)
 
