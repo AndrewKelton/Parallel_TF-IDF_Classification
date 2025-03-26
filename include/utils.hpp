@@ -220,7 +220,12 @@ inline std::string conv_cat_type(text_cat_types_ type_) {
  * @return Corresponding `text_cat_types_` enum.
  */
 inline text_cat_types_ conv_cat_type(std::string str) {
-    return categories_text.at(str);
+    try {
+        return categories_text.at(str);
+    } catch (const std::out_of_range& e) {
+        std::cerr << str << " is not a category." << std::endl;
+        return invalid_t_;
+    }
 }
 
 /** @} */ // End of UsageTestFiles group

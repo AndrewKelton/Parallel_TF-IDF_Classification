@@ -274,11 +274,9 @@ namespace cats::par { // namespace cats::par
             cat.get_important_terms(corpus);
             cats.emplace_back(std::move(cat));
         } catch (const std::runtime_error &e) {
-            std::cerr << "RuntimeError in get_single_cat_par: " << e.what() << std::endl;
-            exit(EXIT_FAILURE);
+            std::cerr << "RuntimeError in get_single_cat_par, getting " << conv_cat_type(catint) <<  ": " << e.what() << std::endl;
         } catch (const std::exception &e) {
-            std::cerr << "Exception in get_single_cat_par: " << e.what() << std::endl;
-            exit(EXIT_FAILURE);
+            std::cerr << "Exception in get_single_cat_par, getting " << conv_cat_type(catint) <<  ": " << e.what() << std::endl;
         }
         
       /*{
@@ -294,7 +292,7 @@ namespace cats::par { // namespace cats::par
         try {
             for (int i = 0; i < 5; i++) {
                 cat_threads.emplace_back([&, i]() {
-                    cats::par::get_single_cat_par(corpus, ref(cat_vect), conv_cat_type(i));
+                    cats::par::get_single_cat_par(std::ref(corpus), std::ref(cat_vect), conv_cat_type(i));
                 });
             }
         } catch (std::exception e) {
@@ -303,6 +301,55 @@ namespace cats::par { // namespace cats::par
 
         for (auto& cat : cat_threads)
             cat.join();
+
+        return cat_vect;
+    }
+
+    struct DocIdxQueue {
+        public:
+            std::queue<int> doc_idx_queue;
+            std::mutex queue_mtx; // queue mutex
+
+    };
+
+    static void worker_thread(const corpus::Corpus& corpus, std::queue<int> doc_idx_queue, std::vector<cats::Category> cat_vect) {
+        int current_cat_type{0};
+
+        while (!doc_idx_queue.empty()) {
+            int current_doc_idx{-1};
+            std::vector<std::vector<std::pair<std::string, double>>> vectored_all_umaps;
+            // {
+            //     std::lock_guard<std::mutex> lock(queue_mtx);
+            //     if (!doc_idx_queue.empty()) {
+            //         current_doc_idx = doc_idx_queue.front();
+            //         task_queue.pop();
+            //     }
+            // }
+            
+
+        }
+    }
+
+    static std::vector<cats::Category> get_all_cat_par(const corpus::Corpus& corpus, int num_threads) {
+        std::vector<std::thread> cat_threads;
+        std::vector<cats::Category> cat_vect;
+        std::queue<int> doc_idx_queue;
+
+        int num_docs = corpus.num_of_docs;
+        for (int i = 0; i < num_docs; i++) 
+            doc_idx_queue.push(i);
+
+        for (int i = 0; i < MAX_CATEGORIES; i++)
+            cat_vect.emplace_back(conv_cat_type(i));
+
+        for (int i = 0; i < num_threads; i++) {
+            cat_threads.emplace_back([&corpus, doc_idx_queue, cat_vect]() {
+                worker_thread(corpus, doc_idx_queue, cat_vect);
+            });
+        }
+
+        for (auto& t : cat_threads)
+            t.join();
 
         return cat_vect;
     }
@@ -408,12 +455,12 @@ namespace cats::par { // namespace cats::par
             threads.emplace_back([num_of_docs, i, number_of_docs_in_thread, number_of_docs_in_last_thread, &unknown_corpus, &cat_vect, &correct_types]() mutable {
                 int x{0};
                 try {
-                    if (i == num_of_docs - number_of_docs_in_thread && number_of_docs_in_last_thread > 0) {
+                    if (i >= num_of_docs - number_of_docs_in_thread && number_of_docs_in_last_thread > 0) {
                         for ( x = 0; x < number_of_docs_in_last_thread; x++) 
                             try {
                                 commit_classification_changes(unknown_corpus.documents.at(x+i).tf_idf, cat_vect, correct_types.at(x+i));
                             } catch (std::out_of_range &e) {
-                                std::cerr << "Error: " << " in init_classification_par, i=" << i << ", x=" << x << std::endl << e.what() << std::endl;
+                                std::cerr << "Error: " << " in init_classification_par last thread, i=" << i << ", x=" << x << std::endl << e.what() << std::endl;
                                 exit(EXIT_FAILURE);
                             }
                     } else {

@@ -309,6 +309,7 @@ namespace cats::par {
      * @return A `vector<Category>` containing all processed category data.
      */
     extern std::vector<cats::Category> get_all_cat_par(const corpus::Corpus&  corpus);
+    // extern std::vector<cats::Category> get_all_cat_par(const corpus::Corpus& corpus, int num_threads);
 
     /**
      * @brief Initializes the classification process for a set of documents parallelized.

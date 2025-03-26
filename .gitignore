@@ -10,7 +10,6 @@ docs/latex
 venv
 # test-output/
 
-
 # object files
 *.o
 test[1-9]

@@ -107,7 +107,7 @@ namespace TFIDF { // namespace TFIDF
                    bool output_classification=true,
                    bool convert_output_to_csv=true,
                    bool is_base_lvl_logging=true,
-                   int num_threads=-1 /* leave as '-1' for dynamic # of threads ** NOT USED CURRENTLY, FUTURE FEATURE ** */
+                   int num_threads=64
                   ) 
                 : task_settings{is_parallel, 
                               (un_trained_input_file.empty() || un_trained_input_file == "") ? false : complete_all_tasks,

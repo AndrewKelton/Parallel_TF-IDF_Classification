@@ -1,11 +1,19 @@
 #include "TFIDF.hpp"
 
-int main() {
-    TFIDF::TFIDF_ tf_idf{false, "data/BBC-News-Training.csv", "data/unknown_text.txt", "data/correct_unknown.txt", 
-                         "tests/test-output/results/sequential-results.txt", 
-                         "tests/test-output/processed-data-results/sequential-processed.csv",
-                         true, true, true, true, true, true, true, -1
+int main(int argc, char * argv[]) {
+    if (argc < 2)
+        return EXIT_FAILURE;
+        
+    int ds_num = atoi(argv[1]);
+    std::string dataset = "data/dataset-" + std::to_string(ds_num);
+
+    TFIDF::TFIDF_ tf_idf{false, dataset + "/training-data.csv", dataset + "/un-trained-data.txt", dataset + "/un-trained-correct-data.txt", 
+                         "tests/test-output/results/sequential-" + std::to_string(ds_num) + "-results.txt",
+                         "tests/test-output/processed-data-results/sequential-" + std::to_string(ds_num) + "-processed.csv",
+                         true, true, true, true, true, true, true, 1
                         };
+
     tf_idf.process_all_data();
+
     return 0;
 }

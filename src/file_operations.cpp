@@ -20,8 +20,8 @@ static std::string input_file_name;
 // static const std::string res_test_dir{"results"};
 // 
 // // output end file names
-// static const std::string par_res_file{"parallel-results.txt"};
-// static const std::string seq_res_file{"sequential-results.txt"};
+// static const std::string par_res_file{"parallel-" + std::to_string(ds_num) + "results.txt"};
+// static const std::string seq_res_file{"sequential-" + std::to_string(ds_num) + "results.txt"};
 // 
 // /* constants for .txt files (results) paths */
 // static const std::string res_par_txt{comp_test_dir + sl + res_test_dir + sl + par_res_file};
@@ -78,6 +78,8 @@ extern void read_csv_to_corpus(corpus::Corpus& corpus, const std::string& file_n
 
         std::pair<std::string, std::string> split = split_string(line, ',');
         text_cat_types_ category = conv_cat_type(split.first);
+
+        // if (category == invalid_t_) continue;
         
         corpus.documents.push_back(create_document(split.second, category));
         i++;
