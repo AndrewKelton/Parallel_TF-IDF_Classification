@@ -152,6 +152,7 @@ namespace TFIDF { // namespace TFIDF
                 bool output_performance; // time output
                 bool output_classification;
                 bool convert_output_to_csv;
+                // bool output_to_file;
                 bool is_base_lvl_logging; // logs errors with std::cerr
                 int num_threads; // if -1 then dynamic # threads
 
