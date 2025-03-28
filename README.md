@@ -18,35 +18,28 @@ Parallel TF-IDF Classification is a high-performance implementation of the Term 
     - **Architecture**: x86_64  
 
 ### Build Instructions
-#### Build Environment
 ```bash
 git clone https://github.com/AndrewKelton/Parallel_TF-IDF_Classification.git
 cd Parallel_TF-IDF_Classification
 
+# Set up the environment, downloadOleanderStemmingLibrary), ensure directories are present
 chmod +x scripts/setup.sh
-scripts/setup.sh
+scripts/setup.sh 
 ```
-#### Build Environment & Run Tests
-```bash
-chmod +x scripts/all.sh
-scripts/all.sh
-```
-
 
 ## Run Tests
 ### Run Individual Tests
 #### a. Parallel Tests
 ```bash
-make n-test
-# n = number of threads to test
+make n-test # n = number of threads to test (cannot be 1), runs test for s for dataset $(DS_NUM)
 ```
 #### b. Sequential Test
 ```bash
-make seq-test
+make seq-test #runs sequential test for s for dataset $(DS_NUM)
 ```
-#### c. Parallel & Sequential Test
+#### c. Parallel & Sequential Tests
 ```bash
-make test
+make test # runs all parallel & sequential tests for dataset $(DS_NUM)
 ```
 
 ### Run _n_ Iterations of All Tests
@@ -54,7 +47,7 @@ make test
 chmod +x scripts/run.sh
 scripts/run.sh
 ```
-_(Runs multiple iterations of make test for benchmarking.)_
+_(Runs multiple iterations of all tests for benchmarking.)_
 
 
 ## Cleaning the Environment
@@ -85,5 +78,6 @@ chmod +x scripts/cleanup.sh
 
 ## Notes
 * Dataset Requirement: Ensure BBC-News-Training.csv is available in the project directory.
-* Logging & Output: Results for _Individual Tests_ are stored in test-output/solo/results/, and logs are saved in test-output/solo/logs/. Results for _Comparison Tests_ are stored in test-output/comparison/results/, and logs are saved in test-output/comparison/logs/.
+* Logging & Output: Results for Tests are stored in tests/test-output/results/, and logs are saved in tests/test-output/logs/. 
+* Formatted Output: Formatted output in the form of CSV files is located in tests/test-output/processed-data-results/
 * Running `scripts/run.sh` may take a long time to finish due to the sequential solution taking quite a bit of time. I recommend reducing the number of iterations in `scripts/run.sh` to 5 if you are running this locally.
