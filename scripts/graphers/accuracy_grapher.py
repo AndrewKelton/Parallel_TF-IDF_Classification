@@ -1,11 +1,24 @@
+'''
+
+       || ===== * ==== * ==== * !!!!!!!!!! * ==== * ==== * ===== ||
+       || ===== * ==== * ==== * ! NOTICE ! * ==== * ==== * ===== ||
+       || ===== * ==== * ==== * !!!!!!!!!! * ==== * ==== * ===== ||
+       ||                                                        ||
+       ||       This python file is only used to graph           ||
+       ||        certain metrics being recorded during           ||
+       ||           during runs of this project.                 ||
+       ||                                                        ||
+       ||  To view outputted graphs, visit 'test-output/graphs'  ||
+       ||                                                        ||
+       || ===== + ==== + ==== + ========== + ==== + ==== + ===== ||
+
+'''
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
 threads = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
-# accuracy_mean = [] # thread 1 = [0]...
-# accuracy_vals = [[] for _ in range(len(threads))] # thread 1, accuracy 1 = [0][0]...
-
 
 def accuracy_plt(accuracy_mean, accuracy_vals, i):
     colors = plt.cm.viridis(np.linspace(0, 0.85, len(threads))) 
@@ -34,7 +47,6 @@ def accuracy_plt(accuracy_mean, accuracy_vals, i):
 
     plt.savefig(f"tests/test-output/graphs/accuracy-dataset-{i}.pdf", format="pdf")
     plt.close()
-
 
 def precision_plt(accuracy_mean, accuracy_vals, i):
     precisions = []
@@ -70,7 +82,6 @@ def precision_plt(accuracy_mean, accuracy_vals, i):
     plt.savefig(f"tests/test-output/graphs/precision-plot-d{i}.pdf", format="pdf")
     plt.close()
 
-
 def main():
     x = 1
     while x <= 3:
@@ -95,7 +106,6 @@ def main():
 
         x+=1
 
-    
 
 if __name__ == '__main__':
     main()
