@@ -12,6 +12,7 @@ int main(int argc, char * argv[]) {
                          "tests/test-output/processed-data-results/parallel-128-" + std::to_string(ds_num) + "-processed.csv",
                          true, true, true, true, true, true, true, 128
                         };
+                        
     tf_idf.process_all_data();
 
     return 0;

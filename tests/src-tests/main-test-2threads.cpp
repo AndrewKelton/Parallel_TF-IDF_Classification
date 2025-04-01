@@ -12,11 +12,7 @@ int main(int argc, char * argv[]) {
                             "tests/test-output/processed-data-results/parallel-2-" + std::to_string(ds_num) + "-processed.csv",
                             true, true, true, true, true, true, true, 2
                         };
-    // TFIDF::TFIDF_ tf_idf{true, "data/dataset-1/training-data.csv", "data/dataset-1/un-trained-data.txt", "data/dataset-1/un-trained-correct-data.txt", 
-    //                         "tests/test-output/results/parallel-4-" + std::string(argv[1]) + "-" + std::to_string(ds_num) + "results.txt", 
-    //                         "tests/test-output/processed-data-results/parallel-4-processed" + std::string(argv[1]) + ".csv",
-    //                         true, true, true, true, true, true, true, 4
-    //                     };
+
     tf_idf.process_all_data();
 
     return 0;

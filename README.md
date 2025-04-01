@@ -19,6 +19,7 @@ Parallel TF-IDF Classification is a high-performance implementation of the Term 
 
 ### Build Instructions
 ```bash
+# Clone project
 git clone https://github.com/AndrewKelton/Parallel_TF-IDF_Classification.git
 cd Parallel_TF-IDF_Classification
 
@@ -31,23 +32,27 @@ scripts/setup.sh
 ### Run Individual Tests
 #### a. Parallel Tests
 ```bash
-make n-test # n = number of threads to test (cannot be 1), runs test for s for dataset $(DS_NUM)
+make n-test # n = number of threads to test
 ```
+_Runs parallel test for dataset $(DS_NUM), check Makefile._
 #### b. Sequential Test
 ```bash
-make seq-test #runs sequential test for s for dataset $(DS_NUM)
+make seq-test
 ```
+_Runs sequential test for dataset $(DS_NUM)._
+
 #### c. Parallel & Sequential Tests
 ```bash
-make test # runs all parallel & sequential tests for dataset $(DS_NUM)
+make test 
 ```
+_Runs all parallel & sequential tests for dataset $(DS_NUM)._
 
 ### Run _n_ Iterations of All Tests
 ```bash
 chmod +x scripts/run.sh
 scripts/run.sh
 ```
-_(Runs multiple iterations of all tests for benchmarking.)_
+_Runs multiple iterations of all tests for benchmarking._
 
 
 ## Cleaning the Environment

@@ -12,12 +12,6 @@ int main(int argc, char * argv[]) {
                          true, true, true, true, true, true, true, 16
                         };
 
-    // TFIDF::TFIDF_ tf_idf{true, "data/dataset-1/training-data.csv", "data/dataset-1/un-trained-data.txt", "data/dataset-1/un-trained-correct-data.txt", 
-    //                      "tests/test-output/results/parallel-16-" + std::to_string(ds_num) + "results.txt", 
-    //                      "tests/test-output/processed-data-results/parallel-16-" + std::to_string(ds_num) + "-processed.csv",
-    //                      true, true, true, true, true, true, true, 16
-    //                     };
-
     tf_idf.process_all_data();
         
     return 0;

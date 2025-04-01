@@ -12,6 +12,7 @@ int main(int argc, char * argv[]) {
                          "tests/test-output/processed-data-results/parallel-256-" + std::to_string(ds_num) + "-processed.csv",
                          true, true, true, true, true, true, true, 256
                         };
+                        
     tf_idf.process_all_data();
 
     return 0;
