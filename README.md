@@ -16,6 +16,7 @@ Parallel TF-IDF Classification is a high-performance implementation of the Term 
     - **Linux Environment**: Ubuntu 22.04.5 LTS (Jammy Jellyfish)  
     - **Kernel Version**: 5.15.0-130-generic  
     - **Architecture**: x86_64  
+    - **Server**: UCF's eustis3 server
 
 ### Build Instructions
 ```bash
