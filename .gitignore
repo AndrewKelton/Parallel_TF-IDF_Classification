@@ -9,11 +9,11 @@ docs/html
 docs/latex
 venv
 
+# testing output to ignore
+test/test-output/results
+test/test-output/logs
+test/test-output/processed-data-results
+
 # object files
 *.o
-# test[1-9]
 
-# not updating until necessary
-# README.md
-
-# CMakeLists.txt

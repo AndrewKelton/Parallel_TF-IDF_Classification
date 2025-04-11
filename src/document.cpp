@@ -162,6 +162,23 @@ namespace corpus {
                 }
             });
         }
+        
+        /* TEST */
+        // for (int i = 0; i < num_of_docs; i+=number_of_docs_in_thread) {
+        //     if (i == num_of_docs - number_of_docs_in_thread && number_of_docs_in_last_thread > 0) {
+        //         threads.emplace_back([this, i, number_of_docs_in_last_thread] {
+        //             for (unsigned x = 0; x < number_of_docs_in_last_thread; x++) 
+        //                 if (x + i < num_of_docs)
+        //                     emplace_tfidf_document(&documents[x+i]);
+        //         });
+        //     } else {
+        //         threads.emplace_back([this, i, number_of_docs_in_thread] {
+        //             for (unsigned x = 0; x < number_of_docs_in_thread; x++) 
+        //                 if (x + i < num_of_docs)
+        //                     emplace_tfidf_document(&documents[x+i]);
+        //         });
+        //     }
+        // }
 
         for (auto& t : threads)
             t.join();

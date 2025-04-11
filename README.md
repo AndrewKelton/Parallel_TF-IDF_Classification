@@ -39,13 +39,13 @@ _Runs parallel test for dataset $(DS_NUM), check Makefile._
 ```bash
 make seq-test
 ```
-_Runs sequential test for dataset $(DS_NUM)._
+_Runs sequential test for dataset $(DS_NUM), check Makefile._
 
 #### c. Parallel & Sequential Tests
 ```bash
 make test 
 ```
-_Runs all parallel & sequential tests for dataset $(DS_NUM)._
+_Runs all parallel & sequential tests for dataset $(DS_NUM), check Makefile._
 
 ### Run _n_ Iterations of All Tests
 ```bash
@@ -58,7 +58,9 @@ _Runs multiple iterations of all tests for benchmarking._
 ## Cleaning the Environment
 ```bash
 chmod +x scripts/cleanup.sh
+./scripts/cleanup.sh
 ```
+_Removes installed dependencies and 'cleans' folders._
 
 
 ## Challenges
@@ -76,13 +78,17 @@ chmod +x scripts/cleanup.sh
 
 ## Goals
 * Provide a parallel TF-IDF vectorizer/classifier for efficient performance.
-* Prove parallel TF-IDF is more efficient than its sequential implementation
-* Ensure correctness in parallel TF-IDF computation
-* Successfully classify documents using TF-IDF scores
+* Prove parallel TF-IDF is more efficient than its sequential implementation.
+* Ensure correctness in parallel TF-IDF computation.
+* Successfully classify documents using TF-IDF scores with respect to cosine similarity.
 
 
 ## Notes
-* Dataset Requirement: Ensure BBC-News-Training.csv is available in the project directory.
+* Dataset Requirement: 
+    * Training data contains the format: category<sub>x</sub>, text<sub>x</sub>
+    * Untrained data's category and corresponding text should be in separate files. 
+        - Untrained Category → un-trained-category.txt: category<sub>x</sub>
+        - Untrained Text → un-trained-text.txt: text<sub>x</sub>
 * Logging & Output: Results for Tests are stored in tests/test-output/results/, and logs are saved in tests/test-output/logs/. 
 * Formatted Output: Formatted output in the form of CSV files is located in tests/test-output/processed-data-results/
-* Running `scripts/run.sh` may take a long time to finish due to the sequential solution taking quite a bit of time. I recommend reducing the number of iterations in `scripts/run.sh` to 5 if you are running this locally.
+* Running `scripts/run.sh` may take a long time to finish due to the sequential and lower-thread solutions taking quite a bit of time. I recommend reducing the number of iterations in `scripts/run.sh` to 5 if you are running this locally and would like to get an average comparison.
