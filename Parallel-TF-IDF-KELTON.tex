@@ -3,7 +3,9 @@
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+% \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
@@ -11,6 +13,35 @@
 \usepackage{caption}
 \usepackage{capt-of}
 \usepackage{listings}
+\usepackage[T1]{fontenc}
+% \usepackage{courier} % or \usepackage{inconsolata} for a modern look
+
+
+% Set monospaced font just for the algorithm block
+% \newcommand{\algorithmfont}{\fontfamily{pcr}\selectfont}
+
+% Replace assignment arrow with equal sign
+% \algrenewcommand{\algorithmicset}{\algorithmfont :=}  % only affects := (not ←)
+% \algrenewcommand{\algorithmicwhile}{\algorithmfont while}
+% \algrenewcommand{\algorithmicdo}{\algorithmfont do}
+% \algrenewcommand{\algorithmicfor}{\algorithmfont for}
+% \algrenewcommand{\algorithmicif}{\algorithmfont if}
+% \algrenewcommand{\algorithmicthen}{\algorithmfont then}
+% \algrenewcommand{\algorithmicelse}{\algorithmfont else}
+% \algrenewcommand{\algorithmicend}{\algorithmfont end}
+% \algrenewcommand{\algorithmicfunction}{\algorithmfont function}
+% \algrenewcommand{\algorithmicreturn}{\algorithmfont return}
+
+% Redefine \State to manually replace ← with =
+% \usepackage{xparse}
+% \RenewDocumentCommand{\State}{o+m}{%
+%   \Statex
+%   \algorithmfont
+%   \IfValueTF{#1}{\algorithmicindent\textbf{#1}\ }{}%
+%   \StrSubstitute{#2}{←}{=}\unskip%
+%   \par
+% }
+
 \lstdefinestyle{ieeecpp}{
   basicstyle=\ttfamily\footnotesize,
   keywordstyle=\color{blue},
@@ -33,12 +64,12 @@
 \newcommand{\code}[1]{\lstinline[basicstyle=\ttfamily]|#1|}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
-\begin{document}
 
-\title{A Parallel Term Frequency---Inverse Document Frequency Implementation in C++\\
+\begin{document}
+\title{A Parallel Term Frequency---Inverse Document Frequency Implementation in C++} %\\
 
 % \thanks{Identify applicable funding agency here. If none, delete this.}
-}
+% }
 
 \author{\IEEEauthorblockN{Andrew Kelton}
 \IEEEauthorblockA{\textit{Dept. of Computer Science} \\
@@ -57,7 +88,7 @@ an597152@ucf.edu}
     C++, classification, computation, efficient, parallel, Python, quick, sequential, Term Frequency-Inverse Document Frequency (TF-IDF), vectorization
 \end{IEEEkeywords}
 
-\section{Introduction}
+\section{Introduction} \label{sec:introduction}
 
 Natural language processing (NLP) is a vital field in today’s world. One of the key techniques used in NLP is Term Frequency-Inverse Document Frequency (TF-IDF), which helps identify important words within a document, while filtering out less relevant words. Search engines such as Google utilize TF-IDF to rank web pages, filtering billions of somewhat relevant words to ensure users receive the most meaningful results. However, computing TF-IDF at this scale is extremely computationally expensive, especially when processing large datasets, such as internet search results.
 
@@ -73,7 +104,7 @@ By implementing TF-IDF classification in C++ with parallelization, this project 
 \textbf{I have achieved the main goal for this project: Implement a parallel Term-Frequency Inverse Document Frequency (TF-IDF) text classifier in C++ and benchmark it against my sequential implementation of a TF-IDF text classifier in C++.}
 I will be using the sequential TF-IDF implementation as my control. As far as I know, there is no publicly available parallel TF-IDF implementation in C++. With this project I seek to be able to implement key components of the commonly used text vectorization and classification algorithm into an efficient parallelized, C++ implementation. Once I have equivalent implementations (sequential and parallel), I will run tests on the two different implementations to see if there are any performance, efficiency, accuracy, or precision differences between them. I will be looking mainly at speed and efficiency, and briefly discussing text classification accuracy and precision.
 
-\section{Motivation}
+\section{Motivation} \label{sec:motivation}
 In my research for this project, I could not find any parallel TF-IDF implementations for articles or text written in C++, either in literature or production. It surprised me that I could not find any strictly parallel TF-IDF implementations for text available in C++. While I would have appreciated the opportunity to test my parallel TF-IDF algorithm against others that are widely used, no such implementation appears to exist. The opportunity to review a similar implementation could have given insight on the key differences between a strictly parallel TF-IDF in C++ and user-level parallel TF-IDF techniques normally found in Python. Although this lack of existing work is disappointing, it confirms the novelty and significance of this project.
 
 An explanation for this gap in C++ implementations, is the dominance of existing Python-based data science and machine learning libraries. Libraries such as Scikit-learn in Python have created specific functions that allow users to implement parallelism in their code, however, they do not provide a strictly parallel TF-IDF implementation~\cite{b4}. These implementations have often been criticized for not being thread-safe and not providing full control for concurrency. This requires users to explicitly optimize and control shared memory, while maintaining thread-safety. In contrast, C++ offers low-level access and control over parallel processing, making it a strong candidate for developing high-performance, large-scale text classification solutions
@@ -98,7 +129,7 @@ TF(t,d) = \frac{\text{number of times } t \text{ appears in } d}{\text{total num
 IDF(t) = \log \left( \frac{N}{1 + \text{freq}(t,d)} \right)
 \]
 
-\section{Implementation}
+\section{Implementation} \label{sec:implementation}
 The following is the breakdown of the tasks I completed on this project:
 
 \begin{itemize}
@@ -135,7 +166,7 @@ The following is the breakdown of the tasks I completed on this project:
         \begin{itemize}    
             \item Measure performance amongst sections
             \item Classification accuracy and precision
-            \item Test multiple untrained corpuses with trained corpuses
+            \item Test multiple test corpuses with trained corpuses
         \end{itemize}
     }
 \end{itemize}
@@ -149,19 +180,19 @@ To summarize the above sections, my goal is to implement a parallel TF-IDF vecto
     \item Categorization
 \end{itemize}
 
-When using a trained corpus, I record performance benchmarks for each section. For example, the timer starts when the Vectorization section begins and ends when the Vectorization section completes. For an untrained corpus, I record performance benchmarks as a whole, including all sections and classification time in one recording. Execution times are recorded in milliseconds and begin and end recording in the same blocks in both implementations.
+When using a trained corpus, I record performance benchmarks for each section. For example, the timer starts when the Vectorization section begins and ends when the Vectorization section completes. For an test corpus, I record performance benchmarks as a whole, including all sections and classification time in one recording. Execution times are recorded in milliseconds and begin and end recording in the same blocks in both implementations.
 
-After all sections complete, including classification (for an untrained corpus), I record accuracy and precision of the classification for each document classified. I compare execution times of each section, classification accuracy, and classification precision between the parallel and sequential implementations. 
+After all sections complete, including classification (for an test corpus), I record accuracy and precision of the classification for each document classified. I compare execution times of each section, classification accuracy, and classification precision between the parallel and sequential implementations. 
 
 \subsection{Classification of Text}
-Untrained text is classified using cosine similarity of the TF-IDF scores of the untrained text, $d_i$, and a category's combined TF-IDF scores, $c_j$, whose TF-IDF scores have already been calculated~\cite{b1} and $d_i$ is a document in the untrained corpus and $c_j$ is the entire \code{TFIDF} of normalized TF-IDF scores of all documents in a \code{Category}. The cosine similarity approach used in this work is largely based on the methodology outlined by Park, Hong, and Kim in \cite{b2}, due to the findings of cosine similarity's significance in using TF-IDF scores to classify text. The approach presented in this work differs from that of Park, Hong, and Kim in that it computes the cosine similarity between a single document and a combined TF-IDF score vector for a category, rather than computing cosine similarity across all documents. Park Hong and Kim's approach is given by\cite{b2}:
+The testing data's text is classified using cosine similarity of the TF-IDF scores of a test data's text, $d_i$, and a training data's category's combined TF-IDF scores using Algorithm 1, $c_j$, whose TF-IDF scores have already been calculated~\cite{b1} and $d_i$ is a document in the test corpus and $c_j$ is the entire \code{TFIDF} of normalized TF-IDF scores of all documents in a \code{Category}. The cosine similarity approach used in this work is largely based on the methodology outlined by Park, Hong, and Kim in \cite{b2}, due to the findings of cosine similarity's significance in using TF-IDF scores to classify text. The approach presented in this work differs from that of Park, Hong, and Kim in that it computes the cosine similarity between a single document and a combined TF-IDF score vector for a category, rather than computing cosine similarity across all documents. Park Hong and Kim's approach is given by:
 \begin{equation}
 \begin{aligned}    
 \text{\textit{Sim}}(doc1, doc2) &= \frac{doc1 \cdot doc2}{\|doc1\| \|doc2\|} \\
                        &= \frac{\sum_{i=1}^{n} A_i B_i}{\sqrt{\sum_{i=1}^{n} A_i^2} \sqrt{\sum_{i=1}^{n} B_i^2}}
 \end{aligned}
 \end{equation}
-where $A_i$ and $B_i$ represent the components of vectors \textit{doc1} and \textit{doc2}, respectively.
+where $A_i$ and $B_i$ represent the components of vectors \textit{doc1} and \textit{doc2}, respectively~\cite{b2}.
 
 While the cosine similarity equation used in this report is as follows: 
 \begin{equation}
@@ -174,7 +205,7 @@ While the cosine similarity equation used in this report is as follows:
 \end{equation}
 where $d_i(t)$ and $c_j(t)$ denote the TF-IDF weights of term $t$ in document $d_i$ and category $c_j$, respectively. The summation $\sum_{t \in d}$ iterates over all terms $t$ in the given document, and the intersection $d_i \cap c_j$ includes only the terms shared by both documents. The threshold $\varepsilon = 10^{-9}$ ensures stability by avoiding division by zero when either document has no weighted terms.
 
-The methodology of classifying an untrained document is as follows:
+The methodology of classifying an test document is as follows:
 \begin{equation}
     \hat{y} = \arg\max_{1 \leq j \leq 5} \textit{Sim}(d_i, c_j)
 \end{equation}
@@ -188,7 +219,7 @@ where it iterates through all 5 indices of \code{Category} object vector and sav
 \end{enumerate}
     
 
-% To find the most similar category to an untrained (uncategorized) document, I iterate through all \code{Category} objects in the \code{std::vector} of categories. In this report, I used 5 category types:
+% To find the most similar category to an test (uncategorized) document, I iterate through all \code{Category} objects in the \code{std::vector} of categories. In this report, I used 5 category types:
 
 
 \subsection{Anticipated \& Encountered Challenges}
@@ -212,19 +243,19 @@ The \code{TFIDF}\_ class is a user-side class that takes input on numerous varia
     \item \code{process_all_data}% \lstinline[language=C]|process_all_data|
 \end{itemize}
 
-These functions allow the user to either process trained and untrained data separately, or process trained data then process untrained data by only calling one function. When testing the code with multiple datasets and varying thread counts, \code{process_all_data} is called to provide a standard for code usage and recording of benchmarks.
+These functions allow the user to either process trained and test data separately, or process trained data then process test data by only calling one function. When testing the code with multiple datasets and varying thread counts, \code{process_all_data} is called to provide a standard for code usage and recording of benchmarks.
 
 Another major issue I became aware of when first testing the program, was the extreme inaccuracy of category classification when utilizing multiple threads. This issue was mainly due to the fact I was not ensuring all threads maintained the same data across all threads. I would lock the \code{vector} that contains the final list of \code{Category} objects when pushing a new \code{Category} but would not lock or ensure proper synchronization when categorizing data. Therefore, \code{Category} objects contained incorrect document indexes, since their chosen index had changed due to another thread modifying the \code{vector} of documents. I was able to fix this issue by locking the entire program when a thread is actively creating a \code{Category} object. However, this solution is not efficient and allows for long-blocking periods, making it essentially sequential with a minor decrease in performance, due to thread creation, deletion, and idle-waiting. In the future, I hope to implement a queue and worker threads to efficiently dequeue \textit{Document} objects and classify them to their correct category without inefficient blocking or waiting.
 
 \subsection{Synchronization}
-The approach for my implementation requires support of locking mechanisms and atomic operations. To avoid data races, whenever pushing or emplacing to a \code{TFIDF}, I lock the \code{TFIDF} and ensure only one thread updates the shared \code{TFIDF} at a time. This design guarantees only one thread updates the \code{TFIDF} at a time, while also ensuring a short critical section to avoid long blocking. Atomic operations are used when classifying our untrained data and incrementing the total and correct count of classifications. This approach guarantees all threads contain the same data throughout the entire TF-IDF process.
+The approach for my implementation requires support of locking mechanisms and atomic operations. To avoid data races, whenever pushing or emplacing to a \code{TFIDF}, I lock the \code{TFIDF} and ensure only one thread updates the shared \code{TFIDF} at a time. This design guarantees only one thread updates the \code{TFIDF} at a time, while also ensuring a short critical section to avoid long blocking. Atomic operations are used when classifying our test data and incrementing the total and correct count of classifications. This approach guarantees all threads contain the same data throughout the entire TF-IDF process.
 
-My implementation also ensures proper thread balancing, avoiding scenarios where some threads have completed their tasks, while others have just begun. This is achieved by splitting the dataset into roughly equal chunks based on the number of available threads we are testing with. Each thread is assigned a portion of data to: vectorize, compute TF-IDF scores, and classify untrained data.
+My implementation also ensures proper thread balancing, avoiding scenarios where some threads have completed their tasks, while others have just begun. This is achieved by splitting the dataset into roughly equal chunks based on the number of available threads we are testing with as seen in Algorithm 2 . Each thread is assigned a portion of data to: vectorize, compute TF-IDF scores, and classify test data.
 
 Additionally, thread synchronization is cautiously managed to ensure threads are not being blocked by long critical sections. The task distribution is designed so that no thread holds up others for extended periods of time. Immediately after updating a critical section that uses locks, threads resume their tasks and remain in sync containing the same data. This approach not only ensures efficient workload, but also efficient use of resources, minimizing idle time and maintaining overall performance.
 
-\section{Testing}
-To accurately compare the results against the sequential C++ implementation, I used the same original dataset and split it into 80% training data and 20% untrained data. This ensured consistent input across all versions of the program. I measured execution time for each section by starting a counter at the beginning of the function call and stopping it immediately after the function returned. Execution time was reported in milliseconds. Below I will present the results of performance, accuracy, and precision analysis.
+\section{Testing} \label{sec:testing}
+To accurately compare the results against the sequential C++ implementation, I used the same original dataset~\cite{b6} and split it into 80\% training data and 20\% testing data. This ensured consistent input across all versions of the program. As discussed in Section~\ref{sec:implementation}, I measured execution time in milliseconds and recorded the classification accuracy and precision. Below I will present the results of performance, accuracy, and precision analysis.
 
 \subsection{Testing Environment}
 All code was written, compiled, and tested using C++17 on the University of Central Florida’s high-performance Secure Shell Protocol (SSH) server, \textit{eustis3}. Eustis3 runs Ubuntu 22.04 LTS with Linux kernel version 5.15.0 and is equipped with dual-socket Intel\textsuperscript{\textregistered} Xeon\textsuperscript{\textregistered} Silver 4216 CPUs, totaling 64 threads (2 sockets × 16 cores × 2 threads per core). The system provides 187~GiB of RAM, of which approximately 58~GiB were free and 75~GiB available during testing. This setup offered sufficient parallel processing capabilities for benchmarking the proposed algorithm while maintaining a consistent Linux-based development environment to minimize OS-specific inconsistencies.
@@ -249,7 +280,7 @@ done
 \end{minipage}
 \end{figure}
 
-\section{Evaluation}
+\section{Evaluation} \label{sec:evaluation}
 Once both the sequential and parallel TF-IDF implementations were finished in C++, I could analyze the differences in performance, accuracy, and precision between the two. For this paper, I will be using the results from dataset-3, which is the largest dataset used and the most likely to be used in a real-world scenario.
 
 \begin{figure}[htbp]
@@ -266,7 +297,7 @@ In figure 2, there is a dramatic change in performance from 1 to 64 threads, and
 \label{fig}
 \end{figure}
 
-Figure 3 illustrates the mean classification accuracy of 10 iterations across all tests. As we can see, there is a dramatic drop in accuracy between 2 and 32 threads. This may suggest an issue with data races when classifying untrained data, as trained data values and objects across all threads remains the same. However, the test utilizing 128 threads maintains the highest accuracy percentage of 90.47\%, followed by the sequential implementation with an accuracy percentage of 89.88\%. 
+Figure 3 illustrates the mean classification accuracy of 10 iterations across all tests. As we can see, there is a dramatic drop in accuracy between 2 and 32 threads. This may suggest an issue with data races when classifying test data, as trained data values and objects across all threads remains the same. However, the test utilizing 128 threads maintains the highest accuracy percentage of 90.47\%, followed by the sequential implementation with an accuracy percentage of 89.88\%. 
 
 \begin{figure}[htbp]
 \centerline{\includegraphics{Fig4.png}}
@@ -279,7 +310,7 @@ Figure 4 illustrates the classification precision of 10 iterations across all te
 It is also worth noting that the sequential implementation, on average across all 10 tests, took approximately 7.8 minutes to complete all tasks, while the implementation utilizing 128 threads took an average of 2.3 minutes to complete all tasks. These two configurations were chosen for direct comparison because they were the only ones that consistently achieved a precision of 1.00, indicating deterministic behavior and the absence of data races. Furthermore, both tests yielded the highest classification accuracies across all tests, with the sequential version achieving 89.88\% and the 128-thread version achieving a slightly higher accuracy of 90.47\%. This comparison demonstrates that the sequential implementation is about 3.4 times slower than my parallel implementation with 128 threads, which not only maintained precision but marginally improved classification accuracy.
 
 \subsection{Conclusion}
-I present a parallel TF-IDF implementation in C++. I discovered significant performance improvements in the parallel implementation of the sequential implementation. While I also discovered some data race concerns amongst a certain number of threads, I also discovered utilizing 128 threads was optimal for performance, accuracy, and precision. My implementation uses both atomic operations and locking mechanisms, such as mutex locks. It allows for the classification of untrained data, provided there was trained data given. I compared the parallel implementation to my sequential implementation using custom test scripts and found the optimal number of threads across all tasks for performance, classification accuracy, and precision was 128 threads. I plan to further develop this project and incorporate more functions and usages to further expand C++’s usage in modern NLP.
+I present a parallel TF-IDF implementation in C++. I discovered significant performance improvements in the parallel implementation of the sequential implementation. While I also discovered some data race concerns amongst a certain number of threads, I also discovered utilizing 128 threads was optimal for performance, accuracy, and precision. My implementation uses both atomic operations and locking mechanisms, such as mutex locks. It allows for the classification of test data, provided there was trained data given. I compared the parallel implementation to my sequential implementation using custom test scripts and found the optimal number of threads across all tasks for performance, classification accuracy, and precision was 128 threads. I plan to further develop this project and incorporate more functions and usages to further expand C++’s usage in modern NLP.
 
 \begin{thebibliography}{00}
 \bibitem{b1} G. Juraev and O. Bozorov, ``Using TF-IDF in text classification,'' AIP Conference Proceedings, vol. 2789, pp. 050017–-050017, Jan. 2023, \url{https:://doi.org/10.1063/5.0145520}.
@@ -289,9 +320,68 @@ I present a parallel TF-IDF implementation in C++. I discovered significant perf
 \bibitem{b5} B. Madden, ``Oleander Stemming Library,'' May 19, 2024. Accessed Feb. 11, 2025. [Online]. Available: \url{https://github.com/Blake-Madden/OleanderStemmingLibrary}.
 \bibitem{b6}B. Bose, ``BBC News Classification,'' 2019. Accessed Jan. 2025. [Online]. Available: \url{https://kaggle.com/competitions/learn-ai-bbc}.
 \end{thebibliography}
-\vspace{12pt}
-\color{red}
-IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
+% \vspace{12pt}
+% \color{red}
+% IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
+
+% \clearpage
+\section*{Appendix}
+% \appendix
+
+\begin{algorithm}
+    \caption{Merge Document TF-IDF into Category creating combined TF-IDF scores.}
+    \begin{algorithmic}[1]
+    \State Initialize $word\_count$ as empty map
+    \State $i$ = $0$
+    \ForAll{$(word, tfidf) \in doc\_tf\_idf$}
+        \State $i$ = $i + 1$
+        \If{$word \in tf\_idf\_all$}
+            \State tf\_idf\_all[word] = tf\_idf\_all[word] + $tfidf$
+            \State word\_count[word] = word\_count[word] + $1$
+        \Else
+            \State tf\_idf\_all[word] = $tfidf$
+            \State word\_count[word] = $1$
+        \EndIf
+    \EndFor
+    \ForAll{$(word, count) \in word\_count$}
+        \State tf\_idf\_all[word] = tf\_idf\_all[word] / $i$
+    \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \caption{Loads \textit{x} Document objects to a thread}
+    \begin{algorithmic}[1]
+    \State n\_docs\_th = n\_docs / num\_ths
+    \State n\_last = n\_docs \% n\_docs\_th
+    \State n\_last += n\_docs\_th
+    \If{$n\_docs\_th$ == $1$}
+        \State num\_ths\_used = n\_docs
+    \Else
+        \State num\_ths\_used = num\_ths
+    \EndIf
+    \For{$i = 0$ to $n\_docs$ step $n\_docs\_th$}
+        \State \textbf{create\_thread}(function()
+        \If{$i = n\_docs - n\_docs\_th$ \textbf{and} $n\_last > 0$}
+            \For{$x = 0$ to $n\_last$}
+                \If{$x + i < n\_docs$}
+                    \State function($documents[x + i]$)
+                \EndIf
+            \EndFor
+        \Else
+            \For{$x = 0$ to $n\_docs\_th$}
+                \If{$x + i < n\_docs$}
+                    \State function($documents[x + i]$)
+                \EndIf
+            \EndFor
+        \EndIf
+        \State ) \Comment{End of lambda function}
+    \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
+% \bigskip
+    
 
 \end{document}
 
