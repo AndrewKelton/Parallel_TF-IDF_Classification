@@ -138,7 +138,7 @@ namespace corpus {
 
         unsigned number_of_docs_in_thread = get_number_of_docs_per_thread(num_threads);
         num_doc_per_thread = number_of_docs_in_thread;
-        unsigned number_of_docs_in_last_thread = num_of_docs % number_of_docs_in_thread;
+        unsigned number_of_docs_in_last_thread = num_of_docs % number_of_docs_in_thread + number_of_docs_in_thread;
 
         if (num_doc_per_thread == 1) {
             num_threads_used = num_of_docs;

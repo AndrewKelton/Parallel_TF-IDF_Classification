@@ -149,7 +149,6 @@ namespace cats { // namespace cats
         double dotProduct = 0.0, norm1 = 0.0, norm2 = 0.0;
 
         for (const auto& [word, tfidf1] : doc1) {
-            // cout << "word: " << word << std::endl;
             if (doc2.find(word) != doc2.end()) {
                 dotProduct += tfidf1 * doc2.at(word);
             }
@@ -157,12 +156,10 @@ namespace cats { // namespace cats
         }
         
         for (const auto& [word, tfidf2] : doc2) {
-            // cout << word << std::endl;
             norm2 += tfidf2 * tfidf2;
         }
-        // cout << "Norm1: " << norm1 << "\tNorm2: " << norm2 << "\tdotProduct: " << dotProduct << std::endl;
 
-        if (fabs(norm1) < 1e-9 || fabs(norm2) < 1e-9) return 0.0; // Avoid division by zero
+        if (fabs(norm1) < 1e-9 || fabs(norm2) < 1e-9) return 0.0; // avoids division by zero
 
         return dotProduct / (sqrt(norm1) * sqrt(norm2));
     }
@@ -185,13 +182,10 @@ namespace cats { // namespace cats
             i++;
         }
 
-        // cout << correct_type << "\t" << conv_cat_type(unknown_classification.classified_type) << std::endl;
         if (unknown_classification.correct_type == unknown_classification.classified_type) {
             unknown_classification.correct = true;
-            // cout << "True";
         } else {
             unknown_classification.correct = false;
-            // cout << "False";
         }
 
         return unknown_classification;
@@ -261,6 +255,7 @@ namespace cats::par { // namespace cats::par
     std::atomic<int> correct_count{0};
     std::atomic<int> total_count{0};
     std::mutex c_mtx;
+
 
     extern void get_cat_for_group(std::vector<Category>& cats, docs::Document& document) {
 
