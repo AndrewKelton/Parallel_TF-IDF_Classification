@@ -114,10 +114,10 @@ The absence of scalable parallel  TF-IDF implementations in C++ also suggests an
 In the future, I plan to incorporate more functions that allow users to view more data resolved from the TF-IDF vectorization.
 
 \section{Related Work}
-As explained above, TF-IDF is a widely used technique to evaluate the importance of words in documents.
+As explained above, TF-IDF is a widely used technique to evaluate the importance of words within a document. Although I could not find any parallel Tf-IDF implementations in C++, I was able to find research in relation to using cosine similarity for text classification. I relied on the findings of Park, Hong, and Kim's research on the use of cosine similarity for text classification~\cite{b2}. Their research consisted of utilizing cosine similarity to enhance traditional classifiers, however, I solely used cosine similarity to classify testing documents in this project. I did however use their~\cite{b2} cosine similarity function as a base to my own. I will discuss the specific aspects in which Park, Hong, and Kim's cosine similarity implementation differs from my own in the next section. 
 
 \subsection{An Overview of TF-IDF}
-The following is the mathematical equation of the TF-IDF algorithm, where the TF-IDF score for word \textit{t} in the document \textit{d} is defined as:
+The following is the mathematical equation of the TF-IDF algorithm, where the TF-IDF score for word \textit{t} in the document \textit{d} is defined as~\cite{b7}:
 \[
 \text{TF-IDF}(t, d) = \text{TF}(t, d) \times \text{IDF}(t)
 \]
@@ -128,6 +128,7 @@ TF(t,d) = \frac{\text{number of times } t \text{ appears in } d}{\text{total num
 \[
 IDF(t) = \log \left( \frac{N}{1 + \text{freq}(t,d)} \right)
 \]
+This is the same algorithm and mathematical equation used to calculate TF-IDF scores in this project.
 
 \section{Implementation} \label{sec:implementation}
 The following is the breakdown of the tasks I completed on this project:
@@ -149,12 +150,12 @@ The following is the breakdown of the tasks I completed on this project:
             \item Skip stop words (common words such as the, is, etc. that do not contribute importance to a document)
             \item Remove punctuation
             \item Convert all letters to lower case
-            \item Stem words using the \code{english_stem} class from the Oleander Stemming Library~\cite{b5}
+            \item Stem words using the \code{english_stem} function from the Oleander Stemming Library~\cite{b5}
         \end{itemize}
     }
     \item Implement the functions to vectorize a corpus of documents.
-    \item Implement the functionality of each major TF-IDF function in C++.
-    \item Implement the functionality of major text classification functions in C++.
+    \item Implement the functionality TF-IDF computation in C++.
+    \item Implement the functionality text classification using cosine similarity in C++.
     \item Create a testing environment for extracting benchmarks, performance, accuracy, and precision results
     {
         \begin{itemize}    
@@ -165,8 +166,8 @@ The following is the breakdown of the tasks I completed on this project:
     {
         \begin{itemize}    
             \item Measure performance amongst sections
-            \item Classification accuracy and precision
-            \item Test multiple test corpuses with trained corpuses
+            \item Measure classification accuracy and precision
+            \item Test multiple testing corpuses with training corpuses
         \end{itemize}
     }
 \end{itemize}
@@ -185,7 +186,7 @@ When using a trained corpus, I record performance benchmarks for each section. F
 After all sections complete, including classification (for an test corpus), I record accuracy and precision of the classification for each document classified. I compare execution times of each section, classification accuracy, and classification precision between the parallel and sequential implementations. 
 
 \subsection{Classification of Text}
-The testing data's text is classified using cosine similarity of the TF-IDF scores of a test data's text, $d_i$, and a training data's category's combined TF-IDF scores using Algorithm 1, $c_j$, whose TF-IDF scores have already been calculated~\cite{b1} and $d_i$ is a document in the test corpus and $c_j$ is the entire \code{TFIDF} of normalized TF-IDF scores of all documents in a \code{Category}. The cosine similarity approach used in this work is largely based on the methodology outlined by Park, Hong, and Kim in \cite{b2}, due to the findings of cosine similarity's significance in using TF-IDF scores to classify text. The approach presented in this work differs from that of Park, Hong, and Kim in that it computes the cosine similarity between a single document and a combined TF-IDF score vector for a category, rather than computing cosine similarity across all documents. Park Hong and Kim's approach is given by:
+The testing data's text is classified using cosine similarity of the TF-IDF scores of a test data's text, $d_i$, and a training data's category's combined TF-IDF scores using Algorithm 1, $c_j$, whose TF-IDF scores have already been calculated~\cite{b1} and $d_i$ is a document in the test corpus and $c_j$ is the entire \code{TFIDF} of normalized TF-IDF scores of all documents in a \code{Category}. The cosine similarity approach used in this work is largely based on the methodology outlined by Park, Hong, and Kim in \cite{b2}, due to the findings of cosine similarity's significance in using TF-IDF scores to classify text. The approach presented in this work differs from that of Park, Hong, and Kim in that it computes the cosine similarity between a single document and a combined TF-IDF score vector for a category, rather than computing cosine similarity across all documents. Park, Hong and Kim's approach is given by:
 \begin{equation}
 \begin{aligned}    
 \text{\textit{Sim}}(doc1, doc2) &= \frac{doc1 \cdot doc2}{\|doc1\| \|doc2\|} \\
@@ -291,13 +292,14 @@ Once both the sequential and parallel TF-IDF implementations were finished in C+
 
 In figure 2, there is a dramatic change in performance from 1 to 64 threads, and then it fizzles out, remaining close to or worse than before. However, the Categories performance remains similar amongst all threads. This is due to the way the Categories are updated between the sequential and parallel implementations. As stated earlier, the parallel implementation for the Categories section is essentially sequential by locking the entire corpus object before completing categorization tasks. In the future, I hope to fix this issue by implementation a conccurent queue for categorization tasks.
 
+
+Figure 3 illustrates the mean classification accuracy of 10 iterations across all tests. As we can see, there is a dramatic drop in accuracy between 2 and 32 threads. This may suggest an issue with data races when classifying test data, as trained data values and objects across all threads remains the same. However, the test utilizing 128 threads maintains the highest accuracy percentage of 90.47\%, followed by the sequential implementation with an accuracy percentage of 89.88\%. 
+
 \begin{figure}[htbp]
 \centerline{\includegraphics{Fig3.png}}
 \caption{Classification accuracy results from 1--1024 threads.}
 \label{fig}
 \end{figure}
-
-Figure 3 illustrates the mean classification accuracy of 10 iterations across all tests. As we can see, there is a dramatic drop in accuracy between 2 and 32 threads. This may suggest an issue with data races when classifying test data, as trained data values and objects across all threads remains the same. However, the test utilizing 128 threads maintains the highest accuracy percentage of 90.47\%, followed by the sequential implementation with an accuracy percentage of 89.88\%. 
 
 \begin{figure}[htbp]
 \centerline{\includegraphics{Fig4.png}}
@@ -318,7 +320,8 @@ I present a parallel TF-IDF implementation in C++. I discovered significant perf
 \bibitem{b3} R. R. Curtin \textit{et al.}, ``mlpack 4: a fast, header-only C++ machine learning library,'' \textit{Journal of Open Source Software}, vol. 8, no. 85, p. 5011, 2023, \url{https://doi.org/10.21105/joss.05011}.
 \bibitem{b4} F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, P. Prettenhofer, R. Weiss, V. Dubourg, J. Vanderplas, A. Passos, D. Cournapeau, M. Brucher, M. Perrot, and E. Duchesnay, ``Scikit-learn: Machine Learning in Python,'' \textit{Journal of Machine Learning Research}, vol. 12, pp. 2825--2830, 2011.
 \bibitem{b5} B. Madden, ``Oleander Stemming Library,'' May 19, 2024. Accessed Feb. 11, 2025. [Online]. Available: \url{https://github.com/Blake-Madden/OleanderStemmingLibrary}.
-\bibitem{b6}B. Bose, ``BBC News Classification,'' 2019. Accessed Jan. 2025. [Online]. Available: \url{https://kaggle.com/competitions/learn-ai-bbc}.
+\bibitem{b6} B. Bose, ``BBC News Classification,'' 2019. Accessed Jan. 2025. [Online]. Available: \url{https://kaggle.com/competitions/learn-ai-bbc}.
+\bibitem{b7} C. Sammut and G. I. Webb, eds., \textit{Encyclopedia of Machine Learning}, Springer US, Boston, MA, 2010, pp. 986--987. \url{https://doi.org/10.1007/978-0-387-30164-8_832}{10.1007/978-0-387-30164-8\_832}.
 \end{thebibliography}
 % \vspace{12pt}
 % \color{red}
