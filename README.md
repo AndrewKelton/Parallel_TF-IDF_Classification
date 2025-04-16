@@ -88,8 +88,8 @@ _Removes installed dependencies and 'cleans' folders._
 * Dataset Requirement: 
     * Training data contains the format: category<sub>x</sub>, text<sub>x</sub>
     * Untrained data's category and corresponding text should be in separate files. 
-        - Untrained Category → un-trained-category.txt: category<sub>x</sub>
-        - Untrained Text → un-trained-text.txt: text<sub>x</sub>
-* Logging & Output: Results for Tests are stored in tests/test-output/results/, and logs are saved in tests/test-output/logs/. 
-* Formatted Output: Formatted output in the form of CSV files is located in tests/test-output/processed-data-results/
+        - Untrained Category → testing-category.txt: category<sub>x</sub>
+        - Untrained Text → testing-text.txt: text<sub>x</sub>
+* Logging & Output: Results for Tests are stored in tests/output/results/, and logs are saved in tests/output/logs/. 
+* Formatted Output: Formatted output in the form of CSV files is located in tests/output/processed-data-results/
 * Running `scripts/run.sh` may take a long time to finish due to the sequential and lower-thread solutions taking quite a bit of time. I recommend reducing the number of iterations in `scripts/run.sh` to 5 if you are running this locally and would like to get an average comparison.

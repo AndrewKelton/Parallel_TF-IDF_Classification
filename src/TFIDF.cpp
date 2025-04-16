@@ -1,6 +1,6 @@
 #include "TFIDF.hpp"
 
-void TFIDF::TFIDF_::process_trained_data() {
+void TFIDF::TFIDF_::process_training_data() {
 
     /* Read in trained data from CSV file */
     try {
@@ -103,7 +103,7 @@ void TFIDF::TFIDF_::process_trained_data() {
     /* -- Category Section END -- */
 }
 
-void TFIDF::TFIDF_::process_un_trained_data() {
+void TFIDF::TFIDF_::process_testing_data() {
 
     /* Read in the untrained/unknown text */
     try {
@@ -215,8 +215,8 @@ void TFIDF::TFIDF_::process_un_trained_data() {
 }   
 
 void TFIDF::TFIDF_::process_all_data() {
-    process_trained_data();
-    process_un_trained_data();
+    process_training_data();
+    process_testing_data();
 }
 
 void TFIDF::TFIDF_::handle_err(std::string to_cerr) {

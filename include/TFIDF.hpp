@@ -34,8 +34,8 @@ namespace TFIDF { // namespace TFIDF
      *          managing various tasks such as performance monitoring and logging.
      * 
      * It contains methods for:
-     * - `process_trained_data()`: Processes the trained corpus.
-     * - `process_un_trained_data()`: Processes the untrained corpus.
+     * - `process_training_data()`: Processes the trained corpus.
+     * - `process_testing_data()`: Processes the untrained corpus.
      * - `process_all_data()`: Processes both trained and untrained data.
      * 
      * @note This class can be configured to run in parallel or sequentially based on the user settings.
@@ -126,12 +126,12 @@ namespace TFIDF { // namespace TFIDF
             /**
              * @brief Processes the trained data and classifies documents to their respective Category.
              */
-            void process_trained_data();
+            void process_training_data();
 
             /**
              * @brief Processes the untrained data and classifies it with the trained data.
              */
-            void process_un_trained_data();
+            void process_testing_data();
 
             /**
              * @brief Processes both trained and untrained data.

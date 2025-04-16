@@ -5,7 +5,7 @@ import scipy.stats as stats
 import os
 
 # Define file paths
-MAIN_DIR = "tests/test-output/processed-data-results/"
+MAIN_DIR = "tests/output/processed-data-results/"
 RES_PAR = MAIN_DIR + "parallel-processed.csv"
 RES_SEQ = MAIN_DIR + "sequential-processed.csv"
 
@@ -34,8 +34,8 @@ def plot_bell_curve(data, title, filename):
     plt.grid()
 
     # Save the figure
-    os.makedirs("tests/test-output/graphs", exist_ok=True)
-    plt.savefig(f"tests/test-output/graphs/{filename}", format="pdf")
+    os.makedirs("tests/output/graphs", exist_ok=True)
+    plt.savefig(f"tests/output/graphs/{filename}", format="pdf")
     plt.close()
 
 def main():

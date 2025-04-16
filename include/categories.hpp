@@ -60,7 +60,7 @@ namespace corpus {
  */
 namespace cats { 
 
-    const std::string CAT_FILENAME = "test-output/lengthy/category-info.txt";
+    const std::string CAT_FILENAME = "output/lengthy/category-info.txt";
 
     /**
      * @class Category

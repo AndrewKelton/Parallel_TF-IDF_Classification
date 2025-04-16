@@ -1,7 +1,7 @@
 import csv
 
-input_file = "data/bbc-news-data.csv"  # Change this to your actual file path
-output_file = "data/bbc-news-data-fixed.csv"
+input_file = "tests/data/bbc-news-data.csv"  # Change this to your actual file path
+output_file = "tests/data/bbc-news-data-fixed.csv"
 
 # Manually set the delimiter if known (modify this if `head -n 1` shows a different one)
 KNOWN_DELIMITERS = ["\x1b", "|", ";", "\t"]  # Add other potential delimiters if necessary

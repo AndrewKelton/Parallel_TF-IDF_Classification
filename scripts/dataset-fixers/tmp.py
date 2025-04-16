@@ -1,8 +1,8 @@
 # tmp.py
-# Splits un-trained data with correct category info into
-# two files: 'data/unknown_text_fix.txt' & 'data/correct_unknown.txt'.
-# * 'data/correct_unknown.txt' contains the correct categories (1 category per line).
-# * 'data/unknown_text_fix.txt' contains the raw text data (1 article per line).
+# Splits testing data with correct category info into
+# two files: 'tests/data/unknown_text_fix.txt' & 'tests/data/correct_unknown.txt'.
+# * 'tests/data/correct_unknown.txt' contains the correct categories (1 category per line).
+# * 'tests/data/unknown_text_fix.txt' contains the raw text data (1 article per line).
 
 def process_file(input_file, output_file, removed_words_file):
     with open(input_file, 'r', encoding='utf-8') as infile, \
@@ -18,9 +18,9 @@ def process_file(input_file, output_file, removed_words_file):
 
 if __name__ == '__main__':
     
-    input_filename = "data/dataset-3/unknown_text_unfixed.txt" 
-    output_filename = "data/dataset-3/un-trained-data.txt"
-    removed_words_filename = "data/dataset-3/un-trained-correct-data.txt"
+    input_filename = "tests/data/dataset-3/unknown_text_unfixed.txt" 
+    output_filename = "tests/data/dataset-3/testing-data.txt"
+    removed_words_filename = "tests/data/dataset-3/testing-correct-data.txt"
 
     process_file(input_filename, output_filename, removed_words_filename)
 

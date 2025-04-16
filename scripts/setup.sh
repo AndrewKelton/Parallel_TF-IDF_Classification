@@ -91,7 +91,7 @@ do
 done
 
 
-# create DESCRIPTION file for test-output
+# create DESCRIPTION file for output
 
     echo "
     ### This directory stores output files generated during testing, logs, and graphs.

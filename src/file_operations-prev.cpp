@@ -13,7 +13,7 @@ static std::string input_file_name;
 static const std::string sl{"/"}; // general purpose slash
 
 /* constants for directory paths */
-static const std::string base_test_dir{"tests/test-output"};
+static const std::string base_test_dir{"tests/output"};
 static const std::string processed_csv_dir{base_test_dir + sl + "processed-data-results"};
 static const std::string comp_test_dir{base_test_dir + sl + "comparison"};
 static const std::string solo_test_dir{base_test_dir + sl + "solo"};
@@ -210,7 +210,7 @@ extern void read_unknown_text(corpus::Corpus& corpus, const std::string& file_na
 
 extern std::vector<std::string> read_unknown_cats() {
     std::vector<std::string> correct_cats;
-    std::ifstream file{"data/correct_unknown.txt"};
+    std::ifstream file{"tests/data/correct_unknown.txt"};
     
     if (!file.is_open())
         throw std::runtime_error("file cannot be opened...");

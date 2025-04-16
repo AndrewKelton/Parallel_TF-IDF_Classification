@@ -13,7 +13,7 @@ static std::string input_file_name;
 // static const std::string sl{"/"}; // general purpose slash
 // 
 // /* constants for directory paths */
-// static const std::string base_test_dir{"tests/test-output"};
+// static const std::string base_test_dir{"tests/output"};
 // static const std::string processed_csv_dir{base_test_dir + sl + "processed-data-results"};
 // static const std::string comp_test_dir{base_test_dir + sl + "comparison"};
 // static const std::string solo_test_dir{base_test_dir + sl + "solo"};

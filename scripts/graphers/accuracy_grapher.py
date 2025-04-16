@@ -8,7 +8,7 @@
        ||        certain metrics being recorded during           ||
        ||           during runs of this project.                 ||
        ||                                                        ||
-       ||  To view outputted graphs, visit 'test-output/graphs'  ||
+       ||  To view outputted graphs, visit 'output/graphs'  ||
        ||                                                        ||
        || ===== + ==== + ==== + ========== + ==== + ==== + ===== ||
 
@@ -45,7 +45,7 @@ def accuracy_plt(accuracy_mean, accuracy_vals, i):
     plt.title(f'Mean Accuracy vs. Number of Threads w/ Dataset {i}')
     # plt.xticks(rotation=45, ha="right")  # Rotate x-axis labels for readability
 
-    plt.savefig(f"tests/test-output/graphs/accuracy-dataset-{i}.pdf", format="pdf")
+    plt.savefig(f"tests/output/graphs/accuracy-dataset-{i}.pdf", format="pdf")
     plt.close()
 
 def precision_plt(accuracy_mean, accuracy_vals, i):
@@ -79,7 +79,7 @@ def precision_plt(accuracy_mean, accuracy_vals, i):
     plt.title(f"Precision vs. Number of Threads w/ Dataset {i}")
     # plt.xticks(rotation=45, ha="right")  # Rotate x-axis labels for readability
 
-    plt.savefig(f"tests/test-output/graphs/precision-plot-d{i}.pdf", format="pdf")
+    plt.savefig(f"tests/output/graphs/precision-plot-d{i}.pdf", format="pdf")
     plt.close()
 
 def main():
@@ -91,9 +91,9 @@ def main():
         for thread in threads:
             file_name = ''
             if thread == 1:
-                file_name=f'tests/test-output/processed-data-results/sequential-{x}-processed.csv'
+                file_name=f'tests/output/processed-data-results/sequential-{x}-processed.csv'
             else:
-                file_name = f'tests/test-output/processed-data-results/parallel-{thread}-{x}-processed.csv'
+                file_name = f'tests/output/processed-data-results/parallel-{thread}-{x}-processed.csv'
             df = pd.read_csv(file_name)
             accuracy_mean.append(df['Accuracy'].mean())
 

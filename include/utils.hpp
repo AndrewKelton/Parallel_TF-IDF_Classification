@@ -42,9 +42,9 @@
 /** @brief Maximum number of processing sections. */
 #define MAX_SECTIONS 4
 
-#define DEFAULT_TRAINED_INPUT_FILE "data/BBC-News-Training.csv"
-#define DEFAULT_UN_TRAINED_INPUT_FILE "data/unknown_text.txt"
-#define DEFAULT_UN_TRAINED_CORRECT_INPUT_FILE "data/correct_unknown.txt"
+#define DEFAULT_TRAINED_INPUT_FILE "tests/data/BBC-News-Training.csv"
+#define DEFAULT_UN_TRAINED_INPUT_FILE "tests/data/unknown_text.txt"
+#define DEFAULT_UN_TRAINED_CORRECT_INPUT_FILE "tests/data/correct_unknown.txt"
 #define DEFAULT_OUTPUT_RESULTS_TXT_FILE "results.txt"
 #define DEFAULT_OUTPUT_RESULTS_LOG_FILE "errors.log"
 #define DEFAULT_PROCESSED_DATA_OUTPUT_CSV_FILE "processed.csv"

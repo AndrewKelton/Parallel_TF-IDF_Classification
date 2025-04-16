@@ -8,7 +8,7 @@
        ||        certain metrics being recorded during           ||
        ||           during runs of this project.                 ||
        ||                                                        ||
-       ||  To view outputted graphs, visit 'test-output/graphs'  ||
+       ||  To view outputted graphs, visit 'output/graphs'  ||
        ||                                                        ||
        || ===== + ==== + ==== + ========== + ==== + ==== + ===== ||
 
@@ -31,9 +31,9 @@ def main():
         for thread in threads:
             file_name = ''
             if thread == 1:
-                file_name=f'tests/test-output/processed-data-results/sequential-{i}-processed.csv'
+                file_name=f'tests/output/processed-data-results/sequential-{i}-processed.csv'
             else:
-                file_name = f'tests/test-output/processed-data-results/parallel-{thread}-{i}-processed.csv'
+                file_name = f'tests/output/processed-data-results/parallel-{thread}-{i}-processed.csv'
             df = pd.read_csv(file_name)
             vectorization_mean.append(df['Vectorization'].mean())
             tfidf_mean.append(df['TF-IDF'].mean())
@@ -68,7 +68,7 @@ def main():
         # plt.tight_layout()
 
         # Save the plot as a PDF
-        plt.savefig("tests/test-output/graphs/speedup-dataset-" + str(i) + ".pdf", format="pdf")
+        plt.savefig("tests/output/graphs/speedup-dataset-" + str(i) + ".pdf", format="pdf")
         plt.show()
 
         i+=1

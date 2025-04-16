@@ -1,1 +1,0 @@
-Vectorization: 1094 ms

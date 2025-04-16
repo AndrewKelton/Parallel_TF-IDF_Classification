@@ -10,7 +10,7 @@
  * 
  * By default, all flags are set to `0`, meaning output generation is **disabled** unless explicitly enabled
  * 
- * - `ENABLE_LENGTHY` (default: 0) → Enables detailed output in `/test-output/lengthy/`.  
+ * - `ENABLE_LENGTHY` (default: 0) → Enables detailed output in `/output/lengthy/`.  
  * - `ENABLE_TERMS_INFO` (default: 0) → Enables TF-IDF term information output.  
  * - `ENABLE_CATS_INFO` (default: 0) → Enables document category output.  
  * 
@@ -23,7 +23,7 @@
 #ifndef _CONFIG_HPP
 #define _CONFIG_HPP
 
-/** @brief Enables detailed output in `/test-output/lengthy/`. Default: Disabled (`0`). */
+/** @brief Enables detailed output in `/output/lengthy/`. Default: Disabled (`0`). */
 #ifndef ENABLE_LENGTHY
 #define ENABLE_LENGTHY 0
 #endif

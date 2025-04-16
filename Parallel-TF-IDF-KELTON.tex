@@ -239,8 +239,8 @@ When testing the code, I noticed it was quite difficult to understand exactly wh
 
 The \code{TFIDF}\_ class is a user-side class that takes input on numerous variables, such as: number of threads to use, print output, print errors, file inputs, and file outputs, just to name a few. This greatly increased the code-readability, reusability, and effectiveness of recording metrics amongst multiple inputs. The class contains three functions:
 \begin{itemize}
-    \item \code{process_trained_data} %\lstinline[language=C]|process_trained_data|
-    \item \code{process_un_trained_data}% \lstinline[language=C]|process_un_trained_data|
+    \item \code{process_training_data} %\lstinline[language=C]|process_training_data|
+    \item \code{process_testing_data}% \lstinline[language=C]|process_testing_data|
     \item \code{process_all_data}% \lstinline[language=C]|process_all_data|
 \end{itemize}
 
@@ -263,7 +263,7 @@ All code was written, compiled, and tested using C++17 on the University of Cent
 
 The main test files were written to be mostly one-to-one from each other. The only differences in the main test files are the inputs when creating the \code{TFIDF}\_ object. The tests are conducted by inputting the respective number of threads for the \code{TFIDF}\_ object to handle. All testing files use the same datasets: \textit{dataset-1}, \textit{dataset-2}, and \textit{dataset-3}, which consist of collections of categorized BBC News articles of varying lengths and complexities. These datasets were sourced from \cite{b6}
 
-The runner is a Makefile which compiles and executes the parallel implementation, then the sequential implementation. The command make test will compile and execute both the main test files with the preset trained data file and output the data into its respective files in the test-outputs folder.
+The runner is a Makefile which compiles and executes the parallel implementation, then the sequential implementation. The command make test will compile and execute both the main test files with the preset trained data file and output the data into its respective files in the outputs folder.
 
 To run multiple tests of all numbers of threads and the sequential test, I used a Bash script. The script runs each testing scenario ten times before testing the next scenario. This allows shorter testing scenarios to run and complete before testing longer scenarios, such as the sequential implementation, which may take upwards of twenty minutes to complete per test. Figure 1 is an example of what a block in the Bash script looks like when testing the code with two threads. This script was used to gather ten iterations of each test across the three datasets.
 
