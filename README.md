@@ -31,6 +31,11 @@ scripts/setup.sh
 
 ## Run Tests
 ### Run Individual Tests
+```shell
+make main
+./main 3 128 # arg1 = dataset, arg2 = thread count
+```
+_Runs test for any dataset and thread count._
 #### a. Parallel Tests
 ```bash
 make n-test # n = number of threads to test
