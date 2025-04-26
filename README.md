@@ -65,26 +65,26 @@ _Runs >= 1 iteration of all tests with all 3 datasets._
 #### Example Output
 ```bash
 -----------------------------------------------
-                    Test #1            
+                    Test #1                
 -----------------------------------------------
 
                    Dataset-1                 
 * --- * --- * --- * ------- * --- * --- * --- *
-Testing w/ 1 Thread(s) Passed ✅
+Testing w/1    Thread(s)  Passed ✅
 ...
-Testing w/ 1024 Thread(s) Passed ✅
+Testing w/1024 Thread(s)  Passed ✅
 
                    Dataset-2                 
 * --- * --- * --- * ------- * --- * --- * --- *
-Testing w/ 1 Thread(s) Passed ✅
+Testing w/1    Thread(s)  Passed ✅
 ...
-Testing w/ 1024 Thread(s) Passed ✅
+Testing w/1024 Thread(s)  Passed ✅
 
                    Dataset-3                 
 * --- * --- * --- * ------- * --- * --- * --- *
-Testing w/ 1 Thread(s) Passed ✅
+Testing w/1    Thread(s)  Passed ✅
 ...
-Testing w/ 1024 Thread(s) Passed ✅
+Testing w/1024 Thread(s)  Passed ✅
 
                 Testing Report                 
 -----------------------------------------------

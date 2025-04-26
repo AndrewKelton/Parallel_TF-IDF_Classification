@@ -2,7 +2,7 @@
 
 NUM_ITERATIONS=1
 
-# make clean
+make clean
 make test
 
 total_count=0
@@ -25,7 +25,7 @@ for ((y=1; y <= NUM_ITERATIONS; y++)); do
             ((total_count++))
 
             if [ $j == 1 ]; then
-                # ./test $i
+                ./test $i
                 file="tests/output/results/sequential-$i-results.txt"
                 ((sequential_count++))
 
@@ -37,7 +37,7 @@ for ((y=1; y <= NUM_ITERATIONS; y++)); do
                     ((correct_count++))
                 fi
             else 
-                # ./test $i $j
+                ./test $i $j
                 file="tests/output/results/parallel-$j-$i-results.txt"
                 ((parallel_count++))
 
