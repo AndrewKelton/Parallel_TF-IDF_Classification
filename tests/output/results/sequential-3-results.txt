@@ -1,7 +1,7 @@
-Vectorization: 3877 ms
-TF-IDF: 437377 ms
-Categories: 1074 ms
-Unknown Classification: 29148 ms
+Vectorization: 3912 ms
+TF-IDF: 432613 ms
+Categories: 1095 ms
+Unknown Classification: 28849 ms
 # of total unknown Documents: 860
 # of total correctly Classfied: 773
 % Classifed Correctly: 89.8837%

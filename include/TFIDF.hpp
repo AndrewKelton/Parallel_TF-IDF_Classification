@@ -94,7 +94,8 @@ namespace TFIDF { // namespace TFIDF
              * @param is_base_lvl_logging Whether to log errors to stderr (default: true).
              * @param num_threads Number of threads for parallel processing (default: -1 for dynamic threads).
              */
-            TFIDF_(bool is_parallel=true, 
+            TFIDF_(
+                   bool is_parallel=true, 
                    std::string trained_input_file=DEFAULT_TRAINED_INPUT_FILE, 
                    std::string un_trained_input_file=DEFAULT_UN_TRAINED_INPUT_FILE, 
                    std::string un_trained_correct_classification_file=DEFAULT_UN_TRAINED_CORRECT_INPUT_FILE, 

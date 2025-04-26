@@ -10,7 +10,7 @@ docs/latex
 venv
 
 # testing output to ignore
-# tests/
+tests/output/*
 
 # object files
 *.o

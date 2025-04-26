@@ -1,13 +1,24 @@
 # Parallel TF-IDF Classification
 
-## Documentation
+<!-- ## Documentation
 Check out the Doxyfile <a href="https://andrewkelton.me/parallel-tf-idf-project/index.html" target="_blank">documentation</a>!
-<!--<a href="https://andrewkelton.me/parallel-tf-idf-project/index.html" target="_blank">Documentation</a> -->
+<a href="https://andrewkelton.me/parallel-tf-idf-project/index.html" target="_blank">Documentation</a> -->
 
 ## Introduction
-Parallel TF-IDF Classification is a high-performance implementation of the Term Frequency-Inverse Document Frequency (TF-IDF) algorithm for document classification. This project leverages parallel computing to efficiently process large text datasets. This project also compares the times and accuracy between the parallel method and the sequential method. Files use a Doxygen comment format.
+Parallel TF-IDF Classification is a high-performance implementation of the Term Frequency-Inverse Document Frequency (TF-IDF) algorithm for document classification. This project leverages parallel computing to efficiently process and classify large text datasets. This project also compares the times and accuracy between the parallel implementations and the sequential implementation. Files use a Doxygen comment format.
+
+### Challenges, Tasks, and Goals
+* Provide a parallel TF-IDF vectorizer and classifier library for efficient performance.
+* Implement text classifier using cosine similarity
+* Measure times of computation in different sections of the code
+* Measure accuracy and precision of text classification
+* Successfully classify documents using TF-IDF scores with respect to cosine similarity.
+* Ensure correctness in parallel TF-IDF computation.
+* Prove the parallel TF-IDF is more efficient and useful than its sequential methodology.
+
 
 ## Installation
+
 ### Prerequisites
 - C++ compiler (GCC, Clang, or MSVC)
 - **CPP_STANDARD** C++17 REQUIRED!!!
@@ -29,64 +40,67 @@ chmod +x scripts/setup.sh
 scripts/setup.sh 
 ```
 
-## Run Tests
-### Run Individual Tests
+## Testing
+
+### Parallel Test
 ```shell
-make main
-./main 3 128 # arg1 = dataset, arg2 = thread count
+ $ make test
+ $ ./test 3 128 # arg1 = dataset-3, arg2 = 128 threads
 ```
-_Runs test for any dataset and thread count._
-#### a. Parallel Tests
-```bash
-make n-test # n = number of threads to test
-```
-_Runs parallel test for dataset $(DS_NUM), check Makefile._
-#### b. Sequential Test
-```bash
-make seq-test
-```
-_Runs sequential test for dataset $(DS_NUM), check Makefile._
+_Runs multithreaded test for dataset specified, utilizes specified # of threads._
 
-#### c. Parallel & Sequential Tests
+### Sequential Test
 ```bash
-make test 
+ $ make test
+ $ ./test 3 # arg1 = dataset-3
 ```
-_Runs all parallel & sequential tests for dataset $(DS_NUM), check Makefile._
+_Runs sequential test for dataset specified._
 
-### Run _n_ Iterations of All Tests
+### Run All Tests
 ```bash
-chmod +x scripts/run.sh
-scripts/run.sh
-```
-_Runs multiple iterations of all tests for benchmarking._
+ $ chmod +x scripts/run.sh
+ $ scripts/run.sh
+``` 
+_Runs >= 1 iteration of all tests with all 3 datasets._    
+#### Example Output
+```bash
+-----------------------------------------------
+                    Test #1            
+-----------------------------------------------
 
+                   Dataset-1                 
+* --- * --- * --- * ------- * --- * --- * --- *
+Testing w/ 1 Thread(s) Passed ✅
+...
+Testing w/ 1024 Thread(s) Passed ✅
+
+                   Dataset-2                 
+* --- * --- * --- * ------- * --- * --- * --- *
+Testing w/ 1 Thread(s) Passed ✅
+...
+Testing w/ 1024 Thread(s) Passed ✅
+
+                   Dataset-3                 
+* --- * --- * --- * ------- * --- * --- * --- *
+Testing w/ 1 Thread(s) Passed ✅
+...
+Testing w/ 1024 Thread(s) Passed ✅
+
+                Testing Report                 
+-----------------------------------------------
+Total Iterations 1
+Passed 33/33    total tests
+Passed 30/30    parallel tests
+Passed 3/3      sequential tests
+```
 
 ## Cleaning the Environment
 ```bash
-chmod +x scripts/cleanup.sh
-./scripts/cleanup.sh
+ $ chmod +x scripts/cleanup.sh
+ $ ./scripts/cleanup.sh
 ```
 _Removes installed dependencies and 'cleans' folders._
 
-
-## Challenges
-* Efficient parallel version of TF-IDF algorithm
-* Optimize thread usage to maximize speedup
-* Handle large datasets efficiently
-* Ensure correctness in parallel optimization
-
-## Tasks
-* Implement parallel and sequential vectorization and TF-IDF compution
-* Implement classifier using cosine similarity
-* Measure times of computation in different sections of code
-* Measure accuracy of classification
-* Compare Parallel and Sequential times and accuracy
-
-## Goals
-* Provide a parallel TF-IDF vectorizer/classifier for efficient performance.
-* Prove parallel TF-IDF is more efficient than its sequential implementation.
-* Ensure correctness in parallel TF-IDF computation.
-* Successfully classify documents using TF-IDF scores with respect to cosine similarity.
 
 
 ## Notes
