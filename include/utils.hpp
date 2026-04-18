@@ -62,42 +62,6 @@ enum class_type_ {
 };
 
 /** 
- * @enum text_cat_types_
- * @brief Represents different text classification categories.
- */
-enum text_cat_types_ {
-    sport_t_,          ///< Sports category.
-    business_t_,       ///< Business category.
-    politics_t_,       ///< Politics category.
-    tech_t_,           ///< Technology category.
-    entertainment_t_,  ///< Entertainment category.
-    invalid_t_         ///< Invalid, Unrecognized, or Unititialized category.
-};
-
-/** 
- * @brief Maps category names (strings) to their corresponding `text_cat_types_` enum.
- */
-const std::map<std::string, text_cat_types_> categories_text = {
-    {"sport", sport_t_},
-    {"business", business_t_},
-    {"politics", politics_t_},
-    {"tech", tech_t_},
-    {"entertainment", entertainment_t_}
-};
-
-/** 
- * @brief Maps `text_cat_types_` enums to their corresponding string representations.
- */
-const std::map<text_cat_types_, std::string> text_categories = {
-    {sport_t_, "sport"},
-    {business_t_, "business"},
-    {politics_t_, "politics"},
-    {tech_t_, "tech"},
-    {entertainment_t_, "entertainment"},
-    {invalid_t_, "invalid"}
-};
-
-/** 
  * @enum section_type_
  * @brief Represents different computational sections used for processing.
  */
@@ -185,47 +149,6 @@ inline void print_duration_code(_time_point_ start, _time_point_ end, section_ty
 
 inline void print_duration_code(double duration, section_type_ type) {
     std::cout << get_section_name(type) << ": " << duration << " ms" << std::endl;
-}
-
-/**
- * @brief Converts an integer to `text_cat_types_` enum.
- * 
- * @param i Integer representing the category.
- * @return Corresponding `text_cat_types_` enum value.
- */
-inline text_cat_types_ conv_cat_type(int i) {
-    if (i > 5)
-        return invalid_t_;
-    return static_cast<text_cat_types_>(i);
-}
-
-/**
- * @brief Converts a `text_cat_types_` enum to its string representation.
- * 
- * @param type_ The category type enum.
- * @return Corresponding category name as a string.
- */
-inline std::string conv_cat_type(text_cat_types_ type_) {
-    try {
-        return text_categories.at(type_);
-    } catch (const std::out_of_range& e) {
-        return text_categories.at(invalid_t_);
-    }
-}
-
-/**
- * @brief Converts a string to a `text_cat_types_` enum.
- * 
- * @param str Category name as a string.
- * @return Corresponding `text_cat_types_` enum.
- */
-inline text_cat_types_ conv_cat_type(std::string str) {
-    try {
-        return categories_text.at(str);
-    } catch (const std::out_of_range& e) {
-        std::cerr << str << " is not a category." << std::endl;
-        return invalid_t_;
-    }
 }
 
 /** @} */ // End of UsageTestFiles group
