@@ -35,9 +35,8 @@ Parallel TF-IDF Classification is a high-performance implementation of the Term 
 git clone https://github.com/AndrewKelton/Parallel_TF-IDF_Classification.git
 cd Parallel_TF-IDF_Classification
 
-# Set up the environment, downloadOleanderStemmingLibrary), ensure directories are present
-chmod +x scripts/setup.sh
-scripts/setup.sh 
+# Set up the environment, download OleanderStemmingLibrary), ensure directories are present
+make setup
 ```
 
 ## Testing
@@ -96,12 +95,9 @@ Passed 3/3      sequential tests
 
 ## Cleaning the Environment
 ```bash
- $ chmod +x scripts/cleanup.sh
- $ ./scripts/cleanup.sh
+ $ make cleanup
 ```
 _Removes installed dependencies and 'cleans' folders._
-
-
 
 ## Notes
 * Dataset Requirement: 

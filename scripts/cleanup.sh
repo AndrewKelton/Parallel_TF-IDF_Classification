@@ -75,10 +75,6 @@ if [ -d "$STEM_LIB_DIR" ]; then
     echo -e "${GREEN}  ✅ Removed $STEM_LIB_DIR${NC}"
 fi
 
-# Makefile to clean up
-echo -e "\n${CYAN}  🔨 Running make clean...${NC}"
-make clean
-
 # Remove all .zip files in CWD
 echo -e "\n${CYAN}  🗜️  Removing .zip files...${NC}"
 find . -type f -name "*.zip" -exec rm -f {} \;

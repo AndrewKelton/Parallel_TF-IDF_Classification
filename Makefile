@@ -49,6 +49,13 @@ all: $(MAIN_EXEC)
 test: $(MAIN_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
+setup:
+	@bash scripts/setup.sh
+
+cleanup:
+	@$(MAKE) --no-print-directory clean
+	@bash scripts/cleanup.sh
+
 $(MAIN_EXEC): $(MAIN_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
