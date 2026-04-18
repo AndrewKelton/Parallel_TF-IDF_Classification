@@ -91,26 +91,6 @@ extern void read_csv_to_corpus(corpus::Corpus& corpus, const std::string& file_n
     file.close();
 }    
 
-// return .txt file name for results to csv
-// static std::string get_txt_name(unsigned int par_or_seq /** 0 = parallel, 1 = sequential*/, bool comp_or_solo) {
-//     if (par_or_seq != 0 && par_or_seq != 1)
-//         throw std::runtime_error("invalid params in 'get_file_name'");
-//     else if (par_or_seq == 0) {
-//         return comp_or_solo ? res_par_txt_singleton : res_par_txt;
-//     }
-// 
-//     return comp_or_solo ? res_seq_txt_singleton : res_seq_txt;
-// }
-// 
-// // return .csv file name from .txt result file name
-// static std::string get_csv_name(const std::string& txt_file_name) {
-//     std::string file_txt_path;
-// 
-//     if (txt_file_name.find("parallel") != std::string::npos)
-//         return processed_par_csv;
-//     return processed_seq_csv;
-// }
-
 extern std::string get_input_file_name() {
     return input_file_name;
 }
@@ -147,35 +127,6 @@ extern std::vector<std::string> read_unknown_cats(const std::string& file_name) 
 
     return correct_cats;
 }
-
-// actually write plain text file results to csv file
-// static void write_sections_csv(std::vector<std::pair<std::string, std::string>> pln_txt, const std::string& txt_file_name) {
-//     std::string file_name = get_csv_name(txt_file_name);
-//     std::ofstream file(file_name, std::ios::app); // append to csv
-// 
-//     if (!file) {
-//         throw_runtime_error("error writing to csv");
-//     } else {
-//         file.seekp(0, std::ios::end);
-//         
-//         if (file.tellp() == 0) 
-//             file << "Vectorization,TF-IDF,Categories,Unknown Classification,Accuracy\n";  // Header row
-// 
-//         std::unordered_map<std::string, std::string> section_mapping;
-//         
-//         for (const auto& sec_time : pln_txt) {
-//             std::string no_ms_time = sec_time.second.substr(1, sec_time.second.find(" ms") - 1); // 'stem' the output
-//             section_mapping[sec_time.first] = no_ms_time;
-//         }
-// 
-//         // print mapping in csv format
-//         file << section_mapping["Vectorization"] << ","
-//              << section_mapping["TF-IDF"] << ","
-//              << section_mapping["Categories"] << ","
-//              << section_mapping["Unknown Classification"] << ","
-//              << section_mapping["Accuracy"] << std::endl;
-//     }
-// }
 
 extern void convert_results_txt_to_csv(const std::string& txt_file_name, const std::string& csv_file_name) {
     std::ifstream file{txt_file_name};
