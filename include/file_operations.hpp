@@ -15,11 +15,8 @@
  * 
  * @note Requires all input files to be located in the `data` folder.
  * 
- * @version 1.1
- * @date 2025-03-19
- * 
  * @par Changelog:
- * - Improved file writing efficiency in `write_sections_csv()` function.
+ * - Reads category string directly into corpus
  * - Improved CSV formatted output.
  * - @brief Example of new CSV format:
  * ```csv

@@ -21,7 +21,7 @@ namespace cats { // namespace cats
     // return sorted std::vector of tfidf terms
     std::vector<std::pair<std::string, double>> Category::sort_unordered_umap(std::unordered_map<std::string, double> terms) {
         if (terms.empty())
-            throw_runtime_error("no terms or terms are empty in ", conv_cat_type(this->category_type));
+            throw_runtime_error("no terms or terms are empty in ", this->category_type);
 
         std::vector<std::pair<std::string, double>> vectored_umap(terms.begin(), terms.end());
 
@@ -36,10 +36,10 @@ namespace cats { // namespace cats
     std::pair<std::string, double> Category::search_nth_important_term(std::vector<std::vector<std::pair<std::string, double>>> all_tfidf_terms, std::vector<std::pair<std::string, double>> used) {
 
         if (all_tfidf_terms.empty()){
-            throw_runtime_error("empty tfidf in ", conv_cat_type(this->category_type));
+            throw_runtime_error("empty tfidf in ", this->category_type);
         }
         if (all_tfidf_terms[0].empty()) {
-            throw_runtime_error("empty tfidf in ", conv_cat_type(this->category_type));
+            throw_runtime_error("empty tfidf in ", this->category_type);
         }
         
         std::pair<std::string, double> current_high = all_tfidf_terms[0][0];
@@ -135,7 +135,7 @@ namespace cats { // namespace cats
             return;
         }
 
-        file << "Category: " << conv_cat_type(category_type) << "\n";
+        file << "Category: " << category_type << "\n";
         
         for (auto& term : most_important_terms) {
             file << term.first << ": " << term.second << "\n";
@@ -166,20 +166,18 @@ namespace cats { // namespace cats
 
     extern unknown_class classify_text(const std::unordered_map<std::string, double>& unknownText, std::vector<Category> cat_vect, std::string correct_type) {
         unknown_class unknown_classification;
-        unknown_classification.correct_type = conv_cat_type(correct_type);
-        text_cat_types_ best_category_type{invalid_t_};
+        unknown_classification.correct_type = correct_type;
+        std::string best_category_type{""};
         double maxSimilarity = 0.0;
 
-        int i{0};
         for (const auto& cat_tf_idf : cat_vect) {
 
             double similarity = cosine_similarity(unknownText, cat_tf_idf.tf_idf_all);
             if (similarity > maxSimilarity) {
                 maxSimilarity = similarity;
-                best_category_type = conv_cat_type(i);
-                unknown_classification.classified_type = conv_cat_type(i);
+                best_category_type = cat_tf_idf.get_type();
+                unknown_classification.classified_type = cat_tf_idf.get_type();
             }
-            i++;
         }
 
         if (unknown_classification.correct_type == unknown_classification.classified_type) {
@@ -202,7 +200,7 @@ namespace cats { // namespace cats
         }
 
         for (auto doc : u_classified.unknown_doc) {
-            std::cout << conv_cat_type(doc.correct_type) << "\t" << conv_cat_type(doc.classified_type) << "\t";
+            std::cout << doc.correct_type << "\t" << doc.classified_type << "\t";
             
             if (doc.correct)
                 std::cout << "True";
@@ -214,40 +212,40 @@ namespace cats { // namespace cats
     }
 
     // initialize categories std::vector
-    static std::vector<Category> init_categories() {
+    static std::vector<Category> init_categories(std::unordered_set<std::string> categories) {
         std::vector<Category> categories_list;
 
-        for (int i = 0; i < MAX_CATEGORIES; i++)
-            categories_list.emplace_back(i);
+        for (const auto& category: categories)
+            categories_list.emplace_back(category);
         
         return categories_list;
     }
 
     // deprecated function
-    extern std::vector<Category> get_all_category_important_terms(const corpus::Corpus& corpus) {
-        std::vector<Category> categories_list = init_categories();
-        std::vector<std::thread> category_threads;
-
-        for (int i = 0; i < MAX_CATEGORIES; i++) {
-            std::cout << "getting important categories for " << conv_cat_type(conv_cat_type(i)) << std::endl;
-            category_threads.emplace_back([&, i] {
-                try {
-                    categories_list.at(i).get_important_terms(corpus);
-                } catch (const std::runtime_error &e) {
-                    std::cerr << "RuntimeError get_all_category_important_terms: " << e.what() << std::endl;
-                    return;
-                } catch (const std::exception &e) {
-                    std::cerr << "Exception get_all_category_important_terms: " << e.what() << std::endl;
-                    return;
-                }
-            });
-        }
-
-        for (auto& thread : category_threads)
-            thread.join();
-
-        return categories_list;
-    }
+//     extern std::vector<Category> get_all_category_important_terms(const corpus::Corpus& corpus) {
+//         std::vector<Category> categories_list = init_categories(corpus.category_types_set);
+//         std::vector<std::thread> category_threads;
+// 
+//         for (int i = 0; i < MAX_CATEGORIES; i++) {
+//             std::cout << "getting important categories for " << conv_cat_type(i) << std::endl;
+//             category_threads.emplace_back([&, i] {
+//                 try {
+//                     categories_list.at(i).get_important_terms(corpus);
+//                 } catch (const std::runtime_error &e) {
+//                     std::cerr << "RuntimeError get_all_category_important_terms: " << e.what() << std::endl;
+//                     return;
+//                 } catch (const std::exception &e) {
+//                     std::cerr << "Exception get_all_category_important_terms: " << e.what() << std::endl;
+//                     return;
+//                 }
+//             });
+//         }
+// 
+//         for (auto& thread : category_threads)
+//             thread.join();
+// 
+//         return categories_list;
+//     }
 }
 
 /* Parallel Functions */
@@ -261,17 +259,17 @@ namespace cats::par { // namespace cats::par
 
     }
 
-    extern void get_single_cat_par(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint) {
+    extern void get_single_cat_par(const corpus::Corpus& corpus, std::vector<Category>& cats, std::string category) {
         std::lock_guard<std::mutex> lock(mtx); /* MOVING LOCK HERE INCREASED ACCURACY BY ABOUT 60% */
-        Category cat(catint);
+        Category cat(category);
 
         try {
             cat.get_important_terms(corpus);
             cats.emplace_back(std::move(cat));
         } catch (const std::runtime_error &e) {
-            std::cerr << "RuntimeError in get_single_cat_par, getting " << conv_cat_type(catint) <<  ": " << e.what() << std::endl;
+            std::cerr << "RuntimeError in get_single_cat_par, getting " << category <<  ": " << e.what() << std::endl;
         } catch (const std::exception &e) {
-            std::cerr << "Exception in get_single_cat_par, getting " << conv_cat_type(catint) <<  ": " << e.what() << std::endl;
+            std::cerr << "Exception in get_single_cat_par, getting " << category <<  ": " << e.what() << std::endl;
         }
         
       /*{
@@ -285,9 +283,9 @@ namespace cats::par { // namespace cats::par
         std::vector<cats::Category> cat_vect;
 
         try {
-            for (int i = 0; i < 5; i++) {
-                cat_threads.emplace_back([&, i]() {
-                    cats::par::get_single_cat_par(std::ref(corpus), std::ref(cat_vect), conv_cat_type(i));
+            for (auto& cat : corpus.category_types_set) {
+                cat_threads.emplace_back([&, cat]() {
+                    cats::par::get_single_cat_par(std::ref(corpus), std::ref(cat_vect), cat);
                 });
             }
         } catch (std::exception e) {
@@ -334,8 +332,8 @@ namespace cats::par { // namespace cats::par
         for (int i = 0; i < num_docs; i++) 
             doc_idx_queue.push(i);
 
-        for (int i = 0; i < MAX_CATEGORIES; i++)
-            cat_vect.emplace_back(conv_cat_type(i));
+        for (const auto& cat : corpus.category_types_set)
+            cat_vect.emplace_back(cat);
 
         for (int i = 0; i < num_threads; i++) {
             cat_threads.emplace_back([&corpus, doc_idx_queue, cat_vect]() {
@@ -488,8 +486,8 @@ namespace cats::par { // namespace cats::par
 /* Sequential Functions */
 namespace cats::seq { // namespace cats::seq
 
-    extern void get_single_cat_seq(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint) {
-        Category cat(catint);
+    extern void get_single_cat_seq(const corpus::Corpus& corpus, std::vector<Category>& cats, std::string category) {
+        Category cat(category);
         try {
             cat.get_important_terms(corpus);
         } catch (const std::runtime_error &e) {
@@ -502,12 +500,12 @@ namespace cats::seq { // namespace cats::seq
         cats.emplace_back(std::move(cat));
     }
 
-    extern std::vector<cats::Category> get_all_cat_seq(const corpus::Corpus&  corpus) {
+    extern std::vector<cats::Category> get_all_cat_seq(const corpus::Corpus& corpus) {
         std::vector<cats::Category> cat_vect;
         try {
-            for (int i = 0; i < 5; i++) 
-                cats::seq::get_single_cat_seq(corpus, ref(cat_vect), conv_cat_type(i));
-            
+            for (const auto& cat : corpus.category_types_set) {
+                cats::seq::get_single_cat_seq(corpus, cat_vect, cat);
+            }
         } catch (std::exception e) {
             std::cerr << "Error in get_single_cat_seq: " << e.what() << std::endl;
         }

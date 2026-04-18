@@ -9,8 +9,6 @@
  * in `Document` objects. It uses the Oleander Stemming Library to reduce words 
  * to their root forms (e.g., "enjoying" → "enjoy"). 
  * 
- * @version 1.0
- * @date 2025-03-12
  * @see https://github.com/Blake-Madden/OleanderStemmingLibrary
  */
 

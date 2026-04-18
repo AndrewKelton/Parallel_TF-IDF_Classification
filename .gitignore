@@ -18,3 +18,4 @@ tests/output
 test
 
 .github
+compile_commands.json

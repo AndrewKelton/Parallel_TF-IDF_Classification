@@ -48,7 +48,7 @@ namespace docs {
         return "Number of Terms: " + std::to_string(total_terms) + "\n";
     }
     std::string Document::print_category() const { 
-        return "Category: " + text_categories.at(category) + "\n\n";
+        return "Category: " + category + "\n\n";
     }
     std::string Document::print_tf_idf() const {
         std::string tf_idf_str{"TF-IDF Vectorization: \n"};
