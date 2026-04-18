@@ -15,7 +15,7 @@
 #ifndef _PREPROCESS_HPP
 #define _PREPROCESS_HPP
 
-#include "document.hpp"
+#include "Document.hpp"
 
 /**
  * @brief Reduces a given word to its root form using stemming.

@@ -29,8 +29,6 @@
 #include <fstream>
 #include "utils.hpp"
 
-#define MAX_CATEGORIES 5
-
 
 /**
  * @namespace corpus

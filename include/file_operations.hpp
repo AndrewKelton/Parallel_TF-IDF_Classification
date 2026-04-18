@@ -29,7 +29,8 @@
 #ifndef _FILE_OPERATIONS_HPP
 #define _FILE_OPERATIONS_HPP
 
-#include "document.hpp"
+#include "Document.hpp"
+#include "Corpus.hpp"
 
 /**
  * @brief Reads a CSV file and loads data into a `Corpus` object.

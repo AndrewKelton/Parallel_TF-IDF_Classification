@@ -16,7 +16,8 @@
 #ifndef _COUNT_VECTORIZATION_HPP
 #define _COUNT_VECTORIZATION_HPP
 
-#include "document.hpp"
+#include "Document.hpp"
+#include "Corpus.hpp"
 
 
 /**

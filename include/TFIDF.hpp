@@ -12,6 +12,7 @@
 
 #include "count_vectorization.hpp"
 #include "file_operations.hpp"
+#include "Corpus.hpp"
 
 
 namespace TFIDF { // namespace TFIDF

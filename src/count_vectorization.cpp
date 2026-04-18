@@ -5,6 +5,7 @@
 #include "count_vectorization.hpp"
 #include "preprocess.hpp"
 #include "categories.hpp"
+#include "Corpus.hpp"
 #include <set>
 
 std::atomic<int> doc_id_count{0}; // document id 

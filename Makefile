@@ -29,7 +29,8 @@ $(shell mkdir -p $(TST_DIR)/$(BUILD_DIR)/$(OBJ_DIR) $(TST_DIR)/$(BUILD_DIR))
 # Common source files
 COMMON_SOURCES = $(SRC_DIR)/count_vectorization.cpp \
 				 $(SRC_DIR)/categories.cpp \
-                 $(SRC_DIR)/document.cpp \
+                 $(SRC_DIR)/Document.cpp \
+                 $(SRC_DIR)/Corpus.cpp \
                  $(SRC_DIR)/preprocess.cpp \
                  $(SRC_DIR)/file_operations.cpp \
 				 $(SRC_DIR)/TFIDF.cpp 

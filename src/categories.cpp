@@ -3,7 +3,8 @@
  */
 
 #include "categories.hpp"
-#include "document.hpp"
+#include "Document.hpp"
+#include "Corpus.hpp"
 #include "utils.hpp"
 #include <mutex>
 #include <algorithm>
