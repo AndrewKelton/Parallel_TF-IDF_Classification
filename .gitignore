@@ -11,8 +11,10 @@ include/OleanderStemmingLibrary
 venv
 
 # testing output to ignore
-tests/output/*
+tests/output
 
 # object files
 *.o
+test
+
 
