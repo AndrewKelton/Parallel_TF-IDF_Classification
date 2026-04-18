@@ -14,7 +14,6 @@ fi
 source $ENV_FILE || { echo "Error: Failed to source $ENV_FILE"; exit 1; }
 eval $(cat $ENV_FILE) || { echo "Error: Failed to evaluate $ENV_FILE"; exit 1; }
  
-
 # welcome message
 echo -e "\n"
 echo "=============================================="
@@ -50,59 +49,36 @@ else
     fi
 fi
 
-echo ""
+# create testing directories if non existant
+ALL_TEST_DIRS=( "$TEST_DIR" "$BASE_TEST_OUT_DIR" "$LENGTHY_TEST_DIR" "$BASE_RESULTS_DIR" "$BASE_LOGS_DIR" "$PROCESSED_DATA_CSV_DIR" "$GRAPHS_DIR")
 
-while true 
-do
-    read -p "Would you like to setup test directories (y/n)? " response
-    
-    if [ "$response" == "y" ] || [ "$response" == "Y" ]; then
-        ALL_TEST_DIRS=( "$TEST_DIR" "$BASE_TEST_OUT_DIR" "$LENGTHY_TEST_DIR" "$COMP_TEST_DIR" "$SOLO_TEST_DIR" "$BASE_RESULTS_DIR" "$BASE_LOGS_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$PROCESSED_DATA_CSV_DIR" "$GRAPHS_DIR")
+echo -e "Setting up testing directories...\n" 
 
-        echo -e "Setting up testing directories...\n" 
+# create build directory
+mkdir -p "$BUILD_TEST_DIR"
 
-        # create build directory
-        mkdir -p "$BUILD_TEST_DIR"
-
-        # Check/Create directory for each 
-        # required directory for testing 
-        for DIR in "${ALL_TEST_DIRS[@]}"; do
-            if [ ! -d "$DIR" ] && [ "$DIR" != "$RES_TEST_DIR" ] && [ "$DIR" != "$LOG_TEST_DIR" ]; then
-                echo -e "Creating directory: $DIR"
-                mkdir -p "$DIR"
-            elif ( [ ! -d "$SOLO_TEST_DIR$DIR" ] || [ ! -d "$COMP_TEST_DIR$DIR" ] ) && [ "$DIR" == "$RES_TEST_DIR" ]; then
-                echo -e "Creating directory: $SOLO_TEST_DIR$DIR"
-                mkdir -p "$SOLO_TEST_DIR$DIR"
-                echo -e "Creating directory: $COMP_TEST_DIR$DIR"
-                mkdir -p "$COMP_TEST_DIR$DIR"
-            elif ( [ ! -d "$SOLO_TEST_DIR$DIR" ] || [ ! -d "$COMP_TEST_DIR$DIR" ] ) && [ "$DIR" == "$LOG_TEST_DIR" ]; then
-                echo -e "Creating directory: $SOLO_TEST_DIR$DIR"
-                mkdir -p "$SOLO_TEST_DIR$DIR"
-                echo -e "Creating directory: $COMP_TEST_DIR$DIR"
-                mkdir -p "$COMP_TEST_DIR$DIR"
-            fi
-        done        
-        echo -e "Test Directories Created...\n"
-        break
-
-    elif [ "$response" == "n" ] || [ "$response" == "N" ]; then
-        break
+# Check/Create directory for each 
+# required directory for testing 
+for DIR in "${ALL_TEST_DIRS[@]}"; do
+    if [ ! -d "$DIR" ]; then
+        echo -e "Creating directory: $DIR"
+        mkdir -p "$DIR"
+    else 
+        echo -e "Directory: $DIR already exists..."
     fi
-done
-
+done        
+echo -e "Test Directories Created...\n"
 
 # create DESCRIPTION file for output
+echo "
+### This directory stores output files generated during testing, logs, and graphs.
 
-    echo "
-    ### This directory stores output files generated during testing, logs, and graphs.
+- processed-data-results/: Contains 2 CSV files with test results, 1. parallel tests, 2. sequential tests.
+- graphs/: Stores generated graphs comparing sequential vs parallel performance.
+- .../results/: Holds output stdout from tests.
+- .../logs/: Holds logs related to test runs.
 
-    - processed-data-results/: Contains 2 CSV files with test results, 1. parallel tests, 2. sequential tests.
-    - graphs/: Stores generated graphs comparing sequential vs parallel performance.
-    - .../results/: Holds output stdout from tests.
-    - .../logs/: Holds logs related to test runs.
-
-    This directory is cleaned up by cleanup.sh and will delete all data, unless specified.
-    " > $BASE_TEST_OUT_DIR/README.md
-
+This directory is cleaned up by cleanup.sh and will delete all data, unless specified.
+" > $BASE_TEST_OUT_DIR/README.md
 
 echo "Setup Complete!"
