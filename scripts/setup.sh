@@ -57,7 +57,7 @@ do
     read -p "Would you like to setup test directories (y/n)? " response
     
     if [ "$response" == "y" ] || [ "$response" == "Y" ]; then
-        ALL_TEST_DIRS=( "$TEST_DIR" "$BASE_TEST_OUT_DIR" "$LENGTHY_TEST_DIR" "$COMP_TEST_DIR" "$SOLO_TEST_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$PROCESSED_DATA_CSV_DIR" "$GRAPHS_DIR")
+        ALL_TEST_DIRS=( "$TEST_DIR" "$BASE_TEST_OUT_DIR" "$LENGTHY_TEST_DIR" "$COMP_TEST_DIR" "$SOLO_TEST_DIR" "$BASE_RESULTS_DIR" "$BASE_LOGS_DIR" "$RES_TEST_DIR" "$LOG_TEST_DIR" "$PROCESSED_DATA_CSV_DIR" "$GRAPHS_DIR")
 
         echo -e "Setting up testing directories...\n" 
 
