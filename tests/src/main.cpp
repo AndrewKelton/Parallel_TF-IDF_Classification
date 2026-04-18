@@ -54,5 +54,18 @@ int main(int argc, char * argv[]) {
     std::cout.rdbuf(coutBuf);
     std::cerr.rdbuf(cerrBuf);
 
+    /* notify user of completion */
+    bool is_parallel = argc >= 3;
+    int dataset = atoi(argv[1]);
+    std::cout << "\n  ✅ Test complete!" << std::endl;
+    if (is_parallel)
+        std::cout << "  🧵 Mode:     Parallel (" << atoi(argv[2]) << " threads)" << std::endl;
+    else
+        std::cout << "  🔁 Mode:     Sequential" << std::endl;
+    std::cout << "  📂 Dataset:  " << dataset << std::endl;
+    std::cout << "  📄 Results:  " << results_output << std::endl;
+    std::cout << "  📋 Logs:     " << logging_output << std::endl;
+    std::cout << "  📊 CSV:      " << procssd_output << "\n" << std::endl;
+
     return 0;
 }
