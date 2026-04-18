@@ -7,11 +7,14 @@ obj/
 build/
 docs/html
 docs/latex
+include/OleanderStemmingLibrary
 venv
 
 # testing output to ignore
-tests/output/*
+tests/output
 
 # object files
 *.o
+test
+
 
