@@ -11,9 +11,6 @@
  * 
  * The multi-threaded approach distributes documents across multiple threads for improved 
  * performance, while the sequential approach processes documents one at a time.
- * 
- * @version 1.0
- * @date 2025-03-12
  */
 
 #ifndef _COUNT_VECTORIZATION_HPP

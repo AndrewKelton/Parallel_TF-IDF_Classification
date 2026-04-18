@@ -16,13 +16,8 @@
  * also contains utility functions for managing categories, checking if a document belongs to a 
  * specific category, and handling category-related data efficiently.
  * 
- * @version 3.1
- * @date 2025-03-22
- * 
  * @par Changelog:
- * - Created functions: `get_all_cat_seq` and `get_all_cat_par`.
- * -- Iterates through all category types, returning a `vector<Category>`
- *    containing the category info. Allows user to only have to call the function.
+ * - Added dynamic categories, no longer stuck to 5 categories.
  * 
  */
 
@@ -81,7 +76,6 @@ namespace cats {
         private:
 
             std::string category_type; ///< Category type 
-            // text_cat_types_ category_type;  ///< Category type (text_cat_types_)
             int number_of_docs;             ///< Number of documents in this category
             std::vector<std::pair<std::string, double>> most_important_terms; ///< List of top terms in the category sorted by TF-IDF
         
@@ -296,7 +290,7 @@ namespace cats::par {
      * @param cats A vector to store the resulting Category objects.
      * @param catint The category type to process.
      */
-    extern void get_single_cat_par(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint);
+    extern void get_single_cat_par(const corpus::Corpus& corpus, std::vector<Category>& cats, std::string category);
 
     /**
      * @brief Get important terms for all Category objects using parallel processing (5 threads, 1 per Category).
@@ -344,9 +338,9 @@ namespace cats::seq {
      * 
      * @param corpus The corpus of documents used for calculating TF-IDF. It must be a valid pointer to a `Corpus` object.
      * @param cats A vector to store the resulting Category objects. The categories will be filled with the most important terms.
-     * @param catint The category type to process, represented as a value from `text_cat_types_`.
+     * @param catint The category type to process, represented as string.
      */
-    extern void get_single_cat_seq(const corpus::Corpus& corpus, std::vector<Category>& cats, text_cat_types_ catint);
+    extern void get_single_cat_seq(const corpus::Corpus& corpus, std::vector<Category>& cats, std::string category);
     
     /**
      * @brief Get important terms for all Category objects using sequential processing.
@@ -356,7 +350,7 @@ namespace cats::seq {
      * 
      * @param corpus The corpus of documents used for calculating TF-IDF. It must be a valid pointer to a `Corpus` object.
      * @param cats A vector to store the resulting Category objects. The categories will be filled with the most important terms.
-     * @param catint The category type to process, represented as a value from `text_cat_types_`.
+     * @param catint The category type to process, represented as a string.
      * @return A `vector<Category>` containing all processed category data.
      */
     extern std::vector<cats::Category> get_all_cat_seq(const corpus::Corpus&  corpus);

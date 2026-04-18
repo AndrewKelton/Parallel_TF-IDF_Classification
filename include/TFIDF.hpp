@@ -5,12 +5,6 @@
  * @author Andrew Kelton
  * @brief Defines the TFIDF_ class, which implements methods for processing trained and untrained data
  *        and calculating TF-IDF scores for text classification tasks.
- * 
- * @version 1.0
- * @date 2025-03-24
- * 
- * @par Changelog:
- * - Initial version with basic functionality for TF-IDF processing.
  */
 
 #ifndef _TFIDF_HPP

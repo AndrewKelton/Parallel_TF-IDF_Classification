@@ -4,14 +4,6 @@
  * 
  * @author Andrew Kelton
  * @brief Defines the Document and Corpus classes and their related functions.
- * 
- * @version 1.1
- * @date 2025-03-19
- * 
- * @par Changelog:
- * - Moved `get_number_of_docs_per_thread()` in corpus::Corpus from private -> public.
- * - Changed `get_number_of_docs_per_thread()` to a `const` function.
- * 
  */
 
 #ifndef _DOCUMENT_HPP
@@ -95,7 +87,6 @@ namespace docs {
             std::unordered_map<std::string, double> term_frequency; ///< Normalized term frequencies
             std::unordered_map<std::string, double> tf_idf;         ///< TF-IDF scores for terms in the document
             int total_terms{0};       ///< Total number of words in the document
-            // text_cat_types_ category; ///< Classification category assigned to the document
             std::string category; ///< Classification category assigned to the document
 
             /**
@@ -190,12 +181,11 @@ namespace corpus {
 
         public:
 
-            std::vector<docs::Document> documents;                               ///< Collection of document objects in the corpus.
+            std::vector<docs::Document> documents;  ///< Collection of document objects in the corpus.
             std::unordered_map<std::string, double> inverse_document_frequency; ///< Stores the inverse document frequency (IDF) values.
-            std::atomic<int> num_of_docs{0};                               ///< Total number of documents in the corpus.
+            std::atomic<int> num_of_docs{0};    ///< Total number of documents in the corpus.
             std::atomic<int> num_of_categories{0};  ///< Total number of categories in the corpus.
-            std::unordered_set<std::string> category_types_set;
-            // unordered_map<string, int> document_frequency;         // # of documents each word appears in
+            std::unordered_set<std::string> category_types_set; ///< set of category types as strings.
 
             /**
             * @brief Computes the TF-IDF values for all documents in parallel.

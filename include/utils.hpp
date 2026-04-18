@@ -17,9 +17,6 @@
  * - Error handling and runtime exceptions.
  * - Time measurement utilities.
  * - Thread-related constants
- * 
- * @version 1.0
- * @date 2025-03-12
  */
 
 #ifndef _UTILS_H
