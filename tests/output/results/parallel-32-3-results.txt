@@ -1,3 +1,0 @@
-Vectorization: 210 ms
-TF-IDF: 15591 ms
-Categories: 1221 ms
