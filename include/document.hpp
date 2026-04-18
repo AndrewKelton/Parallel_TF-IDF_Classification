@@ -22,6 +22,8 @@
 #include <cstdarg>
 #include <sstream>
 #include <fstream>
+#include <unordered_set>
+
 #include "utils.hpp"
 #include "categories.hpp"
 
@@ -93,7 +95,8 @@ namespace docs {
             std::unordered_map<std::string, double> term_frequency; ///< Normalized term frequencies
             std::unordered_map<std::string, double> tf_idf;         ///< TF-IDF scores for terms in the document
             int total_terms{0};       ///< Total number of words in the document
-            text_cat_types_ category; ///< Classification category assigned to the document
+            // text_cat_types_ category; ///< Classification category assigned to the document
+            std::string category; ///< Classification category assigned to the document
 
             /**
              * @brief Checks whether a given term exists in the document.
@@ -190,6 +193,8 @@ namespace corpus {
             std::vector<docs::Document> documents;                               ///< Collection of document objects in the corpus.
             std::unordered_map<std::string, double> inverse_document_frequency; ///< Stores the inverse document frequency (IDF) values.
             std::atomic<int> num_of_docs{0};                               ///< Total number of documents in the corpus.
+            std::atomic<int> num_of_categories{0};  ///< Total number of categories in the corpus.
+            std::unordered_set<std::string> category_types_set;
             // unordered_map<string, int> document_frequency;         // # of documents each word appears in
 
             /**

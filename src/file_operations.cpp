@@ -47,7 +47,7 @@ static std::pair<std::string, std::string> split_string(const std::string& str, 
 }
 
 // return a new docs::Document object with inputted text and category
-static docs::Document create_document(std::string text, text_cat_types_ category) {
+static docs::Document create_document(std::string text, std::string category) {
     docs::Document new_document;
     new_document.text = text;
     new_document.category = category;
@@ -77,11 +77,13 @@ extern void read_csv_to_corpus(corpus::Corpus& corpus, const std::string& file_n
             continue;
 
         std::pair<std::string, std::string> split = split_string(line, ',');
-        text_cat_types_ category = conv_cat_type(split.first);
+        std::string category = split.first;
 
-        // if (category == invalid_t_) continue;
-        
-        corpus.documents.push_back(create_document(split.second, category));
+        if (corpus.category_types_set.insert(category).second) {
+            corpus.num_of_categories++;
+        }
+
+        corpus.documents.push_back(create_document(split.second, split.first));
         i++;
     }   
     
@@ -123,7 +125,7 @@ extern void read_unknown_text(corpus::Corpus& corpus, const std::string& file_na
     int i{0};
     while (getline(file, line)) {
 
-        corpus.documents.push_back(create_document(line, invalid_t_));
+        corpus.documents.push_back(create_document(line, ""));
         i++;
     }
 

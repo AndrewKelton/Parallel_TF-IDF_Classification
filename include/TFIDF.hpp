@@ -18,7 +18,6 @@
 
 #include "count_vectorization.hpp"
 #include "file_operations.hpp"
-#include "flag_handler.hpp"
 
 
 namespace TFIDF { // namespace TFIDF

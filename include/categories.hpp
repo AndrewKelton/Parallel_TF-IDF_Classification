@@ -80,7 +80,8 @@ namespace cats {
 
         private:
 
-            text_cat_types_ category_type;  ///< Category type (text_cat_types_)
+            std::string category_type; ///< Category type 
+            // text_cat_types_ category_type;  ///< Category type (text_cat_types_)
             int number_of_docs;             ///< Number of documents in this category
             std::vector<std::pair<std::string, double>> most_important_terms; ///< List of top terms in the category sorted by TF-IDF
         
@@ -134,9 +135,9 @@ namespace cats {
             /**
              * @brief Regular constructor to create a Category from the category type.
              * 
-             * @param category_type The type of category (integer that maps to text_cat_types_).
+             * @param category_type The type of category (string).
              */
-            Category(int category_type) : category_type{static_cast<text_cat_types_>(category_type)} {}
+            Category(std::string category_type) : category_type{category_type} {}
 
             /** 
              * @brief Copy Constructor 
@@ -175,9 +176,9 @@ namespace cats {
             /**
              * @brief Gets the category type.
              * 
-             * @return The type of the category as a text_cat_types_.
+             * @return The type of the category as a string.
              */
-            text_cat_types_ get_type() const {
+            std::string get_type() const {
                 return category_type;
             }
         
@@ -209,8 +210,8 @@ namespace cats {
      * This struct holds information about the correct and classified categories of a document.
      */
     struct Classified_S {
-        text_cat_types_ correct_type;    ///< The correct category of the document.
-        text_cat_types_ classified_type; ///< The category the document was classified into.
+        std::string correct_type;    ///< The correct category of the document.
+        std::string classified_type; ///< The category the document was classified into.
         bool correct;                    ///< Whether the classification was correct.
     };
     using unknown_class = Classified_S;  ///< Use `unknown_class`, I dislike capitals.
