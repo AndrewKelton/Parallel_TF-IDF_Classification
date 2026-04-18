@@ -5,6 +5,12 @@
 
 int main(int argc, char * argv[]) {
 
+    /* ensure dataset included */
+    if (argc < 2) {
+        std::cerr << "No dataset specified..." << std::endl << "Terminating early." << std::endl;
+        return 1;
+    }
+
     /* acquire dataset number */
     std::string input_folder{"tests/data/dataset-" + std::to_string(atoi(argv[1])) + "/"};
     std::string input_training{input_folder + "training-data.csv"};
@@ -14,10 +20,11 @@ int main(int argc, char * argv[]) {
     /* set the output files */
     std::string base_output_folder{"tests/output/"}; 
     std::string base_file_name{""};
-    if (argc < 3)
+    if (argc < 3) {
         base_file_name += "sequential-" + std::to_string(atoi(argv[1])) + "-";
-    else 
+    } else {
         base_file_name += "parallel-" + std::to_string(atoi(argv[2])) + "-" + std::to_string(atoi(argv[1])) + "-";
+    }
     std::string results_output{base_output_folder + "results/" + base_file_name + "results.txt"};
     std::string logging_output{base_output_folder + "logs/" + base_file_name + "errors.log"};
     std::string procssd_output{base_output_folder + "processed-data-results/" + base_file_name + "processed.csv"};
@@ -58,10 +65,11 @@ int main(int argc, char * argv[]) {
     bool is_parallel = argc >= 3;
     int dataset = atoi(argv[1]);
     std::cout << "\n  ✅ Test complete!" << std::endl;
-    if (is_parallel)
+    if (is_parallel) {
         std::cout << "  🧵 Mode:     Parallel (" << atoi(argv[2]) << " threads)" << std::endl;
-    else
+    } else {
         std::cout << "  🔁 Mode:     Sequential" << std::endl;
+    }
     std::cout << "  📂 Dataset:  " << dataset << std::endl;
     std::cout << "  📄 Results:  " << results_output << std::endl;
     std::cout << "  📋 Logs:     " << logging_output << std::endl;
