@@ -73,8 +73,10 @@ extern void read_csv_to_corpus(corpus::Corpus& corpus, const std::string& file_n
     while (getline(file, line)) {
         
         // ignore header
-        if (line == "category,text")
+        if (i == 0) {
+            i += 1;
             continue;
+        }
 
         std::pair<std::string, std::string> split = split_string(line, ',');
         std::string category = split.first;
@@ -84,8 +86,9 @@ extern void read_csv_to_corpus(corpus::Corpus& corpus, const std::string& file_n
         }
 
         corpus.documents.push_back(create_document(split.second, split.first));
-        i++;
+        i += 1;
     }   
+    i -= 1;
     
     corpus.num_of_docs.store(i);
     file.close();
