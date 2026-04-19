@@ -35,13 +35,12 @@ extern void compute_idf_vector_training(corpus::Corpus * corpus) {
 }
 
 extern void compute_tfidf_matrix_training(corpus::Corpus * corpus) {
-    int total_terms_unique = corpus->get_num_unique_terms();
     int total_documents = corpus->num_of_docs;
 
     for (int i = 0; i < total_documents; ++i) {
         for (auto& term: corpus->vocabulary) {
             int col = corpus->term_to_index[term];
-            corpus->tfidf_matrix[i][corpus->term_to_index[term]] = corpus->tf_matrix[i][col] * corpus->idf_vector[corpus->term_to_index[term]];
+            corpus->tfidf_matrix[i][col] = corpus->tf_matrix[i][col] * corpus->idf_vector[col];
         }
     }
 }

@@ -76,7 +76,7 @@ namespace corpus {
 
             std::vector<std::vector<double>> tf_matrix; ///< rows = documents, cols = vocab terms
             std::vector<double> idf_vector; ///< A single vector of length vocab_size
-            std::vector<std::vector<double>> tfidf_matrix;
+            std::vector<std::vector<double>> tfidf_matrix; ///< rows = documents, cols = TF-IDF scores for each vocab term
 
             /**
             * @brief Computes the TF-IDF values for all documents in parallel.
