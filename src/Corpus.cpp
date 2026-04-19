@@ -131,7 +131,7 @@ namespace corpus {
     }
 
     int Corpus::get_num_unique_terms() const {
-        return inverse_document_frequency.size();
+        return vocabulary.size();
     }
 
     unsigned Corpus::get_number_of_docs_per_thread() const {
@@ -177,4 +177,6 @@ namespace corpus {
 
         file.close();
     }
+
+
 } // corpus namespace

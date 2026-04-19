@@ -71,6 +71,13 @@ namespace corpus {
             std::atomic<int> num_of_categories{0};  ///< Total number of categories in the corpus.
             std::unordered_set<std::string> category_types_set; ///< set of category types as strings.
 
+            std::vector<std::string> vocabulary; ///< index → term string
+            std::unordered_map<std::string, int> term_to_index; ///< term string → index
+
+            std::vector<std::vector<double>> tf_matrix; ///< rows = documents, cols = vocab terms
+            std::vector<double> idf_vector; ///< A single vector of length vocab_size
+            std::vector<std::vector<double>> tfidf_matrix;
+
             /**
             * @brief Computes the TF-IDF values for all documents in parallel.
             * 

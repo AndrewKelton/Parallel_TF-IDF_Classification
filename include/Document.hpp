@@ -82,12 +82,10 @@ namespace docs {
         public:
 
             int document_id{0}; ///< Unique document identifier (for testing/debugging)
+            int total_terms{0}; ///< Total number of words in the document
             std::string text;   ///< Raw text content of the document
-            std::unordered_map<std::string, int> term_count;        ///< Term occurrence count within the document
-            std::unordered_map<std::string, double> term_frequency; ///< Normalized term frequencies
-            std::unordered_map<std::string, double> tf_idf;         ///< TF-IDF scores for terms in the document
-            int total_terms{0};       ///< Total number of words in the document
             std::string category; ///< Classification category assigned to the document
+            std::unordered_map<std::string, int> term_count;
 
             /**
              * @brief Checks whether a given term exists in the document.

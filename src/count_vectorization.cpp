@@ -6,31 +6,15 @@
 #include "preprocess.hpp"
 #include "categories.hpp"
 #include "Corpus.hpp"
-#include <set>
+#include "constants/stopwords.hpp"
+#include <unordered_set>
 
 std::atomic<int> doc_id_count{0}; // document id 
 
-/* words that carry no value and are voided 
- * used from https://towardsdatascience.com/building-a-cross-platform-tfidf-text-summarizer-in-rust-7b05938f4507
-*/
-static const std::set<std::string> STOPWORDS{
-    "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", 
-    "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", 
-    "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", 
-    "theirs", "themselves", "what", "which", "who", "whom", "this", "that", 
-    "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", 
-    "have", "has", "had", "having", "do", "does", "did", "doing", "an", "the", 
-    "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", 
-    "by", "for", "with", "about", "against", "between", "into", "through", 
-    "during", "before", "after", "above", "below", "to", "from", "up", "down", 
-    "in", "out", "on", "off", "over", "under", "again", "further", "then", "oh",
-    "once", "here", "there", "when", "where", "why", "how", "all", "any", 
-    "both", "each", "few", "more", "most", "other", "some", "such", "no", 
-    "nor", "not", "only", "own", "same", "so", "than", "too", "very", "can", 
-    "will", "just", "don", "should", "now", "a", "b", "c", "d", "e", "f", 
-    "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u",
-    "v", "w", "x", "y", "z"
-};
+// O(1) average lookup — built once at static init from constants/stopwords.hpp
+static const std::unordered_set<std::string> STOPWORDS(
+    STOPWORDS_LIST.begin(), STOPWORDS_LIST.end()
+);
 
 /* Increments term count in a Document.
  * Ignores words in STOPWORDS, does NOT 

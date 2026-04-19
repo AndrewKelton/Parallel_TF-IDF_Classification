@@ -5,9 +5,18 @@
 #include "preprocess.hpp"
 #include "english_stem.h"
 #include "utils.hpp"
+#include "constants/stopwords.hpp"
+
 #include <locale>
 #include <codecvt>
+#include <unordered_set>
 
+
+
+// O(1) average lookup — built once at static init from constants/stopwords.hpp
+static const std::unordered_set<std::string> STOPWORDS(
+    STOPWORDS_LIST.begin(), STOPWORDS_LIST.end()
+);
 
 /* Helper for static_assert to trigger an error 
  * for unsupported types. See comment below for 
@@ -61,7 +70,7 @@ static std::string preprocess_remove_punc_text(std::string str) {
     return processed;
 }
 
-extern std::string preprocess_prune_term(std::string str) {
+static std::string preprocess_prune_term(std::string str) {
     std::wstring to_prune;
 
     try {
@@ -71,7 +80,9 @@ extern std::string preprocess_prune_term(std::string str) {
         return str;
     }
 
-    // prune it
+    /* Special thank to Blake Madden for providing the incredible
+     * OleanderStemmingLibrary: https://www.oleandersolutions.com/stemming/stemming.html
+     */
     stemming::english_stem<> stemmer;
     stemmer(to_prune);
 
@@ -79,6 +90,20 @@ extern std::string preprocess_prune_term(std::string str) {
 }
 
 // preprocess all text in document
-extern void preprocess_text(docs::Document * doc) {
-    doc->text = preprocess_to_lower_text(preprocess_remove_punc_text(doc->text));
+extern std::vector<std::string> preprocess_tokenize(const docs::Document * doc) {
+    std::string processing_text = doc->text;
+
+    processing_text = preprocess_to_lower_text(preprocess_remove_punc_text(processing_text));
+    std::istringstream iss(processing_text);
+    std::vector<std::string> tokens;
+    std::string word;
+
+    while (iss >> word) {
+        std::string stemmed = preprocess_prune_term(word);
+        if (STOPWORDS.count(word) == 0) {
+            tokens.push_back(stemmed);
+        } 
+    }
+   
+    return tokens;
 }
