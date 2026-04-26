@@ -6,10 +6,7 @@
 #include "file_operations.hpp"
 #include "training_vectorizer.hpp"
 #include "computation.hpp"
-
-std::vector<double> build_centroid() {
-
-}
+#include "Category.hpp"
 
 void tfidf::fit(std::string path) {
     read_csv_to_corpus(this->training_corpus, path);
@@ -22,7 +19,7 @@ void tfidf::fit(std::string path) {
     compute_tfidf_matrix_training(&this->training_corpus);
 
     // build categories centroids
-    for (auto& category: this->)
+    std::vector<Category> categories = build_categories(this->training_corpus);
 }
 
 void tfidf::transform(std::string path) {

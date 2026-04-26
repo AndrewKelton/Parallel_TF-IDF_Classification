@@ -9,6 +9,7 @@
 #ifndef _CATEGORY_HPP
 #define _CATEGORY_HPP
 
+#include "Corpus.hpp"
 #include <string>
 #include <vector>
 
@@ -33,5 +34,8 @@ class Category {
         std::string category_type;
         std::vector<double> centroid;
 };
+
+// returns std::vector<Category>
+extern std::vector<Category> build_categories(const corpus::Corpus& corpus);
 
 #endif
