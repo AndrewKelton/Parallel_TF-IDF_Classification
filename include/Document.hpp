@@ -15,9 +15,10 @@
 #include <sstream>
 #include <fstream>
 #include <unordered_set>
+#include <unordered_map>
 
 #include "utils.hpp"
-#include "categories.hpp"
+#include "Category.hpp"
 
 class Category; ///< Forward declaration
 

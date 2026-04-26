@@ -1,4 +1,4 @@
-/**
+/*
  * @file Corpus.hpp
  * @ingroup HeaderFiles
  * 
@@ -11,7 +11,7 @@
 
 #include "Document.hpp"
 #include "utils.hpp"
-#include "categories.hpp"
+#include "Category.hpp"
 
 /**
  * @namespace corpus
