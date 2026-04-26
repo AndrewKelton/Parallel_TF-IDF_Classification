@@ -24,21 +24,19 @@ extern std::vector<Category> build_categories(const corpus::Corpus& corpus) {
         category_type_to_indices[label].push_back(row);
     }
 
-    int row_count = corpus.tfidf_matrix.size();
     int col_count = corpus.tfidf_matrix[0].size();
     for (auto& category : category_type_to_indices) {
         std::vector<size_t> indices = category.second;
-        std::vector<double> centroid(row_count, 0.0);
+        std::vector<double> centroid(col_count, 0.0);
         int num_docs_category = indices.size();
 
-        for (int i = 0; i < row_count; ++i) {
+        for (int term = 0; term < col_count; ++term) {
             double term_tfidf_total = 0.0;
 
             for (auto& doc_idx: indices) {
-                term_tfidf_total += corpus.tfidf_matrix[i][doc_idx];
+                term_tfidf_total += corpus.tfidf_matrix[doc_idx][term];
             }
-
-            centroid[i] = term_tfidf_total / num_docs_category;
+            centroid[term] = term_tfidf_total / num_docs_category;
         }
 
         Category new_category(category.first, centroid);
