@@ -4,7 +4,7 @@
 
 #include "training_vectorizer.hpp"
 #include "preprocess.hpp"
-#include "categories.hpp"
+#include "Category.hpp"
 
 
 void build_vocaulary(corpus::Corpus * corpus) {

@@ -3,7 +3,7 @@
  */
 
 #include "Document.hpp"
-#include "categories.hpp"
+#include "Category.hpp"
 #include <fstream>
 
 namespace docs {

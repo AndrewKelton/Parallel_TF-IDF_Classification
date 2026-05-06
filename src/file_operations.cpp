@@ -3,38 +3,11 @@
  */
 
 #include "file_operations.hpp"
-#include "categories.hpp"
+#include "Category.hpp"
 #include "utils.hpp"
 #include <fstream>
 
 static std::string input_file_name;
-
-/* --- Constants --- */
-// static const std::string sl{"/"}; // general purpose slash
-// 
-// /* constants for directory paths */
-// static const std::string base_test_dir{"tests/output"};
-// static const std::string processed_csv_dir{base_test_dir + sl + "processed-data-results"};
-// static const std::string comp_test_dir{base_test_dir + sl + "comparison"};
-// static const std::string solo_test_dir{base_test_dir + sl + "solo"};
-// static const std::string res_test_dir{"results"};
-// 
-// // output end file names
-// static const std::string par_res_file{"parallel-" + std::to_string(ds_num) + "results.txt"};
-// static const std::string seq_res_file{"sequential-" + std::to_string(ds_num) + "results.txt"};
-// 
-// /* constants for .txt files (results) paths */
-// static const std::string res_par_txt{comp_test_dir + sl + res_test_dir + sl + par_res_file};
-// static const std::string res_seq_txt{comp_test_dir + sl + res_test_dir + sl + seq_res_file};
-// 
-// static const std::string res_par_txt_singleton{solo_test_dir + sl + res_test_dir + sl + par_res_file};
-// static const std::string res_seq_txt_singleton{solo_test_dir + sl + res_test_dir + sl + seq_res_file};
-// 
-// /* constants for processed csv files */
-// static const std::string processed_par_csv{processed_csv_dir + sl + "parallel-processed.csv"};
-// static const std::string processed_seq_csv{processed_csv_dir + sl + "sequential-processed.csv"};
-/* --- Constants --- */
-
 
 // return std::pair of first split from csv 'category, text'
 static std::pair<std::string, std::string> split_string(const std::string& str, const char& splitter) {
