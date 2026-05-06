@@ -11,6 +11,7 @@
 #define _TFIDF_HPP
 
 #include "Corpus.hpp"
+#include <vector>
 
 class tfidf {
     public:
@@ -23,6 +24,7 @@ class tfidf {
     private:
         corpus::Corpus training_corpus;
         corpus::Corpus testing_corpus;
+        std::vector<Category> categories;
 };
 
 #endif // _TFIDF_HPP

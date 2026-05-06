@@ -9,6 +9,7 @@
 #include "Category.hpp"
 
 void tfidf::fit(std::string path) {
+
     read_csv_to_corpus(this->training_corpus, path);
 
     build_vocaulary(&this->training_corpus);
@@ -19,7 +20,7 @@ void tfidf::fit(std::string path) {
     compute_tfidf_matrix_training(&this->training_corpus);
 
     // build categories centroids
-    std::vector<Category> categories = build_categories(this->training_corpus);
+    this->categories = build_categories(this->training_corpus);
 }
 
 void tfidf::transform(std::string path) {
